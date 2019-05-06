@@ -1,0 +1,5 @@
+{
+  "atom-text-editor": {
+    "f12": "Exec-in-cmd:start"
+  }
+}

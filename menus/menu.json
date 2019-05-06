@@ -1,0 +1,10 @@
+{
+  "context-menu": {
+    "atom-text-editor": [
+      {
+        "label": "Exec in cmd",
+        "command": "Exec-in-cmd:start"
+      }
+    ]
+  }
+}
