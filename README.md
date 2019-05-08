@@ -3,6 +3,8 @@
 >一鍵編譯執行檔案 (One click to compile and execute the file taht we support)<BR>
 >點擊 F12 啟動 (Click F12 to start it).
 >
+![A screenshot of your package](https://had.name/data/atom/Screenshot.gif)
+
 # 目前支援的格示有 (Support Now)：
 ## .c
 >cd "{path}" & gcc "{filename}.c" -o "{filename}" & chcp 65001 & md out & cls</BR>
@@ -51,7 +53,7 @@
 >You need to install R and set environment variables.
 >
 
-# 原理 (How does it work)：
+# 原理 (How it works)：
 >本外掛原理是透過抓取檔案位置、檔案名稱，及副檔名等參數傳送給 open.exe 偵測檔案類型丟給命令提示字元適合的程式碼進行工作。</BR>
 >若要自行新增或更改方法，可修改本外掛 lib 資料夾內的 open.c 檔案並編譯成 open.exe</BR>
 >The package catches the file's path, filename, and filename extension. We deliver the arguments to open.exe ,a program that can detect the kind of file and choose the proper commands to work.</BR>
@@ -66,4 +68,3 @@
 >來自有名線上科技 (From Hadname Online Technology)
 >https://had.name/atom/
 >
-![A screenshot of your package](Screenshot.gif)
