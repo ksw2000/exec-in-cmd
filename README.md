@@ -3,7 +3,7 @@
 >一鍵編譯執行檔案 (One click to compile and execute the file taht we support)<BR>
 >點擊 F12 啟動 (Click F12 to start it).
 >
-![A screenshot of your package](https://had.name/data/atom/Screenshot.gif)
+  <img src="https://had.name/data/atom/Screenshot.gif" style="max-width:600px; width:100%;" alt="A screenshot of how Exec-in-cmd works"/>
 
 # 目前支援的格示有 (Support Now)：
 ## .c
