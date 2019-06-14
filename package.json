@@ -1,7 +1,7 @@
 {
     "name": "exec-in-cmd",
     "main": "./lib/exec",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "description": "Click F12 to execute Java,C,C++,Python,GO... in windows command line.",
     "activationCommands": {
         "atom-workspace": "Exec-in-cmd:start"
