@@ -1,39 +1,40 @@
 {
-  "name": "exec-in-cmd",
-  "main": "./lib/exec",
-  "version": "2.0.0",
-  "description": "Click F12 to execute a file (C,C++,Java,Python,GO...) in command line.",
-  "activationCommands": {
-    "atom-workspace": "Exec-in-cmd:start"
-  },
-  "bugs": {
-    "url": "https://github.com/Hadname/exec-in-cmd/issues"
-  },
-  "homepage": "https://github.com/Hadname/exec-in-cmd#readme",
-  "keywords": [
-    "cmd",
-    "execute",
-    "exec",
-    "runner",
-    "Go",
-    "C",
-    "C++",
-    "Cpp",
-    "Java",
-    "Python",
-    "HTML",
-    "R"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Hadname/exec-in-cmd.git"
-  },
-  "license": "MIT",
-  "engines": {
-    "atom": ">=0.1.0 <2.0.0"
-  },
-  "author": {
-    "name": "Hadname Online",
-    "email": "admin@had.name"
-  }
+    "name": "exec-in-cmd",
+    "main": "./lib/exec",
+    "version": "0.4.0",
+    "description": "Click F12 to execute Java,C,C++,Python,GO... in windows command line.",
+    "activationCommands": {
+        "atom-workspace": "Exec-in-cmd:start"
+    },
+    "bugs": {
+        "url": "https://github.com/Hadname/exec-in-cmd/issues"
+    },
+    "homepage": "https://github.com/Hadname/exec-in-cmd#readme",
+    "keywords": [
+        "cmd",
+        "execute",
+        "exec",
+        "runner",
+        "Go",
+        "C",
+        "C++",
+        "Cpp",
+        "Java",
+        "Python",
+        "HTML",
+        "R",
+        "Ruby"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Hadname/exec-in-cmd.git"
+    },
+    "license": "MIT",
+    "engines": {
+        "atom": ">=0.1.0 <2.0.0"
+    },
+    "author": {
+        "name": "Hadname",
+        "email": "admin@had.name"
+    }
 }

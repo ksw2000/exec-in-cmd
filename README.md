@@ -21,7 +21,7 @@
 >You need to install mingw(http://www.mingw.org/) and set environment variables.
 >
 ## .go
->       cd "{path}" & go run "{filename}.go"</BR>
+>       cd "{path}" & go run "{filename}.go"
 >需安裝go(https://golang.org/doc/install) 並設定環境變數GOROOT GOPATH
 >
 >You need to install go(https://golang.org/doc/install) and set environment varibales
@@ -45,7 +45,7 @@
 >需安裝jre 並設定環境變數。
 >
 >You need to install jre and set environment variables.</BR>
-## .html .htm .pdf
+## .html .htm .pdf .lnk
 >       cd "{path}" & start "" "{filename}{filename extension}"
 >需安裝瀏覽器，若有亂碼請試試於&lt;head&gt; &lt;/head&gt;間加入
 >
@@ -53,6 +53,12 @@
 >Get garbled texts? Try to insert code between &lt;head&gt; &lt;/head&gt;:
 >
 >       <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+>
+## .rb
+>       cd "{path}"  & chcp 65001 & cls & ruby "{filename}.rb"
+>需安裝ruby 並設定環境變數
+>
+>You need to install ruby and set environment variables.
 >
 ## .py
 >       cd "{path}" & python "{filename}.py"
