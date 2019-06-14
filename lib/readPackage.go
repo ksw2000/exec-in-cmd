@@ -21,8 +21,8 @@ func main() {
         second := re2.FindStringSubmatch(first[0]);
         re3 := regexp.MustCompile(`[a-zA-Z]+[a-zA-Z0-9.]{0,}`)
         third := re3.FindStringSubmatch(second[0]);
-        fmt.Printf("%s",third[0]);
+        fmt.Printf("%s",third[0])
     }else{
-        fmt.Print("0");
+        fmt.Print("0")
     }
 }
