@@ -3,7 +3,7 @@
 >一鍵編譯執行檔案 (One click to compile and execute the file taht we support)<BR>
 >點擊 F12 啟動 (Click F12 to start it).
 >
-  <img src="https://user-images.githubusercontent.com/50315688/57392898-8b079680-71f4-11e9-96d9-f36b5c9ab264.gif" style="max-width:600px; width:100%;" alt="A screenshot of how Exec-in-cmd works"/>
+  <img src="https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png" style="max-width:600px; width:100%;" alt="A screenshot of how Exec-in-cmd works"/>
 
 # 目前支援的格示有 (Support Now)：
 ## .c
