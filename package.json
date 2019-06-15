@@ -2,7 +2,7 @@
     "name": "exec-in-cmd",
     "main": "./lib/exec",
     "version": "2.1.2",
-    "description": "Click F12 to execute Java,C,C++,Python,GO... in windows command line.",
+    "description": "Execute code(C,Java,Python,GO...) in windows command line by clicking F12.",
     "activationCommands": {
         "atom-workspace": "Exec-in-cmd:start"
     },
@@ -25,10 +25,7 @@
         "R",
         "Ruby"
     ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Hadname/exec-in-cmd.git"
-    },
+    "repository": "https://github.com/Hadname/exec-in-cmd",
     "license": "MIT",
     "engines": {
         "atom": ">=0.1.0 <2.0.0"
