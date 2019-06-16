@@ -56,9 +56,17 @@
 >
 ## .rb
 >       cd "{path}"  & chcp 65001 & cls & ruby "{filename}.rb"
->需安裝ruby 並設定環境變數
+>需安裝ruby 並設定環境變數.
 >
 >You need to install ruby and set environment variables.
+>
+>若有亂碼請試著在開頭加入：
+>
+>If you get garbled texts, try to insert following code in the opengin of file.
+>
+>        #!/usr/bin/ruby -w
+>        # -*- coding: UTF-8 -*-
+>        #coding=utf-8
 >
 ## .py
 >       cd "{path}" & python "{filename}.py"
@@ -78,14 +86,15 @@
 >若要自行新增或更改方法，可修改本外掛 lib 資料夾內的 open.c 檔案並編譯成 open.exe</BR>
 >
 >The package catches the file's path, filename, and filename extension. We deliver the arguments to open.exe ,a program that can detect the kind of file and choose the proper commands to work.</BR>
->If you want to add or change the commands, please modify the file open.c in file libs/ in our package.
+>If you want to add or change the commands, please modify libs/open.c in our package.
 >
 
 # 注意 (Notice)
->使用時檔案建議以 UTF-8 進行編碼。</BR>
+>使用時檔案建議以 UTF-8 進行編碼。
+>
 >We suggest that you use UTF-8 encoding.
 
-# 關於我們 (About)
->來自有名線上科技 (From Hadname Online Technology)
->https://had.name/atom/
->
+<center>
+Made by : Hadname Online (有名線上科技) <BR>
+<a href="https://had.name/atom/">https://had.name/atom/</a>
+</center>
