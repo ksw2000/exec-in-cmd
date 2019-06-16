@@ -60,9 +60,9 @@
 >
 >You need to install ruby and set environment variables.
 >
->若有亂碼請試著在開頭加入：
+>若有亂碼請試著在檔案開頭加入：
 >
->If you get garbled texts, try to insert following code in the opengin of file.
+>If you get garbled texts, try to insert following code in the opening of file.
 >
 >        #!/usr/bin/ruby -w
 >        # -*- coding: UTF-8 -*-
