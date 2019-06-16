@@ -1,1 +1,1 @@
-print("Hello python! 哈囉Python！")
+print("Hello python! 哈囉Python！ こんにちは")
