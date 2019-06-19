@@ -8,8 +8,9 @@ public class package_ex{
 }
 //If you click F12 , you will get:
 //----------------------------------------------------------
-//Error: Could not find or load main class package_ex
-//Caused by: java.lang.ClassNotFoundException: package_ex
+//Error: Main method not found in class p1.package_ex, please define the main method as:
+//   public static void main(String[] args)
+//or a JavaFX application class must extend javafx.application.Application
 //----------------------------------------------------------
 //It is correct. The file has been compiled although it can't be executed.
 //This file will be compiled to out/p1/package_ex.class
