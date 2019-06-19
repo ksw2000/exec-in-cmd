@@ -1,33 +1,37 @@
-# 歡迎使用 (Welcome to Use) Exec-in-cmd
->Exec-in-cmd：以命令提示字元執行檔案 (Execute a file in command line)<BR>
->一鍵編譯執行檔案 (One click to compile and execute the file taht we support)<BR>
->點擊 F12 啟動 (Click F12 to start it).
+# 這是什麼 (What is this)
+>讓你的Atom更方便！當你每次要執行程式碼時不必另外開啟命令提示字元，也不必改用其他IDE，你只要按下F12即可！
+>
+>Make your Atom be more convenient when you want to run your code. You don't need to use command line or other IDE to run your code. You just need to click F12 to run your code.
+>
+>目前僅支援 Windows，但非永遠。
+>
+>We only support for Windows now, but NOT forever.
 >
   <img src="https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png" style="max-width:600px; width:100%;" alt="A screenshot of how Exec-in-cmd works"/>
 
-# 目前支援的格示有 (Support Now)：
-## .c
+# 支援格式 (Support)
+### .c
 >       cd "{path}" & gcc "{filename}.c" -o "{filename}" & chcp 65001 & md out & cls
 >       cd "{path}" & "{filename}.exe"
 >需安裝mingw(http://www.mingw.org/) 並設定環境變數。
 >
 >You need to install mingw(http://www.mingw.org/) and set environment variables.
 >
-## .cpp
+### .cpp
 >       cd "{path}" & g++ "{filename}.cpp" -o "{filename}" & chcp 65001 & md out & cls
 >       cd "{path}" & "{filename}.exe"
 >需安裝mingw(http://www.mingw.org/) 並設定環境變數。
 >
 >You need to install mingw(http://www.mingw.org/) and set environment variables.
 >
-## .go
+### .go
 >       cd "{path}" & go run "{filename}.go"
 >需安裝go(https://golang.org/doc/install) 並設定環境變數GOROOT GOPATH
 >
 >You need to install go(https://golang.org/doc/install) and set environment varibales
 >such as GOROOT and GOPATH
 >
-## .java
+### .java
 #### 不使用 package： (Not using packages: )
 >       cd "{path}" & md out & cls & javac -encoding UTF-8 -d out -classpath out {filename}.java
 >       cd "{path}\out" & java {filename}
@@ -45,16 +49,17 @@
 >需安裝jre 並設定環境變數。
 >
 >You need to install jre and set environment variables.</BR>
-## .html .htm .pdf .lnk
+### .html .htm .pdf .lnk
 >       cd "{path}" & start "" "{filename}{filename extension}"
->需安裝瀏覽器，若有亂碼請試試於&lt;head&gt; &lt;/head&gt;間加入
+>需安裝瀏覽器 (You need to install a web browser)
 >
->You need to install a web browser.</BR>
->Get garbled texts? Try to insert code between &lt;head&gt; &lt;/head&gt;:
+>若HTML檔有亂碼請試試於&lt;head&gt; &lt;/head&gt;間加入
+>
+>Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/head&gt;:
 >
 >       <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 >
-## .rb
+### .rb
 >       cd "{path}"  & chcp 65001 & cls & ruby "{filename}.rb"
 >需安裝ruby 並設定環境變數.
 >
@@ -68,20 +73,20 @@
 >        # -*- coding: UTF-8 -*-
 >        #coding=utf-8
 >
-## .py
+### .py
 >       cd "{path}" & python "{filename}.py"
 >需安裝python 並設定環境變數
 >
 >You need to install python and set environment variables.
 >
-## .R
+### .R
 >       cd "{path}" & chcp 65001 & cls & Rscript "{filename}.R"
 >需安裝R 並設定環境變數
 >
 >You need to install R and set environment variables.
 >
 
-# 原理 (How it works)：
+# 原理 (How it works)
 >本外掛原理是透過抓取檔案位置、檔案名稱，及副檔名等參數傳送給 open.exe 偵測檔案類型丟給命令提示字元適合的程式碼進行工作。
 >若要自行新增或更改方法，可修改本外掛 lib 資料夾內的 open.c 檔案並編譯成 open.exe</BR>
 >
@@ -93,8 +98,6 @@
 >使用時檔案建議以 UTF-8 進行編碼。
 >
 >We suggest that you use UTF-8 encoding.
-
-<center>
-Made by : Hadname Online (有名線上科技) <BR>
-<a href="https://had.name/atom/">https://had.name/atom/</a>
-</center>
+>
+> #### Made by : Hadname Online (有名線上科技)
+> #### <a href="https://had.name/atom/">https://had.name/atom/</a>
