@@ -27,6 +27,9 @@ float exec(char str[]){
     return time;
 }
 
+void clear(char *str){
+    str='\0';
+}
 int main(int argc, char *argv[]){
     //strcmp is a function compare two strings. If they are same, return 0
     //argv[1] return path (not including \)
@@ -43,7 +46,7 @@ int main(int argc, char *argv[]){
         sprintf(str,"%s & md out & cls & javac -encoding UTF-8 -d out -classpath out %s%s",str,argv[2],argv[3]);
         compile_time=exec(str);
         sprintf(str2,"%s",str);
-        str='\0';
+        clear(str);
 
         //Run
         char getPackage[256]="";
@@ -70,7 +73,8 @@ int main(int argc, char *argv[]){
         sprintf(str,"%s \"%s%s\" -o \"out\\%s\"",str,argv[2],argv[3],argv[2]);
         compile_time=exec(str);
         sprintf(str2,"%s",str);
-        str='\0';
+        clear(str);
+        
         sprintf(str,"cd \"%s\\out\" & \"%s.exe\"",argv[1],argv[2]);
     }else if(strcmp(argv[3],".py")==0){
         sprintf(str,"%s & python \"%s%s\"",str,argv[2],argv[3]);
