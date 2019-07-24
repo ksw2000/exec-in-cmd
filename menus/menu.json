@@ -4,6 +4,10 @@
       {
         "label": "Exec in cmd",
         "command": "Exec-in-cmd:start"
+      },
+      {
+          "label": "Exec in cmd (Advance)",
+          "command": "Exec-in-cmd:advance"
       }
     ]
   }
