@@ -1,69 +1,80 @@
-# 這是什麼 (What is this)
->讓你的Atom更方便！當你每次要執行程式碼時不必另外開啟命令提示字元，也不必改用其他IDE，你只要按下F12即可！
->
->Make your Atom be more convenient when you want to run your code. You don't need to use command line or other IDE to run your code. You just need to click F12 to run your code.
->
->目前僅支援 Windows，但非永遠。
->
->We only support for Windows now, but NOT forever.
->
-  <img src="https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png" style="max-width:600px; width:100%;" alt="A screenshot of how Exec-in-cmd works"/>
+# Exec in cmd
+讓你的 Atom 更方便！當你每次要執行程式碼時不必另外開啟命令提示字元，也不必改用其他 IDE ，你只要按下 `F12` 即可！(目前僅支援 Windows)
 
-# 支援格式 (Support)
-### .c
+Make your Atom be more convenient when you want to run your code. You don't need to use command line or other IDE to run your code. You just need to click `F12` to run your code.(Only support for Windows now)
+
+![preview](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png)
+
+### .c .cpp
+>###### C :
 >       cd "{path}" & gcc "{filename}.c" -o "{filename}" & chcp 65001 & md out & cls
 >       cd "{path}" & "{filename}.exe"
->需安裝mingw(http://www.mingw.org/) 並設定環境變數。
->
->You need to install mingw(http://www.mingw.org/) and set environment variables.
->
-### .cpp
+>###### C++ :
 >       cd "{path}" & g++ "{filename}.cpp" -o "{filename}" & chcp 65001 & md out & cls
 >       cd "{path}" & "{filename}.exe"
->需安裝mingw(http://www.mingw.org/) 並設定環境變數。
 >
 >You need to install mingw(http://www.mingw.org/) and set environment variables.
 >
+>* example/
+>   * out/
+>       * example.exe
+>   * example.c
+>   * example.cpp
+>
+
 ### .go
 >       cd "{path}" & go run "{filename}.go"
->需安裝go(https://golang.org/doc/install) 並設定環境變數GOROOT GOPATH
 >
 >You need to install go(https://golang.org/doc/install) and set environment varibales
->such as GOROOT and GOPATH
+>such as `GOROOT` and `GOPATH`
+>
+>* example/
+>   * bin/
+>   * pkg/
+>   * src/
+>       * example.go
+>
 >
 ### .java
-#### 不使用 package： (Not using packages: )
+>``請將所有java檔放置在同一資料夾``，我們會將所有class檔放在適當的資料夾。我們利用 readPackage.exe 取得這個java檔的package名
+>
+>Please `save all ".java" files in the same folder`. We will move ".class" to the folder which it should be. We use readPackage.exe to get the package name of this java file.
+>
+>
+>* example/
+>   * out/
+>       * p1/
+>           * a.class
+>       * b.class
+>       * c.class
+>   * a.java (use package p1)
+>   * b.java
+>   * c.java
+>    
+>編譯：(Compile)
+>
 >       cd "{path}" & md out & cls & javac -encoding UTF-8 -d out -classpath out {filename}.java
->       cd "{path}\out" & java {filename}
-#### 使用 package： (Using packages ):
->請將所有java檔放置在同一資料夾，我們會將所有class檔放在適當的資料夾。我們利用 readPackage.exe 取得這個java檔的package名
 >
->Please save all ".java" files in the same folder. We will move ".class" to the folder which it should be. We use readPackage.exe to get the package name of this java file.
+>取得package名：(Get package name)
 >
->取得package名：(Get package name: )
+>       {exec-in-cmd-root}\lib\readPackage.exe -p "{path}"
+>執行：(Run)
 >
->       {path_of_open.c}\readPackage.exe -p "{path}"
->執行：(Run .class: )
+>       // Use package
+>       cd "{path}\out" & java {package_name}.{filename}
 >
+>       // Not use package
 >       cd "{path}\out" & java {package_name}.{filename}
 >需安裝jre 並設定環境變數。
 >
 >You need to install jre and set environment variables.</BR>
-### .html .htm .pdf .lnk
->       cd "{path}" & start "" "{filename}{filename extension}"
->需安裝瀏覽器 (You need to install a web browser)
->
->若HTML檔有亂碼請試試於&lt;head&gt; &lt;/head&gt;間加入
->
->Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/head&gt;:
->
->       <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+### .js (Node.js)
+>       cd "{path}" & node "{filename}.js"
+>You need to install Node.js (https://nodejs.org) and set environment variables.
 >
 ### .rb
 >       cd "{path}"  & chcp 65001 & cls & ruby "{filename}.rb"
->需安裝ruby 並設定環境變數.
->
->You need to install ruby and set environment variables.
+>You need to install ruby (https://www.ruby-lang.org/) and set environment variables.
 >
 >若有亂碼請試著在檔案開頭加入：
 >
@@ -75,9 +86,7 @@
 >
 ### .py
 >       cd "{path}" & python "{filename}.py"
->需安裝python 並設定環境變數
->
->You need to install python and set environment variables.
+>You need to install python (https://www.python.org/downloads/) and set environment variables.
 >
 ### .R
 >       cd "{path}" & chcp 65001 & cls & Rscript "{filename}.R"
@@ -85,16 +94,48 @@
 >
 >You need to install R and set environment variables.
 >
-
-# 原理 (How it works)
+### .html .htm .pdf .lnk
+>       cd "{path}" & start "" "{filename}{filename extension}"
+>需安裝瀏覽器 (You need to install a web browser)
+>
+>若HTML檔有亂碼請試試於&lt;head&gt; &lt;/head&gt;間加入
+>
+>Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/head&gt;:
+>
+>       <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+>
+## Hacking
 >本外掛原理是透過抓取檔案位置、檔案名稱，及副檔名等參數傳送給 open.exe 偵測檔案類型丟給命令提示字元適合的程式碼進行工作。
 >若要自行新增或更改方法，可修改本外掛 lib 資料夾內的 open.c 檔案並編譯成 open.exe</BR>
 >
 >The package catches the file's path, filename, and filename extension. We deliver the arguments to open.exe ,a program that can detect the kind of file and choose the proper commands to work.</BR>
->If you want to add or change the commands, please modify libs/open.c in our package.
+>If you want to add or change the commands, please modify lib/open.c in our package.
+>
+* exec-in-cmd
+    * example
+    * lib
+        * advance.h
+        * function.h
+        * exec.coffee
+        * open.exe
+        * open.c
+        * readPackage.exe
+        * readPackage.go
+
+## 進階模式 (Advance Mode)
+> Click `Shift+F12`
+>
+>#### .c .cpp
+>     0: Compile only
+>     1: Specify output folder
+>     2: Open cmd
+>#### .go
+>     0: Run
+>     1: Build
+>     2: Open cmd
 >
 
-# 注意 (Notice)
+## 注意 (Notice)
 >使用時檔案建議以 UTF-8 進行編碼。
 >
 >We suggest that you use UTF-8 encoding.
