@@ -1,5 +1,6 @@
 {
   "atom-text-editor": {
-    "f12": "Exec-in-cmd:start"
+    "f12": "Exec-in-cmd:start",
+    "shift-f12": "Exec-in-cmd:advance"
   }
 }
