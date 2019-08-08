@@ -13,7 +13,7 @@ Make your Atom be more convenient when you want to run your code. You don't need
        cd "{path}" & chcp 65001 & md {outputFolder} & cls & g++ "{filename}.cpp" -o "{filename}"
        cd "{path}\{outputFolder}" & "{filename}.exe"
 
-You can just compile without running by `Exec In Cmd:Advance` or `Shift+F12`
+You can just compile without running (僅編譯不執行) by `Exec In Cmd:Advance` or `Shift+F12`
 
 You need to install [`MINGW`](http://www.mingw.org/) and set environment variables.
 
@@ -77,7 +77,7 @@ Please __save all ".java" files in the same folder__. We will move ".class" to t
        // Not use package
        cd "{path}\{outputFolder}" & java {filename}
 
-You can just compile (without running) by `Exec In Cmd:Advance` or `Shift+F12`
+You can just compile without running (僅編譯不執行) by `Exec In Cmd:Advance` or `Shift+F12`
 
 You need to install [`JRE (Java Runtime Environment)`](https://www.oracle.com/technetwork/java/javase/downloads/index.html) and set environment variables.</BR>
 
@@ -125,7 +125,8 @@ If you get garbled texts, try to insert following code in the opening of file.
        cd "{path}" &  pyinstaller -F  "{filename}.py"
 You need to install [`python`](https://www.python.org/downloads/) set environment variables.
 
-If you want to use building feature, please insall `pyinstaller` by command line bellow first:
+如果你要使用 Build 功能，請先透過命令提示字元安裝 `pyinstaller`：<br>
+If you want to use building feature, please insall `pyinstaller` by command line bellow :
 
      pip install pyinstaller
 
@@ -150,7 +151,7 @@ Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/hea
 ## 其他功能 ( Another Features )
 #### 在 CMD 中打開 (Open in cmd) :
 >
-> Click `Ctrl+Shift+F12`
+> Press `Ctrl+Shift+F12`
 >
 > Open a CMD from current directory
 >
@@ -158,17 +159,26 @@ Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/hea
 
 #### 進階模式 (Advance Mode):
 >
-> Click `Shift+F12`
+> Press `Shift+F12`
 >
 >##### .c .cpp .java
->     0: Compile only
->     1: Run old
->     1: Specify output folder and then compile and run
+>     0: Compile only  (僅編譯)
+>     1: Run old       (執行舊檔)
+>     2: Specify output folder and then compile and run
+>                      (指定輸出資料夾後編譯執行)
 >
 >##### .go .py
->     0: Run
->     1: Build
+>     0: Run   (執行)
+>     1: Build (建立)
 >
+
+----
+> `F12` : Normal
+>
+> `Shift + F12` : Advance
+>
+> `Ctrl + Shift +F12` : Open command line
+
 ----
 ## Hacking
 本外掛原理是透過抓取檔案位置、檔案名稱，及副檔名等參數傳送給 `open.exe` 偵測檔案類型丟給命令提示字元適合的程式碼進行工作。
