@@ -7,59 +7,74 @@
 
 int main(int argc, char *argv[]){
     //strcmp is a function compare two strings. If they are same, return 0
-    //argv[1] return path (not including \)
-    //argv[2] return filename (not including extension)
-    //argv[3] return filename extension (including point)
-    //argv[4] return this open.c's path (not including \)
+    //argv[1] get path (end without \)
+    //argv[2] get filename (not including extension)
+    //argv[3] get filename extension (start with .)
+    //argv[4] get this open.c's path (end without \)
     //argv[5] 1: if use advance mode , 0: else
-    char str[1024]="",str2[1024]="";
-    int error=0,exit=0,packageFlag=0,advance=0;
+    //argv[6] output folder (end with \)
+
+    int exit=0,packageFlag=0;
     float compile_time=0.0,exec_time=0.0,total_time=0.0;
     clock_t start_compile_time,end_compile_time;
-    advance=(strcmp(argv[5],"1")==0)? 1:0;
+    int advance=(strcmp(argv[5],"1")==0)? 1:0;
+    char *str,*str2;
+    size_t length = strlen(argv[1]) + strlen(argv[2]) + strlen(argv[3]) + strlen(argv[4]) + 512;
+    str=calloc(length, sizeof(char));
+    str2=calloc(length, sizeof(char));
 
     sprintf(str,"cd \"%s\"",argv[1]);
     if(strcmp(argv[3],".java")==0){
-        //Compile
-        sprintf(str,"%s & md out & cls & javac -encoding UTF-8 -d out -classpath out %s%s",str,argv[2],argv[3]);
-        compile_time=exec(str);
-        sprintf(str2,"%s",str);
-        clear(str);
+        if(advance==1){
+            exit=java_advance(str,str2,argv,&compile_time,&packageFlag);
+        }else{
+            //Compile
+            sprintf(str,"%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s%s",str,argv[6],argv[6],argv[6],argv[2],argv[3]);
+            compile_time=exec(str);
+            strcpy(str2,str);
+            clear(str);
 
-        //Run
-        char getPackage[256]="";
-        char packageName[256]="";
-        sprintf(getPackage,"%s\\readPackage.exe -p \"%s\\%s%s\" ",argv[4],argv[1],argv[2],argv[3]);
-        sprintf(str,"cd \"%s\\out\" & java ",argv[1]);
+            //Run
+            char getPackage[256]="";
+            char packageName[256]="";
+            sprintf(getPackage,"%s\\readPackage.exe -p \"%s\\%s%s\" ",argv[4],argv[1],argv[2],argv[3]);
+            sprintf(str,"cd \"%s\\%s\" & java ",argv[1],argv[6]);
 
-        //If use package
-        if(execAndGet(getPackage,packageName)==1){
-            if(strcmp(packageName,"0")!=0){
-                sprintf(str,"%s%s.",str,packageName);
-                packageFlag=1;
+            //If use package
+            if(execAndGet(getPackage,packageName)==1){
+                if(strcmp(packageName,"0")!=0){
+                    sprintf(str,"%s%s.",str,packageName);
+                    packageFlag=1;
+                }
             }
+
+            sprintf(str,"%s%s",str,argv[2]);
         }
 
-        sprintf(str,"%s%s",str,argv[2]);
     }else if(strcmp(argv[3],".c")==0 || strcmp(argv[3],".cpp")==0){
         if(advance==1){
-            exit=c_advance(str,argv,&compile_time);
+            exit=c_advance(str,str2,argv,&compile_time);
         }else{
-            sprintf(str,"%s & chcp 65001 & md out & cls &",str);
+            sprintf(str,"%s & chcp 65001 & md \"%s\" & cls &",str,argv[6]);
             if(strcmp(argv[3],".c")==0){
                 sprintf(str,"%s gcc",str);
             }else{
                 sprintf(str,"%s g++",str);
             }
-            sprintf(str,"%s \"%s%s\" -o \"out\\%s\"",str,argv[2],argv[3],argv[2]);
+
+            sprintf(str,"%s \"%s%s\" -o \"%s%s\"",str,argv[2],argv[3],argv[6],argv[2]);
             compile_time=exec(str);
-            sprintf(str2,"%s",str);
+            strcpy(str2,str);
             clear(str);
 
-            sprintf(str,"cd \"%s\\out\" & \"%s.exe\"",argv[1],argv[2]);
+            sprintf(str,"cd \"%s\\%s\" & \"%s.exe\"",argv[1],argv[6],argv[2]);
         }
     }else if(strcmp(argv[3],".py")==0){
-        sprintf(str,"%s & python \"%s%s\"",str,argv[2],argv[3]);
+        if(advance==1){
+            exit=py_advance(str,argv);
+        }else{
+            sprintf(str,"%s & python \"%s%s\"",str,argv[2],argv[3]);
+        }
     }else if(strcmp(argv[3],".js")==0){
         sprintf(str,"%s & node \"%s%s\"",str,argv[2],argv[3]);
     }else if(strcmp(argv[3],".go")==0){
@@ -72,16 +87,12 @@ int main(int argc, char *argv[]){
         sprintf(str,"%s & chcp 65001 & cls & Rscript \"%s%s\"",str,argv[2],argv[3]);
     }else if(strcmp(argv[3],".rb")==0){
         sprintf(str,"%s & chcp 65001 & cls & ruby \"%s%s\"",str,argv[2],argv[3]);
-    }else if(strcmp(argv[3],".html")==0 || strcmp(argv[3],".htm")==0 || strcmp(argv[3],".pdf")==0 || strcmp(argv[3],".lnk")==0){
-        sprintf(str,"%s & start \"\" \"%s\\%s%s\"",str,argv[1],argv[2],argv[3]);
-        exit=1; //We don't need cmd window if we open the types of files
     }else{
-        error=(argv[0]==0)? 2:1;
+        exit=not_support(str);
+        return 0;
     }
 
-    if(error==1){
-        exit=not_support(str);
-    }else if(error==2){
+    if(argv[0]==0){
         printf("You have not chosen a file.");
     }else{
         exec_time=exec(str);
@@ -92,11 +103,6 @@ int main(int argc, char *argv[]){
             printf("Compiling command:\t%s\nRunning command:\t%s\n",str2,str);
             printf("\n--------------------------------\n");
             printf("Compilation Time:\t%.4f s\nExecution Time:\t\t%.4f s\nTotal Time:\t\t%.4f s",compile_time,exec_time,total_time);
-            if(packageFlag==1){
-                printf("\n\033[40;32mUsing package\033[0m\n\n");
-            }else{
-                printf("\n\n");
-            }
         }else{
             printf("\n--------------------------------\n");
             printf("Command:\n%s\n\n",str);
