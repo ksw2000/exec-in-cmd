@@ -1,6 +1,10 @@
 {
   "activationCommands": {
-    "atom-workspace": ["Exec-in-cmd:exec","Exec-in-cmd:advance","Exec-in-cmd:open_cmd"]
+    "atom-workspace": [
+      "Exec-in-cmd:exec",
+      "Exec-in-cmd:advance",
+      "Exec-in-cmd:open_cmd"
+    ]
   },
   "author": {
     "name": "Hadname",
@@ -39,7 +43,7 @@
   "name": "exec-in-cmd",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Hadname/exec-in-cmd.git"
+    "url": "https://github.com/Hadname/exec-in-cmd.git"
   },
-  "version": "2.1.5"
+  "version": "2.2.0"
 }
