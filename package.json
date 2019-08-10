@@ -1,31 +1,6 @@
 {
-  "_from": "https://www.atom.io/api/packages/exec-in-cmd/versions/2.1.5/tarball",
-  "_id": "exec-in-cmd@2.1.5",
-  "_inBundle": false,
-  "_integrity": "sha512-EcAiWWe+yVwWhcNHJxOJI6Pcm6c0bjxt9nBUubKB98bS47USkQZDdxUyiUz/8oFdO5QQ4c9MMIUVzhT0FFeRmQ==",
-  "_location": "/exec-in-cmd",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "remote",
-    "raw": "https://www.atom.io/api/packages/exec-in-cmd/versions/2.1.5/tarball",
-    "rawSpec": "https://www.atom.io/api/packages/exec-in-cmd/versions/2.1.5/tarball",
-    "saveSpec": "https://www.atom.io/api/packages/exec-in-cmd/versions/2.1.5/tarball",
-    "fetchSpec": "https://www.atom.io/api/packages/exec-in-cmd/versions/2.1.5/tarball"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://www.atom.io/api/packages/exec-in-cmd/versions/2.1.5/tarball",
-  "_shasum": "00818247f5fc71d6bf8ad1fb2548ee89590e1667",
-  "_spec": "https://www.atom.io/api/packages/exec-in-cmd/versions/2.1.5/tarball",
-  "_where": "C:\\Users\\liao2\\AppData\\Local\\Temp\\apm-install-dir-119626-15316-cmiwob.bo4sj",
   "activationCommands": {
-    "atom-workspace": [
-      "Exec-in-cmd:exec",
-      "Exec-in-cmd:advance",
-      "Exec-in-cmd:open_cmd"
-    ]
+    "atom-workspace": ["Exec-in-cmd:exec","Exec-in-cmd:advance","Exec-in-cmd:open_cmd"]
   },
   "author": {
     "name": "Hadname",
@@ -36,7 +11,7 @@
   },
   "bundleDependencies": false,
   "deprecated": false,
-  "description": "Execute code(C,Java,Python,GO...) in windows command line by clicking F12.",
+  "description": "Execute code(C,Java,Python,GO...) in windows command line by F12.",
   "engines": {
     "atom": ">=0.1.0 <2.0.0"
   },
@@ -52,8 +27,10 @@
     "Go",
     "Java",
     "Javascript",
+    "NODEJS",
     "Python",
     "HTML",
+    "PHP",
     "R",
     "Ruby"
   ],
@@ -64,5 +41,5 @@
     "type": "git",
     "url": "git+https://github.com/Hadname/exec-in-cmd.git"
   },
-  "version": "2.2.0"
+  "version": "2.1.5"
 }
