@@ -21,7 +21,11 @@
   "_spec": "https://www.atom.io/api/packages/exec-in-cmd/versions/2.1.5/tarball",
   "_where": "C:\\Users\\liao2\\AppData\\Local\\Temp\\apm-install-dir-119626-15316-cmiwob.bo4sj",
   "activationCommands": {
-    "atom-workspace": ["Exec-in-cmd:exec","Exec-in-cmd:advance","Exec-in-cmd:open_cmd"]
+    "atom-workspace": [
+      "Exec-in-cmd:exec",
+      "Exec-in-cmd:advance",
+      "Exec-in-cmd:open_cmd"
+    ]
   },
   "author": {
     "name": "Hadname",
@@ -60,5 +64,5 @@
     "type": "git",
     "url": "git+https://github.com/Hadname/exec-in-cmd.git"
   },
-  "version": "2.1.5"
+  "version": "2.2.0"
 }
