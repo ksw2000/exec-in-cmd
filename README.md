@@ -98,7 +98,7 @@ You need to install [`Node.js`](https://nodejs.org) and set environment variable
 
        start "" "http://localhost:81/myphp/index.php"
 
-You need to some application can make you run PHP in your computer, for example [__MAMP__]( https://www.mamp.info/ ).
+You need some application which can make you run PHP in your computer, for example [__MAMP__]( https://www.mamp.info/ ).
 
 ----
 ## .rb
