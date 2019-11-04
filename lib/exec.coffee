@@ -1,5 +1,6 @@
 exec=require('child_process').exec
 path=require('path')
+os=require('os')
 
 module.exports =
     config:
@@ -75,18 +76,21 @@ module.exports =
             else if extname in ['.html','.htm','.lnk','.pdf']
                 exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
             else if extname in ['.c','.cpp','.go','.java','.js','.rb','.py','.R']
-                dir_path = "\"#{dir_path}\""
-                basename = "\"#{basename}\""
-                extname  = "\"#{extname}\""
-                dirname  = "\"#{__dirname}\""
-                outC = atom.config.get('exec-in-cmd.outputfolder.C').replace(/\\$/,"\\\\") ? 'out'
-                outJava = atom.config.get('exec-in-cmd.outputfolder.Java').replace(/\\$/,"\\\\") ? 'out'
-                command = "start \"Exec-in-cmd\" /MAX /WAIT \"#{__dirname}\\open.exe\" #{dir_path} #{basename} #{extname} #{dirname} #{advance}"
-                if extname == '".c"' or extname=='".cpp"'
-                    command = "#{command} \"#{outC}\""
-                else if extname =='".java"'
-                    command = "#{command} \"#{outJava}\""
-                exec command
+                if os.platform() == 'win32'
+                    dir_path = "\"#{dir_path}\""
+                    basename = "\"#{basename}\""
+                    extname  = "\"#{extname}\""
+                    dirname  = "\"#{__dirname}\""
+                    outC = atom.config.get('exec-in-cmd.outputfolder.C').replace(/\\$/,"\\\\") ? 'out'
+                    outJava = atom.config.get('exec-in-cmd.outputfolder.Java').replace(/\\$/,"\\\\") ? 'out'
+                    command = "start \"Exec-in-cmd\" /MAX /WAIT \"#{__dirname}\\open.exe\" #{dir_path} #{basename} #{extname} #{dirname} #{advance}"
+                    if extname == '".c"' or extname=='".cpp"'
+                        command = "#{command} \"#{outC}\""
+                    else if extname =='".java"'
+                        command = "#{command} \"#{outJava}\""
+                    exec command
+                else
+                    # Linux
             else
                 atom.notifications.addError('Invalid file extension',{
                     description :"`#{extname}` is not supported."
