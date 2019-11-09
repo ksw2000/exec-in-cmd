@@ -1,6 +1,31 @@
 exec=require('child_process').exec
 path=require('path')
 os=require('os')
+system=os.platform()    #使用系統 OS(win32,linux)
+
+compatible =
+    linux:
+        C:
+            description: 'Specify the folder name where C,C++ output <BR>`[ end with slash ]` `out/` , `output/c/` , `../out/` , `./` , `../`'
+            default: 'out/'
+        Java:
+            description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with slash ]` `out/` , `output/c/` , `../out/` , `./` , `../`'
+            default: 'out/'
+        php:
+            description: 'Specify the root directory of your PHP [ end with slash ]'
+            default: 'home/user/'
+    win:
+        C:
+            description: 'Specify the folder name where C,C++ output <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
+            default: 'out\\'
+        Java:
+            description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
+            default: 'out\\'
+        php:
+            description: 'Specify the root directory of your PHP [ end with blackslash ]'
+            default: 'C:\\MAMP\\htdoc\\'
+
+compatible = if(system=='win32') then compatible.win else compatible.linux
 
 module.exports =
     config:
@@ -12,14 +37,14 @@ module.exports =
                 C:
                     type: 'string'
                     title: 'C, C++ output folder (relative)'
-                    description: 'Specify the folder name where C,C++ output <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
-                    default: 'out\\'
+                    description: compatible.C.description
+                    default: compatible.C.default
                     order: 1
                 Java:
                     type: 'string'
                     title: 'Java output folder (relative)'
-                    description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
-                    default: 'out\\'
+                    description: compatible.Java.description
+                    default: compatible.Java.default
                     order: 2
         php:
             type: 'object'
@@ -29,8 +54,8 @@ module.exports =
                 phpFolder:
                     type: 'string'
                     title: 'PHP Setting'
-                    description: 'Specify the root directory of your PHP (including the end of backslash)'
-                    default: 'C:\\MAMP\\htdoc\\'
+                    description: compatible.php.description
+                    default: compatible.php.default
                     order: 1
                 openIn:
                     type: 'string'
@@ -48,18 +73,23 @@ module.exports =
         @subscriptions.dispose()
     exec_in_cmd: (advance) ->
         select_file=atom.workspace.getActivePaneItem()?.buffer?.file?.path #complete filepath
-        system=os.platform()                    #使用系統 os(win32,linux)
-        dir_path=path.dirname(select_file)      #檔案位罝(結尾不含反斜線) file path (not including backslash)
-        extname=path.extname(select_file)       #副檔名(含點) filename extension (including point)
-        basename=path.basename(select_file)
-        basename=basename.replace(extname,"")   #檔名(不含副檔名) filename (not including extension)
-        complete_file_path="#{dir_path}\\#{basename}#{extname}"
+
+        ###
+            dir_path: 檔案位罝(結尾不含斜線或反斜線) file path (not including slash or backslash)
+            extname : 副檔名(含點) filename extension (including point)
+            basename: 檔名(不含副檔名) filename (not including extension)
+        ###
+
+        dir_path = path.dirname(select_file)
+        extname  = path.extname(select_file)
+        basename = path.basename(select_file).replace(extname,"")
+        complete_file_path = "#{dir_path}\\#{basename}#{extname}"
 
         if advance < 2
             if extname == '.php'
                 phpFolder=atom.config.get('exec-in-cmd.php.phpFolder') ? 'C:\\MAMP\\htdoc\\';
                 openIn=atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost:81/';
-                if complete_file_path.indexOf(phpFolder)==-1
+                if complete_file_path.indexOf(phpFolder) == -1
                     option=
                         description :
                             """
@@ -74,23 +104,49 @@ module.exports =
                     openUrl=openIn + complete_file_path.replace("#{phpFolder}",'').replace("\\","/")
                     exec "start \"\" \"#{openUrl}\""
             else if extname in ['.html','.htm','.lnk','.pdf']
-                exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
-            else if extname in ['.c','.cpp','.go','.java','.js','.rb','.py','.R']
                 if system == 'win32'
-                    dir_path = "\"#{dir_path}\""
-                    basename = "\"#{basename}\""
-                    extname  = "\"#{extname}\""
-                    dirname  = "\"#{__dirname}\""
+                    exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
+                else if system =='linux'
+                    exec "xdg-open \"#{dir_path}/#{basename}#{extname}\""
+            else if extname in ['.c','.cpp','.go','.java','.js','.rb','.py','.R']
+                _dir_path_ = "\"#{dir_path}\""
+                _basename_ = "\"#{basename}\""
+                _extname_  = "\"#{extname}\""
+                _dirname_  = "\"#{__dirname}\""
+
+                # For windows
+                if system == 'win32'
                     outC     = atom.config.get('exec-in-cmd.outputfolder.C').replace(/\\$/,"\\\\") ? 'out'
                     outJava  = atom.config.get('exec-in-cmd.outputfolder.Java').replace(/\\$/,"\\\\") ? 'out'
-                    command  = "start \"Exec-in-cmd\" /MAX /WAIT \"#{__dirname}\\open.exe\" #{dir_path} #{basename} #{extname} #{dirname} #{advance}"
-                    if extname == '".c"' or extname=='".cpp"'
+                    command  = "start \"Exec-in-cmd\" /MAX /WAIT \"#{__dirname}\\open.exe\" #{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
+                    if extname == '.c' or extname=='.cpp'
                         command = "#{command} \"#{outC}\""
-                    else if extname =='".java"'
+                    else if extname =='.java'
                         command = "#{command} \"#{outJava}\""
                     exec command
+                #For linux
                 else if system == 'linux'
-                    # Linux
+                    terminal = "gnome-terminal --window -e"
+                    outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out/'
+                    outJava  = atom.config.get('exec-in-cmd.outputfolder.Java') ? 'out/'
+                    flag     = 0
+                    _finalOutputC_ = "\"#{dir_path}/#{outC}\"\"#{basename}\""
+                    switch extname
+                        when '.c','.cpp'
+                        then command = "cd #{_dir_path_}; mkdir -p \"#{outC}\"; #{if(extname == '.c') then "gcc" else "g++"} \"#{basename}#{extname}\" -o \"#{outC}#{basename}\"; cd #{_dirname_}; #{terminal} \"./openLinux '\"'#{_finalOutputC_}'\"'\""
+                        when '.go'
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
+                        when '.java'
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux java #{_dirname_} #{_dir_path_} #{_basename_} \"#{outJava}\"\""
+                        when '.js'
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'node \"'#{_dir_path_}/#{_basename_}.js'\"'\""
+                        when '.py'
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'python \"'#{_dir_path_}/#{_basename_}.py'\"'\""
+                        when '.rb'
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
+                        else flag=1
+                    if !flag
+                        exec command
                 else
                     # Not support
             else
@@ -98,4 +154,7 @@ module.exports =
                     description :"`#{extname}` is not supported."
                 })
         else
-            exec "start cmd /k \"cd /d \"#{dir_path}\"\""
+            if system == 'win32'
+                exec "start cmd /k \"cd /d \"#{dir_path}\"\""
+            else if system == 'linux'
+                exec "cd \"#{dir_path}\"; gnome-terminal --window"
