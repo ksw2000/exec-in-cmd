@@ -126,22 +126,26 @@ module.exports =
                     exec command
                 #For linux
                 else if system == 'linux'
-                    terminal = "gnome-terminal --window -e"
+                    terminal = "gnome-terminal --window --title='Exec-in-cmd' -e"
                     outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out/'
                     outJava  = atom.config.get('exec-in-cmd.outputfolder.Java') ? 'out/'
                     flag     = 0
                     _finalOutputC_ = "\"#{dir_path}/#{outC}\"\"#{basename}\""
                     switch extname
                         when '.c','.cpp'
-                        then command = "cd #{_dir_path_}; mkdir -p \"#{outC}\"; #{if(extname == '.c') then "gcc" else "g++"} \"#{basename}#{extname}\" -o \"#{outC}#{basename}\"; cd #{_dirname_}; #{terminal} \"./openLinux '\"'#{_finalOutputC_}'\"'\""
+                        # then command = "cd #{_dir_path_}; mkdir -p \"#{outC}\"; #{if(extname == '.c') then "gcc" else "g++"} \"#{basename}#{extname}\" -o \"#{outC}#{basename}\"; cd #{_dirname_}; #{terminal} \"./openLinux '\"'#{_finalOutputC_}'\"'\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
+                        #then command = "cd #{_dir_path_}; mkdir -p \"#{outC}\"; #{if(extname == '.c') then "gcc" else "g++"} \"#{basename}#{extname}\" -o \"#{outC}#{basename}\"; cd #{_dirname_}; #{terminal} \"./openLinux '\"'#{_finalOutputC_}'\"'\""
                         when '.go'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
                         when '.java'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux java #{_dirname_} #{_dir_path_} #{_basename_} \"#{outJava}\"\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outJava}'\"\""
                         when '.js'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'node \"'#{_dir_path_}/#{_basename_}.js'\"'\""
                         when '.py'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'python \"'#{_dir_path_}/#{_basename_}.py'\"'\""
+                        when '.R'
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'Rscript \"'#{_dir_path_}/#{_basename_}.R'\"'\""
                         when '.rb'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
                         else flag=1
