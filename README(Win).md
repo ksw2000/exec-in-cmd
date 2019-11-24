@@ -114,6 +114,11 @@ If you get garbled texts, try to insert following code in the opening of file.
 
        cd "{path}" & python "{filename}.py"
 
+若有亂碼請試著在檔案開頭加入：
+
+If you get garbled texts, try to insert following code in the opening of file.
+
+      # -*- coding: utf-8 -*
 ##### Build : ( .py -> .exe )
 `Exec In Cmd:Advance` or `Shift+F12`
 
