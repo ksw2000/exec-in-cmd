@@ -3,7 +3,8 @@
     "atom-workspace": [
       "Exec-in-cmd:exec",
       "Exec-in-cmd:advance",
-      "Exec-in-cmd:open_cmd"
+      "Exec-in-cmd:open_cmd",
+      "Exec-in-cmd:init"
     ]
   },
   "author": {
@@ -15,13 +16,14 @@
   },
   "bundleDependencies": false,
   "deprecated": false,
-  "description": "Execute code(C,Java,Python,GO...) in windows command line by F12.",
+  "description": "Run code (C,Java,Python,...) in Windows cmd or Linux terminal  by F12.",
   "engines": {
     "atom": ">=0.1.0 <2.0.0"
   },
   "homepage": "https://github.com/Hadname/exec-in-cmd#readme",
   "keywords": [
     "cmd",
+    "terminal",
     "execute",
     "exec",
     "runner",
