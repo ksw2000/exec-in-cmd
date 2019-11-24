@@ -5,7 +5,6 @@ Make your Atom be more convenient when you want to run your code. You don't need
 
 ![preview](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png)
 
-----
 # Notice
 + Please press `Ctrl + F12` or `Exec in cmd: init` for __Linux__ user for the first time use. ( linux 用戶初次使用時務必按下 `Ctrl + F12`)
 
@@ -13,13 +12,13 @@ Make your Atom be more convenient when you want to run your code. You don't need
 
 + We support C, C++, Java, Python, GO, Node.js, R, Ruby ... and so on. (Please read manual for more information)
 
-----
+
 # Manual
 + Windows : <br>https://github.com/Hadname/exec-in-cmd/blob/master/README(Win).md
 
 + Linux (gnome-based) : <br>https://github.com/Hadname/exec-in-cmd/blob/master/README(Linux).md
 
-----
+# Hot Key
 `F12` Normal ( Run code )
 
 `Shift + F12` Advance Mode ( Only for windows now )
@@ -29,6 +28,7 @@ Make your Atom be more convenient when you want to run your code. You don't need
 `Ctrl + F12` Initialize ( for __Linux__ user for the first time use )
 
 ![permission_denied](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot_linux_permission.png)
+If you get __Permission denied__ , please press `Ctrl + F12`
 
 ----
 
