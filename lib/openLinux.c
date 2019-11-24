@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#include<time.h>
+#include<sys/time.h>
 
 char* execAndGet(const char* cmd){
     FILE* pipe=popen(cmd,"r");
@@ -27,16 +27,12 @@ void pause(){
 }
 
 int main(int argc, char** argv){
-
-    //sprintf(cmd,"sudo chmod -R 777 %s",argv[2]);
-    //system(cmd);
-
     //Timecounter
-    float compile_time, time;
-    clock_t start,end;
-
     int i;
     char *cmd, *cmd_compile, *packageName;
+    struct  timeval  start, end;
+    unsigned long compile_time, time;
+
     if(!strcmp(argv[1],".java")){
         cmd=malloc(1024*sizeof(char));
         /*
@@ -46,14 +42,14 @@ int main(int argc, char** argv){
             argv[4] get filename  [without extension]
             argv[5] output folder [end with /]
         */
-
         //Phase1: Compile
         sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\" ; javac -encoding UTF-8 -d \"%s\" -classpath \"%s\" \"%s.java\"",argv[3],argv[5],argv[5],argv[5],argv[4]);
-        start=clock();
+        gettimeofday(&start,NULL);
         system(cmd);
-        end=clock();
-        compile_time=(float)(end-start)/CLOCKS_PER_SEC;
-        cmd_compile = malloc(1024*sizeof(cmd));
+        gettimeofday(&end,NULL);
+        compile_time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
+
+        cmd_compile=malloc(1024*sizeof(cmd));
         strcpy(cmd_compile,cmd);
 
         //Phase2: Get package name
@@ -82,10 +78,10 @@ int main(int argc, char** argv){
         sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\" ; %s \"%s%s\" -lm -O2 -o \"%s%s\"",\
                 argv[3],argv[5],(!strcmp(argv[1],".c"))? "gcc" : "g++",\
                 argv[4],argv[1],argv[5],argv[4]);
-        start=clock();
+        gettimeofday(&start,NULL);
         system(cmd);
-        end=clock();
-        compile_time=(float)(end-start)/CLOCKS_PER_SEC;
+        gettimeofday(&end,NULL);
+        compile_time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
         cmd_compile = malloc(1024*sizeof(cmd));
         strcpy(cmd_compile,cmd);
 
@@ -96,27 +92,29 @@ int main(int argc, char** argv){
         cmd=argv[1];
     }
 
-    start=clock();
+    gettimeofday(&start,NULL);
     system(cmd);
-    end=clock();
-    time=(float)(end-start)/CLOCKS_PER_SEC;
+    gettimeofday(&end,NULL);
+    time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
 
     if(compile_time>0){
         printf("\n--------------------------------\n");
         printf("Compiling command:\t%s\nRunning command:\t%s\n",cmd_compile,cmd);
         printf("\n--------------------------------\n");
-        printf("Compilation Time:\t%.4f s\nExecution Time:\t\t%.4f s\nTotal Time:\t\t%.4f s",compile_time,time,compile_time+time);
+        printf("Compilation Time:\t%.5lf s\nExecution Time:\t\t%.5lf s\nTotal Time:\t\t%.5lf s",\
+        ((double)compile_time)*(10e-6),((double)time)*(10e-6),((double)(compile_time+time))*(10e-6));
     }else{
         printf("\n--------------------------------\n");
         printf("Command:\n%s\n\n",cmd);
-        printf("Total Time: %.4f s\n\n",time);
+        printf("Total Time: %.5lf s\n\n",((double)time)*(10e-6));
     }
-/*
-    printf("\n--------------------------------\n");
-    for(i=0; i<argc; i++){
-        printf("argc[%d] %s\n",i,argv[i]);
-    }
-    printf("command: %s\n",cmd);
-*/
+    printf("\n");
+    /*
+        printf("\n--------------------------------\n");
+        for(i=0; i<argc; i++){
+            printf("argc[%d] %s\n",i,argv[i]);
+        }
+        printf("command: %s\n",cmd);
+    */
     pause();
 }
