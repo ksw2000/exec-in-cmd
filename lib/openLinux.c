@@ -31,7 +31,7 @@ int main(int argc, char** argv){
     int i;
     char *cmd, *cmd_compile, *packageName;
     struct  timeval  start, end;
-    unsigned long compile_time, time;
+    unsigned long compile_time=0, time=0;
 
     if(!strcmp(argv[1],".java")){
         cmd=malloc(1024*sizeof(char));
@@ -65,7 +65,6 @@ int main(int argc, char** argv){
         sprintf(cmd,"%s%s",cmd,argv[4]);
     }else if(!strcmp(argv[1],".c") || !strcmp(argv[1],".cpp")){
         cmd=malloc(1024*sizeof(char));
-        char compiler[4];
         /*
             argv[1] type(.c or .cpp)
             argv[2] get this open.c's path
@@ -74,7 +73,6 @@ int main(int argc, char** argv){
             argv[5] output folder [end with /]
         */
         //Phase1: Compile
-        strcpy(compiler,(!strcmp(argv[1],".c"))? "gcc" : "g++");
         sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\" ; %s \"%s%s\" -lm -O2 -o \"%s%s\"",\
                 argv[3],argv[5],(!strcmp(argv[1],".c"))? "gcc" : "g++",\
                 argv[4],argv[1],argv[5],argv[4]);
@@ -101,14 +99,13 @@ int main(int argc, char** argv){
         printf("\n--------------------------------\n");
         printf("Compiling command:\t%s\nRunning command:\t%s\n",cmd_compile,cmd);
         printf("\n--------------------------------\n");
-        printf("Compilation Time:\t%.5lf s\nExecution Time:\t\t%.5lf s\nTotal Time:\t\t%.5lf s",\
-        ((double)compile_time)*(10e-6),((double)time)*(10e-6),((double)(compile_time+time))*(10e-6));
+        printf("Compilation Time:\t%.6lf s\nExecution Time:\t\t%.6lf s\nTotal Time:\t\t%.6lf s\n\n",\
+        ((double)compile_time)*(10e-7),((double)time)*(10e-7),((double)(compile_time+time))*(10e-7));
     }else{
         printf("\n--------------------------------\n");
         printf("Command:\n%s\n\n",cmd);
-        printf("Total Time: %.5lf s\n\n",((double)time)*(10e-6));
+        printf("Total Time: %.6lf s\n\n",((double)time)*(10e-7));
     }
-    printf("\n");
     /*
         printf("\n--------------------------------\n");
         for(i=0; i<argc; i++){
