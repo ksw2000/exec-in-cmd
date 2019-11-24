@@ -1,7 +1,7 @@
 exec=require('child_process').exec
 path=require('path')
 os=require('os')
-system=os.platform()    #使用系統 OS(win32,linux)
+system=os.platform()    # OS(win32,linux)
 
 compatible =
     linux:
@@ -13,7 +13,7 @@ compatible =
             default: 'out/'
         php:
             description: 'Specify the root directory of your PHP [ end with slash ]'
-            default: 'home/user/'
+            default: '/var/www/'
     win:
         C:
             description: 'Specify the folder name where C,C++ output <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
@@ -61,13 +61,14 @@ module.exports =
                     type: 'string'
                     title: 'index URL'
                     description: 'Specify the URL to access your PHP.'
-                    default: 'http://localhost:81/'
+                    default: 'http://localhost/'
                     order: 2
 
     activate: ->
         atom.commands.add 'atom-workspace', 'Exec-in-cmd:exec', => @exec_in_cmd(0)
         atom.commands.add 'atom-workspace', 'Exec-in-cmd:advance', => @exec_in_cmd(1)
         atom.commands.add 'atom-workspace', 'Exec-in-cmd:open_cmd', => @exec_in_cmd(2)
+        atom.commands.add 'atom-workspace', 'Exec-in-cmd:init', => @exec_in_cmd(3)
 
     deactivate: ->
         @subscriptions.dispose()
@@ -87,8 +88,13 @@ module.exports =
 
         if advance < 2
             if extname == '.php'
-                phpFolder=atom.config.get('exec-in-cmd.php.phpFolder') ? 'C:\\MAMP\\htdoc\\';
-                openIn=atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost:81/';
+                if system == 'win32'
+                    phpFolder=atom.config.get('exec-in-cmd.php.phpFolder') ? 'C:\\MAMP\\htdoc\\';
+                    openIn=atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost:81/';
+                else if system =='linux'
+                    phpFolder=atom.config.get('exec-in-cmd.php.phpFolder') ? '/var/www/';
+                    openIn=atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost/';
+
                 if complete_file_path.indexOf(phpFolder) == -1
                     option=
                         description :
@@ -102,7 +108,10 @@ module.exports =
                     atom.notifications.addError('Invalid directory',option)
                 else
                     openUrl=openIn + complete_file_path.replace("#{phpFolder}",'').replace("\\","/")
-                    exec "start \"\" \"#{openUrl}\""
+                    if system == 'win32'
+                        exec "start \"\" \"#{openUrl}\""
+                    else if system =='linux'
+                        exec "xdg-open \"#{openUrl}\""
             else if extname in ['.html','.htm','.lnk','.pdf']
                 if system == 'win32'
                     exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
@@ -133,9 +142,7 @@ module.exports =
                     _finalOutputC_ = "\"#{dir_path}/#{outC}\"\"#{basename}\""
                     switch extname
                         when '.c','.cpp'
-                        # then command = "cd #{_dir_path_}; mkdir -p \"#{outC}\"; #{if(extname == '.c') then "gcc" else "g++"} \"#{basename}#{extname}\" -o \"#{outC}#{basename}\"; cd #{_dirname_}; #{terminal} \"./openLinux '\"'#{_finalOutputC_}'\"'\""
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
-                        #then command = "cd #{_dir_path_}; mkdir -p \"#{outC}\"; #{if(extname == '.c') then "gcc" else "g++"} \"#{basename}#{extname}\" -o \"#{outC}#{basename}\"; cd #{_dirname_}; #{terminal} \"./openLinux '\"'#{_finalOutputC_}'\"'\""
                         when '.go'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
                         when '.java'
@@ -152,13 +159,18 @@ module.exports =
                     if !flag
                         exec command
                 else
-                    # Not support
+                    atom.notifications.addError('Invalid file extension',{
+                        description :"`#{extname}` is not supported."
+                    })
             else
-                atom.notifications.addError('Invalid file extension',{
-                    description :"`#{extname}` is not supported."
+                atom.notifications.addError('Invalid system',{
+                    description :"`#{system}` is not supported."
                 })
-        else
+        else if advance == 2
             if system == 'win32'
                 exec "start cmd /k \"cd /d \"#{dir_path}\"\""
             else if system == 'linux'
                 exec "cd \"#{dir_path}\"; gnome-terminal --window"
+        else if advance == 3
+            if system =='linux'
+                exec "gnome-terminal --title='Init for Exec-in-cmd' -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
