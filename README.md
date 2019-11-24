@@ -25,7 +25,7 @@ Make your Atom be more convenient when you want to run your code. You don't need
 
 `Ctrl + Shift +F12` Open command line
 
-`Ctrl + F12` Initialize ( for __Linux__ user for the first time use )
+`Ctrl + F12` Initialize ( for __Linux__ user when the first time use )
 
 ![permission_denied](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot_linux_permission.png)
 If you get __Permission denied__ , please press `Ctrl + F12`
