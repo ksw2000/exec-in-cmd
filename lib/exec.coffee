@@ -118,7 +118,7 @@ module.exports =
                 if system == 'win32'
                     outC     = atom.config.get('exec-in-cmd.outputfolder.C').replace(/\\$/,"\\\\") ? 'out'
                     outJava  = atom.config.get('exec-in-cmd.outputfolder.Java').replace(/\\$/,"\\\\") ? 'out'
-                    command  = "start \"Exec-in-cmd\" /MAX /WAIT \"#{__dirname}\\open.exe\" #{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
+                    command  = "start \"Exec-in-cmd\" /WAIT \"#{__dirname}\\open.exe\" #{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
                     if extname == '.c' or extname=='.cpp'
                         command = "#{command} \"#{outC}\""
                     else if extname =='.java'
