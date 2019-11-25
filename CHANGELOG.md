@@ -1,3 +1,6 @@
+## 3.0.0
+* We started to support gnome based Linux
+
 ## 2.2.0
 * Add "open directory in command line".
     * Press `Ctrl-Shift-F12`.
