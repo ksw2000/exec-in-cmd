@@ -1,3 +1,6 @@
+## 3.0.1
+* Fix bug in ( exec.coffee )
+
 ## 3.0.0
 * We started to support gnome based Linux
 

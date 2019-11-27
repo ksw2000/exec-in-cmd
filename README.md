@@ -6,11 +6,11 @@ Make your Atom be more convenient when you want to run your code. You don't need
 ![preview](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png)
 
 # Notice
-+ Please press `Ctrl + F12` or `Exec in cmd: init` for __Linux__ user for the first time use. ( linux 用戶初次使用時務必按下 `Ctrl + F12`)
++ Please press `Ctrl + F12` or `Exec in cmd: init` for __Linux__ user when the first time use. ( linux 用戶初次使用時務必按下 `Ctrl + F12`)
 
 + Please use UTF-8 encoding always.
 
-+ We support C, C++, Java, Python, GO, Node.js, R, Ruby ... and so on. (Please read manual for more information)
++ We support __C__ (gcc), __C++__ (g++), __Java__, __Python__, __GO__, __Node.js__, __R__, __Ruby__ ... and so on. (Please read manual for more information)
 
 
 # Manual

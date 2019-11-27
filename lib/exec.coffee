@@ -159,12 +159,12 @@ module.exports =
                     if !flag
                         exec command
                 else
-                    atom.notifications.addError('Invalid file extension',{
-                        description :"`#{extname}` is not supported."
-                    })
+                        atom.notifications.addError('Invalid system',{
+                            description :"`#{system}` is not supported."
+                        })
             else
-                atom.notifications.addError('Invalid system',{
-                    description :"`#{system}` is not supported."
+                atom.notifications.addError('Invalid file extension',{
+                    description :"`#{extname}` is not supported."
                 })
         else if advance == 2
             if system == 'win32'
