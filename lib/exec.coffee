@@ -117,7 +117,7 @@ module.exports =
                     exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
                 else if system =='linux'
                     exec "xdg-open \"#{dir_path}/#{basename}#{extname}\""
-            else if extname in ['.c','.cpp','.go','.java','.js','.rb','.py','.R']
+            else if extname in ['.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R']
                 _dir_path_ = "\"#{dir_path}\""
                 _basename_ = "\"#{basename}\""
                 _extname_  = "\"#{extname}\""
@@ -141,7 +141,7 @@ module.exports =
                     flag     = 0
                     _finalOutputC_ = "\"#{dir_path}/#{outC}\"\"#{basename}\""
                     switch extname
-                        when '.c','.cpp'
+                        when '.c','.cpp','.cs'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
                         when '.go'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""

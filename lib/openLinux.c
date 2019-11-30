@@ -63,19 +63,25 @@ int main(int argc, char** argv){
             strcat(cmd,".");
         }
         sprintf(cmd,"%s%s",cmd,argv[4]);
-    }else if(!strcmp(argv[1],".c") || !strcmp(argv[1],".cpp")){
+    }else if(!strcmp(argv[1],".c") || !strcmp(argv[1],".cpp") || !strcmp(argv[1],".cs")){
         cmd=malloc(1024*sizeof(char));
         /*
-            argv[1] type(.c or .cpp)
+            argv[1] type(.c , .cpp or .cs)
             argv[2] get this open.c's path
             argv[3] get path      [end without /]
             argv[4] get filename  [without extension]
             argv[5] output folder [end with /]
         */
         //Phase1: Compile
-        sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\" ; %s \"%s%s\" -lm -O2 -o \"%s%s\"",\
-                argv[3],argv[5],(!strcmp(argv[1],".c"))? "gcc" : "g++",\
-                argv[4],argv[1],argv[5],argv[4]);
+        if(!strcmp(argv[1],".c") || !strcmp(argv[1],".cpp")){
+            sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\" ; %s \"%s%s\" -lm -O2 -o \"%s%s\"",\
+                    argv[3],argv[5],(!strcmp(argv[1],".c"))? "gcc" : "g++",\
+                    argv[4],argv[1],argv[5],argv[4]);
+        }else{
+            sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\"; mcs -out:\"%s%s.exe\" \"%s.cs\"",\
+                    argv[3], argv[5], argv[5], argv[4], argv[4]);
+        }
+
         gettimeofday(&start,NULL);
         system(cmd);
         gettimeofday(&end,NULL);
@@ -84,7 +90,12 @@ int main(int argc, char** argv){
         strcpy(cmd_compile,cmd);
 
         //Phase2: Run
-        sprintf(cmd,"cd \"%s/%s\"; \"./%s\"",argv[3],argv[5],argv[4]);
+        if(!strcmp(argv[1],".c") || !strcmp(argv[1],".cpp")){
+            sprintf(cmd,"cd \"%s/%s\"; \"./%s\"",argv[3],argv[5],argv[4]);
+        }else{
+            sprintf(cmd,"cd \"%s/%s\"; mono \"%s.exe\"",argv[3],argv[5],argv[4]);
+        }
+
     }else{
         //argv[1] command
         cmd=argv[1];
