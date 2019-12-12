@@ -6,20 +6,20 @@ system=os.platform()    # OS(win32,linux)
 compatible =
     linux:
         C:
-            description: 'Specify the folder name where C,C++ output <BR>`[ end with slash ]` `out/` , `output/c/` , `../out/` , `./` , `../`'
+            description: 'Specify the folder name where C,C++,C# output <BR>`[ end with slash ]` `out/` , `output/c/` , `../out/` , `./` , `../`'
             default: 'out/'
         Java:
-            description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with slash ]` `out/` , `output/c/` , `../out/` , `./` , `../`'
+            description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with slash ]` `out/` , `output/java/` , `../out/` , `./` , `../`'
             default: 'out/'
         php:
             description: 'Specify the root directory of your PHP [ end with slash ]'
             default: '/var/www/'
     win:
         C:
-            description: 'Specify the folder name where C,C++ output <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
+            description: 'Specify the folder name where C,C++,C# output <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
             default: 'out\\'
         Java:
-            description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
+            description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with backslash ]` `out\\` , `output\\java\\` , `..\\out\\` , `.\\` , `..\\`'
             default: 'out\\'
         php:
             description: 'Specify the root directory of your PHP [ end with blackslash ]'
@@ -36,7 +36,7 @@ module.exports =
             properties:
                 C:
                     type: 'string'
-                    title: 'C, C++ output folder (relative)'
+                    title: 'C, C++, C# output folder (relative)'
                     description: compatible.C.description
                     default: compatible.C.default
                     order: 1
@@ -128,7 +128,7 @@ module.exports =
                     outC     = atom.config.get('exec-in-cmd.outputfolder.C').replace(/\\$/,"\\\\") ? 'out'
                     outJava  = atom.config.get('exec-in-cmd.outputfolder.Java').replace(/\\$/,"\\\\") ? 'out'
                     command  = "start \"Exec-in-cmd\" /WAIT \"#{__dirname}\\open.exe\" #{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
-                    if extname == '.c' or extname=='.cpp'
+                    if extname in ['.c','.cpp','.cs']
                         command = "#{command} \"#{outC}\""
                     else if extname =='.java'
                         command = "#{command} \"#{outJava}\""

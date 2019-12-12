@@ -1,3 +1,7 @@
+## 3.0.2
+* Add C#
+* Turn on optimization flags -O2 for C and C++
+
 ## 3.0.1
 * Fix bug in ( exec.coffee )
 
