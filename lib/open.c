@@ -62,13 +62,21 @@ int main(int argc, char *argv[]){
                 sprintf(str,"%s g++",str);
             }
 
-            sprintf(str,"%s \"%s%s\" -o \"%s%s\"",str,argv[2],argv[3],argv[6],argv[2]);
+            sprintf(str,"%s \"%s%s\" -O2 -o \"%s%s\"",str,argv[2],argv[3],argv[6],argv[2]);
             compile_time=exec(str);
             strcpy(str2,str);
             clear(str);
 
             sprintf(str,"cd \"%s\\%s\" & \"%s.exe\"",argv[1],argv[6],argv[2]);
         }
+    }else if(strcmp(argv[3],".cs")==0){
+        sprintf(str,"%s & md \"%s\" & cls & mcs -out:\"%s%s.exe\" \"%s.cs\"",\
+                str,argv[6],argv[6],argv[2],argv[2]);
+        compile_time=exec(str);
+        strcpy(str2,str);
+        clear(str);
+
+        sprintf(str,"cd \"%s\\%s\" & \"%s.exe\"",argv[1],argv[6],argv[2]);
     }else if(strcmp(argv[3],".py")==0){
         if(advance==1){
             exit=py_advance(str,argv);
@@ -102,7 +110,7 @@ int main(int argc, char *argv[]){
             printf("\n--------------------------------\n");
             printf("Compiling command:\t%s\nRunning command:\t%s\n",str2,str);
             printf("\n--------------------------------\n");
-            printf("Compilation Time:\t%.4f s\nExecution Time:\t\t%.4f s\nTotal Time:\t\t%.4f s",compile_time,exec_time,total_time);
+            printf("Compilation Time:\t%.4f s\nExecution Time:\t\t%.4f s\nTotal Time:\t\t%.4f s\n\n",compile_time,exec_time,total_time);
         }else{
             printf("\n--------------------------------\n");
             printf("Command:\n%s\n\n",str);
