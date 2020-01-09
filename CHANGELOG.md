@@ -1,6 +1,9 @@
 ## 3.0.2
 * Add C#
 * Turn on optimization flags -O2 for C and C++
+* Fix bug
+    * We didn't support the file in the disk taht is different from exec.coffee. But now, we can.
+    * In the past, we didn't notice that `cd` can only change directory in the same disk.
 
 ## 3.0.1
 * Fix bug in ( exec.coffee )
