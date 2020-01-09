@@ -1,6 +1,7 @@
 exec=require('child_process').exec
 path=require('path')
 os=require('os')
+fs=require('fs')
 system=os.platform()    # OS(win32,linux)
 
 compatible =
@@ -125,14 +126,29 @@ module.exports =
 
                 # For windows
                 if system == 'win32'
-                    outC     = atom.config.get('exec-in-cmd.outputfolder.C').replace(/\\$/,"\\\\") ? 'out'
-                    outJava  = atom.config.get('exec-in-cmd.outputfolder.Java').replace(/\\$/,"\\\\") ? 'out'
-                    command  = "start \"Exec-in-cmd\" /WAIT \"#{__dirname}\\open.exe\" #{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
+                    outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out\\'
+                    outJava  = atom.config.get('exec-in-cmd.outputfolder.Java') ? 'out\\'
+
+                    command = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
                     if extname in ['.c','.cpp','.cs']
                         command = "#{command} \"#{outC}\""
                     else if extname =='.java'
                         command = "#{command} \"#{outJava}\""
+                    command = command.replace(/\\/g,'\\\\')
+
+                    changeDisk = ""
+                    i=0
+                    while i< __dirname.length-1
+                         if __dirname[i]==':' &&  __dirname[i+1]=='\\'
+                             changeDisk = __dirname.slice(0,i)
+                             changeDisk += ": & "
+                             break
+                         i++
+
+
+                    command = "#{changeDisk}cd \"#{__dirname}\" & start \"Exec-in-cmd\" /WAIT open.exe " + command
                     exec command
+
                 #For linux
                 else if system == 'linux'
                     terminal = "gnome-terminal --window --title='Exec-in-cmd' -e"
@@ -158,10 +174,33 @@ module.exports =
                         else flag=1
                     if !flag
                         exec command
+                else if system == 'darwin'
+                    outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out/'
+                    outJava  = atom.config.get('exec-in-cmd.outputfolder.Java') ? 'out/'
+                    flag = 0
+                    switch extname
+                        when '.c','.cpp','.cs'
+                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outC}\n"
+                        when '.go'
+                        then data = "go run \"#{dir_path}/#{basename}.go\""
+                        when '.java'
+                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}\n"
+                        when '.js'
+                        then data = "node \"#{dir_path}/#{basename}.js\""
+                        when '.py'
+                        then data = "python \"#{dir_path}/#{basename}.py\""
+                        when '.R'
+                        then data = "Rscript \"#{dir_path}/#{basename}.R\""
+                        when '.rb'
+                        then data = "ruby \"#{dir_path}/#{basename}.rb\""
+                        else flag=1
+                    if !flag
+                        fs.writeFile(__dirname+'/configTemp.tmp',data,(err)->{})
+                        exec "open -a Terminal ./#{__dirname}/openDarwin"
                 else
-                        atom.notifications.addError('Invalid system',{
-                            description :"`#{system}` is not supported."
-                        })
+                    atom.notifications.addError('Invalid os',{
+                        description :"`#{system}` is not supported."
+                    })
             else
                 atom.notifications.addError('Invalid file extension',{
                     description :"`#{extname}` is not supported."
@@ -171,6 +210,12 @@ module.exports =
                 exec "start cmd /k \"cd /d \"#{dir_path}\"\""
             else if system == 'linux'
                 exec "cd \"#{dir_path}\"; gnome-terminal --window"
+            else if system == 'darwin'
+                exec "open -a Terminal #{dir_path}"
+            else
+                atom.notifications.addError('Invalid os',{
+                    description :"`#{system}` is not supported."
+                })
         else if advance == 3
             if system =='linux'
                 exec "gnome-terminal --title='Init for Exec-in-cmd' -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
