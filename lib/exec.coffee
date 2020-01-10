@@ -180,11 +180,11 @@ module.exports =
                     flag = 0
                     switch extname
                         when '.c','.cpp','.cs'
-                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outC}\n"
+                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outC}"
                         when '.go'
                         then data = "go run \"#{dir_path}/#{basename}.go\""
                         when '.java'
-                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}\n"
+                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}"
                         when '.js'
                         then data = "node \"#{dir_path}/#{basename}.js\""
                         when '.py'
@@ -194,6 +194,7 @@ module.exports =
                         when '.rb'
                         then data = "ruby \"#{dir_path}/#{basename}.rb\""
                         else flag=1
+                    data += "\n"
                     if !flag
                         fs.writeFile(__dirname+'/configTemp.tmp',data,(err)->{})
                         exec "open -a Terminal ./#{__dirname}/openDarwin"
@@ -219,3 +220,8 @@ module.exports =
         else if advance == 3
             if system =='linux'
                 exec "gnome-terminal --title='Init for Exec-in-cmd' -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
+            else if system =='darwin'
+                exec "chmod -R 755 \"'#{__dirname}'\"\""
+                atom.notifications.addSuccess('Initialization done',{
+                    description :"You can press `F12` to run code"
+                })
