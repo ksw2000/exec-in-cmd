@@ -5,7 +5,7 @@ fs=require('fs')
 system=os.platform()    # OS(win32,linux)
 
 compatible =
-    linux:
+    linux_and_darwin:
         C:
             description: 'Specify the folder name where C,C++,C# output <BR>`[ end with slash ]` `out/` , `output/c/` , `../out/` , `./` , `../`'
             default: 'out/'
@@ -26,7 +26,7 @@ compatible =
             description: 'Specify the root directory of your PHP [ end with blackslash ]'
             default: 'C:\\MAMP\\htdoc\\'
 
-compatible = if(system=='win32') then compatible.win else compatible.linux
+compatible = if(system=='win32') then compatible.win else compatible.linux_and_darwin
 
 module.exports =
     config:
@@ -92,7 +92,7 @@ module.exports =
                 if system == 'win32'
                     phpFolder=atom.config.get('exec-in-cmd.php.phpFolder') ? 'C:\\MAMP\\htdoc\\';
                     openIn=atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost:81/';
-                else if system =='linux'
+                else if system =='linux' || system=='darwin'
                     phpFolder=atom.config.get('exec-in-cmd.php.phpFolder') ? '/var/www/';
                     openIn=atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost/';
 
@@ -109,15 +109,23 @@ module.exports =
                     atom.notifications.addError('Invalid directory',option)
                 else
                     openUrl=openIn + complete_file_path.replace("#{phpFolder}",'').replace("\\","/")
-                    if system == 'win32'
-                        exec "start \"\" \"#{openUrl}\""
-                    else if system =='linux'
-                        exec "xdg-open \"#{openUrl}\""
+                    switch system
+                        when 'win32'
+                        then exec "start \"\" \"#{openUrl}\""
+                        when 'linux'
+                        then exec "xdg-open \"#{openUrl}\""
+                        when 'darwin'
+                        then exec "open \"#{openUrl}\""
+
             else if extname in ['.html','.htm','.lnk','.pdf']
-                if system == 'win32'
-                    exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
-                else if system =='linux'
-                    exec "xdg-open \"#{dir_path}/#{basename}#{extname}\""
+                switch system
+                    when 'win32'
+                    then exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
+                    when 'linux'
+                    then exec "xdg-open \"#{dir_path}/#{basename}#{extname}\""
+                    when 'darwin'
+                    then exec "open \"#{dir_path}/#{basename}#{extname}\""
+
             else if extname in ['.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R']
                 _dir_path_ = "\"#{dir_path}\""
                 _basename_ = "\"#{basename}\""
@@ -174,6 +182,8 @@ module.exports =
                         else flag=1
                     if !flag
                         exec command
+
+                #For mac os
                 else if system == 'darwin'
                     outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out/'
                     outJava  = atom.config.get('exec-in-cmd.outputfolder.Java') ? 'out/'
@@ -206,6 +216,8 @@ module.exports =
                 atom.notifications.addError('Invalid file extension',{
                     description :"`#{extname}` is not supported."
                 })
+
+        # advace2: Open cmd in windows or terminal in linux or mac os
         else if advance == 2
             if system == 'win32'
                 exec "start cmd /k \"cd /d \"#{dir_path}\"\""
@@ -217,11 +229,13 @@ module.exports =
                 atom.notifications.addError('Invalid os',{
                     description :"`#{system}` is not supported."
                 })
+
+        # advance3: Initialize for linux users and mac os users
         else if advance == 3
             if system =='linux'
                 exec "gnome-terminal --title='Init for Exec-in-cmd' -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
             else if system =='darwin'
-                exec "chmod -R 755 \"'#{__dirname}'\"\""
+                exec "chmod -R 755 '#{__dirname}'"
                 atom.notifications.addSuccess('Initialization done',{
-                    description :"You can press `F12` to run code"
+                    description :"Now, you can press `F12` to run code!"
                 })
