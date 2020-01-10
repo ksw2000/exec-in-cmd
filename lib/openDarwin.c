@@ -56,7 +56,7 @@ int main(int argc, char** argv){
     for(i=1; fgets(argvf[i],1024,f); i++){
         argvf[i][strlen(argvf[i])-1]='\0';
     }
-    system("clear");
+    system("clear && printf '\\e[3J'");
 
     if(!strcmp(argvf[1],".java")){
         cmd=malloc(1024*sizeof(char));
