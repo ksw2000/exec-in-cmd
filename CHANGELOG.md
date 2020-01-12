@@ -2,7 +2,7 @@
 * We started to support gnome based Linux
 
 ## 3.0.2
-* Add C#
+* Add C# for windows
 * Turn on optimization flags -O2 for C and C++
 * Fix bug
     * We didn't support the file in the disk taht is different from exec.coffee. But now, we can.
