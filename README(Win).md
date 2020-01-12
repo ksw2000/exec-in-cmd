@@ -123,7 +123,7 @@ If you get garbled texts, try to insert following code in the opening of file.
 `Exec In Cmd:Advance` or `Shift+F12`
 
        cd "{path}" &  pyinstaller -F  "{filename}.py"
-You need to install [`python`](https://www.python.org/downloads/) set environment variables.
+You need to install [`python`](https://www.python.org/downloads/) and set environment variables.
 
 如果你要使用 Build 功能，請先透過命令提示字元安裝 `pyinstaller`：<br>
 If you want to use building feature, please insall `pyinstaller` by command line bellow :

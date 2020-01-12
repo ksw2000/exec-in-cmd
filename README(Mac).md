@@ -1,12 +1,11 @@
-# Exec in cmd Manual for Linux (gnome-based)
-## Get "permission denied" ?
-![permission_denied](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot_linux_permission.png)
+# Exec in cmd Manual for Mac OS
+## Nothing happens ?
 
-Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette
+Please press `Control + F12` or type `Exec in cmd: init` in command-palette
 
 It will run the following command in terminal:
 
-    sudo chmod -R 777 {exec-in-cmd-root}/lib
+    chmod -R 755 {exec-in-cmd-root}/lib
 
 ---
 ## .c .cpp
@@ -54,7 +53,7 @@ Please __save all ".java" files in the same folder__. We will move ".class" to t
 
 ##### 取得package名：(Get package name)
 
-    {exec-in-cmd-root}/lib/readPackage.exe -p "{path}"
+    {exec-in-cmd-root}/lib/readPackageDarwin.exe -p "{path}"
 
 ##### 執行：(Run)
 
@@ -81,7 +80,7 @@ You need to install [`Node.js`](https://nodejs.org).
  | PHP file you want to open | /var/www/test.com/index.php         |
  | We will open              | http://localhost/index.php          |
 
-    xdg-open "http://localhost/index.php"
+    open -a Terminal "http://localhost/index.php"
 
 You need some application which can make you run PHP in your computer.
 
@@ -114,7 +113,7 @@ You need to install [`R`](https://www.r-project.org/).
 
 ----
 ## .html .htm .pdf
-    xdg-open "{path}\{filename}{filename_extension}"
+    open "{path}\{filename}{filename_extension}"
 
 Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/head&gt;:
 
@@ -124,7 +123,7 @@ Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/hea
 ## Hacking
 First, the package gets the file's extension, and choose what action should we do in `exec.coffee`.
 
-If this file needs to be compiled, it will be processed by `openLinux`, a program that can detect the kind of file and choose the proper commands to work.
+If this file needs to be compiled, it will be processed by `./openDarwin`, a program that can detect the kind of file and choose the proper commands to work.
 
 If this file does not need to be compiled, but it needs to be run in terminal, then `exec.coffee` will send proper commands to `openLinux` because if you run these files through `exec.coffee` directly, they will exit (instead of pause) immediately.
 
@@ -134,7 +133,7 @@ If you want to add or change the commands, please modify `lib/openLinux.c` or `l
     * example /
     * lib /
         * exec.coffee
-        * openLinux.c
-        * openLinux
+        * openDarwin.c
+        * openDarwin
         * readPackage.go
-        * readPackage
+        * readPackageDarwin
