@@ -1,3 +1,6 @@
+## 3.1.0
+* We started to support gnome based Linux
+
 ## 3.0.2
 * Add C#
 * Turn on optimization flags -O2 for C and C++
