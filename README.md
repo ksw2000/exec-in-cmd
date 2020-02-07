@@ -6,7 +6,7 @@ Make your Atom be more convenient when you want to run your code. You don't need
 ![preview](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png)
 
 # Notice
-+ Please press `Ctrl + F12` or using command-palette `Exec in cmd: init` for __Linux__ user and __macOS__ user when the first time use. ( linux 用戶及 macOS 用戶初次使用時務必按下 `Ctrl + F12`)
++ Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette for __Linux__ user and __macOS__ user when the first time use. ( linux 用戶及 macOS 用戶初次使用時務必按下 `Ctrl + F12`)
 
 + Please use UTF-8 encoding always.
 
