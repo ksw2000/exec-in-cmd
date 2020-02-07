@@ -16,7 +16,12 @@ int main(int argc, char** argv){
 
     //Get disk name
     int i,j;
-    i=strcmp(argv[1], ":");
+    for(i=0; i<strlen(argv[1]); i++){
+        if(argv[1][i]==':'){
+            break;
+        }
+    }
+
     char* diskName=calloc(i+2, sizeof(char));
 
     for(j=0; j<i+1; j++){
