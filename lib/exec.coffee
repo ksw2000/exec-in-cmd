@@ -20,7 +20,7 @@ compatible =
             description: 'Specify the folder name where C,C++,C# output <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
             default: 'out\\'
         Java:
-            description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with backslash ]` `out\\` , `output\\java\\` , `..\\out\\` , `.\\` , `..\\`'
+            description: 'Specify the folder name where Java,Kotlin output (Do not include whitespace character.) <BR>`[ end with backslash ]` `out\\` , `output\\java\\` , `..\\out\\` , `.\\` , `..\\`'
             default: 'out\\'
         php:
             description: 'Specify the root directory of your PHP [ end with blackslash ]'
@@ -126,7 +126,7 @@ module.exports =
                     when 'darwin'
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
-            else if extname in ['.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R']
+            else if extname in ['.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R','.kt']
                 _dir_path_ = "\"#{dir_path}\""
                 _basename_ = "\"#{basename}\""
                 _extname_  = "\"#{extname}\""
@@ -140,7 +140,7 @@ module.exports =
                     command = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
                     if extname in ['.c','.cpp','.cs']
                         command = "#{command} \"#{outC}\""
-                    else if extname =='.java'
+                    else if extname in ['.java','.kt']
                         command = "#{command} \"#{outJava}\""
                     command = command.replace(/\\/g,'\\\\')
 
@@ -153,8 +153,7 @@ module.exports =
                              break
                          i++
 
-
-                    command = "#{changeDisk}cd \"#{__dirname}\" & start \"Exec-in-cmd\" /WAIT open.exe " + command
+                    command = "#{changeDisk}cd \"#{__dirname}\" & start \"Exec-in-cmd\" /WAIT open.exe #{command}"
                     exec command
 
                 #For linux

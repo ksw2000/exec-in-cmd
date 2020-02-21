@@ -64,7 +64,14 @@ int main(int argc, char** argv){
 
             sprintf(str,"%s%s",str,argv[2]);
         }
+    }else if(!strcmp(argv[3],".kt")){
+        //Compile
+        sprintf(str,"%s & md \"%s\" & cls & kotlinc %s%s -include-runtime -d \"%s%s.jar\"",str,argv[6],argv[2],argv[3],argv[6],argv[2]);
+        compile_time=exec(str);
+        strcpy(str2,str);
 
+        //Run
+        sprintf(str,"%s & cd \"%s\\%s\" & java -jar \"%s.jar\"",diskName,argv[1],argv[6],argv[2]);
     }else if(strcmp(argv[3],".c")==0 || strcmp(argv[3],".cpp")==0){
         if(advance==1){
             exitFlag=c_advance(str,str2,argv,&compile_time);
