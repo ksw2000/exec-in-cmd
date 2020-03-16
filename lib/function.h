@@ -22,10 +22,6 @@ float exec(char str[]){
     return time;
 }
 
-void clear(char *str){
-    str='\0';
-}
-
 void error_try_again(){
     //Print highlight and yellow string
     //background-color  40: black
