@@ -13,6 +13,7 @@ int main(int argc, char** argv){
     //argv[4] get this open.c's path (end without \)
     //argv[5] 1: if use advance mode , 0: else
     //argv[6] output folder (end with \)
+    //argv[7] package name (java)
 
     //Get disk name
     int i,j;
@@ -43,26 +44,32 @@ int main(int argc, char** argv){
         if(advance==1){
             exitFlag=java_advance(str,str2,argv,&compile_time,&packageFlag);
         }else{
+
             //Compile
-            sprintf(str,"%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s%s",str,argv[6],argv[6],argv[6],argv[2],argv[3]);
+            char backFolder[128];
+            if(strcmp(argv[7], "0")){
+                strcpy(backFolder,"..\\");
+                int i;
+                for(i=0; i<strlen(argv[7]); i++){
+                    if(argv[7][i] == '.'){
+                        strcat(backFolder, "..\\");
+                    }
+                }
+
+                sprintf(str,"%s & md \"%s%s\" & cls & javac -encoding UTF-8 -d %s%s -classpath %s%s %s%s",str,backFolder,argv[6],backFolder,argv[6],backFolder,argv[6],argv[2],argv[3]);
+            }else{
+                sprintf(str,"%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s%s",str,argv[6],argv[6],argv[6],argv[2],argv[3]);
+            }
+
             compile_time=exec(str);
             strcpy(str2,str);
 
             //Run
-            char getPackage[256]="";
-            char packageName[256]="";
-            sprintf(getPackage,"%s\\readPackage.exe -p \"%s\\%s%s\" ",argv[4],argv[1],argv[2],argv[3]);
-            sprintf(str,"%s & cd \"%s\\%s\" & java ",diskName,argv[1],argv[6]);
-
-            //If use package
-            if(execAndGet(getPackage,packageName)==1){
-                if(strcmp(packageName,"0")!=0){
-                    sprintf(str,"%s%s.",str,packageName);
-                    packageFlag=1;
-                }
+            if(strcmp(argv[7], "0")){
+                sprintf(str,"%s & cd \"%s\" & cd %s & cd \"%s\" & java %s.%s",diskName,argv[1],backFolder,argv[6],argv[7],argv[2]);
+            }else{
+                sprintf(str,"%s & cd \"%s\\%s\" & java %s",diskName,argv[1],argv[6],argv[2]);
             }
-
-            sprintf(str,"%s%s",str,argv[2]);
         }
     }else if(!strcmp(argv[3],".kt")){
         //Compile
@@ -124,7 +131,11 @@ int main(int argc, char** argv){
         printf("\n--------------------------------\n");
         printf("Compiling command:\t%s\nRunning command:\t%s\n",str2,str);
         printf("\n--------------------------------\n");
-        printf("Compilation Time:\t%.4f s\nExecution Time:\t\t%.4f s\nTotal Time:\t\t%.4f s\n\n",compile_time,exec_time,total_time);
+        printf("Compilation Time:\t%.4f s\nExecution Time:\t\t%.4f s\nTotal Time:\t\t%.4f s\n",compile_time,exec_time,total_time);
+        if(strcmp(argv[7], "0")){
+            printf("Package:\t\t%s\n", argv[7]);
+        }
+        printf("\n");
     }else{
         printf("\n--------------------------------\n");
         printf("Command:\n%s\n\n",str);

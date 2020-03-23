@@ -2,6 +2,8 @@ exec=require('child_process').exec
 path=require('path')
 os=require('os')
 fs=require('fs')
+readPackage=require("./readPackage.js");
+
 system=os.platform()    # OS(win32,linux)
 
 compatible =
@@ -85,7 +87,6 @@ module.exports =
         dir_path = path.dirname(select_file)
         extname  = path.extname(select_file)
         basename = path.basename(select_file).replace(extname,"")
-        complete_file_path = "#{dir_path}\\#{basename}#{extname}"
 
         if advance < 2
             if extname == '.php'
@@ -96,19 +97,19 @@ module.exports =
                     phpFolder=atom.config.get('exec-in-cmd.php.phpFolder') ? '/var/www/';
                     openIn=atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost/';
 
-                if complete_file_path.indexOf(phpFolder) == -1
+                if select_file.indexOf(phpFolder) == -1
                     option=
                         description :
                             """
                             #### The root directory of your PHP:
                             `#{phpFolder}`
                             #### The path of this php file:
-                            `#{complete_file_path}`
+                            `#{select_file}`
                             """
                         dismissable : true
                     atom.notifications.addError('Invalid directory',option)
                 else
-                    openUrl=openIn + complete_file_path.replace("#{phpFolder}",'').replace("\\","/")
+                    openUrl=openIn + select_file.replace("#{phpFolder}",'').replace("\\","/")
                     switch system
                         when 'win32'
                         then exec "start \"\" \"#{openUrl}\""
@@ -132,6 +133,18 @@ module.exports =
                 _extname_  = "\"#{extname}\""
                 _dirname_  = "\"#{__dirname}\""
 
+                # Get Package Name of java file
+                packageName = '0'
+                if extname == '.java'
+                    data = null
+                    try
+                        data = readPackage(select_file)
+                    catch err
+                        console.log(err)
+
+                    if data != null
+                        packageName = data[1]
+
                 # For windows
                 if system == 'win32'
                     outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out\\'
@@ -140,8 +153,11 @@ module.exports =
                     command = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
                     if extname in ['.c','.cpp','.cs']
                         command = "#{command} \"#{outC}\""
-                    else if extname in ['.java','.kt']
+                    else if extname == '.java'
+                        command = "#{command} \"#{outJava}\" \"#{packageName}\""
+                    else if extname == '.kt'
                         command = "#{command} \"#{outJava}\""
+
                     command = command.replace(/\\/g,'\\\\')
 
                     changeDisk = ""
