@@ -183,17 +183,17 @@ module.exports =
                         when '.c','.cpp','.cs'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
                         when '.go'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
                         when '.java'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outJava}'\" \"'#{packageName}'\"\""
                         when '.js'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'node \"'#{_dir_path_}/#{_basename_}.js'\"'\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; node \"'#{_dir_path_}/#{_basename_}.js'\"'\""
                         when '.py'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'python \"'#{_dir_path_}/#{_basename_}.py'\"'\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; python \"'#{_dir_path_}/#{_basename_}.py'\"'\""
                         when '.R'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'Rscript \"'#{_dir_path_}/#{_basename_}.R'\"'\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; Rscript \"'#{_dir_path_}/#{_basename_}.R'\"'\""
                         when '.rb'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
                         else flag=1
                     if !flag
                         exec command
