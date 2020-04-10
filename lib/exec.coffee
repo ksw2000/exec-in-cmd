@@ -226,19 +226,19 @@ module.exports =
                         when '.c','.cpp','.cs'
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outC}"
                         when '.go'
-                        then data = "go run \"#{dir_path}/#{basename}.go\""
+                        then data = "cd #{_dirname_}; go run \"#{dir_path}/#{basename}.go\""
                         when '.java'
-                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}"
+                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}\n#{packageName}"
                         when '.js'
-                        then data = "node \"#{dir_path}/#{basename}.js\""
+                        then data = "cd #{_dirname_}; node \"#{dir_path}/#{basename}.js\""
                         when '.py'
-                        then data = "#{pythonInter} \"#{dir_path}/#{basename}.py\""
+                        then data = "cd #{_dirname_}; #{pythonInter} \"#{dir_path}/#{basename}.py\""
                         when '.R'
-                        then data = "Rscript \"#{dir_path}/#{basename}.R\""
+                        then data = "cd #{_dirname_}; Rscript \"#{dir_path}/#{basename}.R\""
                         when '.rb'
-                        then data = "ruby \"#{dir_path}/#{basename}.rb\""
+                        then data = "cd #{_dirname_}; ruby \"#{dir_path}/#{basename}.rb\""
                         else flag=1
-                    data += "\n"
+                    data = "#{data}\n"
                     if !flag
                         fs.writeFile(__dirname+'/configTemp.tmp',data,(err)->{})
                         exec "open -a Terminal ./#{__dirname}/openDarwin"

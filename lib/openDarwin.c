@@ -3,23 +3,6 @@
 #include<string.h>
 #include<sys/time.h>
 
-char* execAndGet(const char* cmd){
-    FILE* pipe=popen(cmd,"r");
-    char* result=malloc(256*sizeof(char));
-    strcpy(result,"0"); //preset
-
-    if(!pipe){
-        fprintf(stderr, "Exec-in-cmd Error: execAndGet() openLinux.c\n");
-        exit(EXIT_FAILURE);
-    }
-
-    while(!feof(pipe)){
-        fgets(result,sizeof(result),pipe);
-    }
-    pclose(pipe);
-    return result;
-}
-
 void pause(){
     printf("Press any key to continue...");
     char c;
@@ -43,7 +26,7 @@ int main(int argc, char** argv){
 
     //Timecounter and some variables
     char *cmd, *cmd_compile, *packageName;
-    struct  timeval  start, end;
+    struct timeval start, end;
     unsigned long compile_time=0, time=0;
 
     //Read file
@@ -52,7 +35,7 @@ int main(int argc, char** argv){
         fprintf(stderr, "Something wrong.");
         exit(1);
     }
-    char argvf[6][1024];
+    char argvf[7][1024];
     for(i=1; fgets(argvf[i],1024,f); i++){
         argvf[i][strlen(argvf[i])-1]='\0';
     }
@@ -66,28 +49,39 @@ int main(int argc, char** argv){
             argvf[3] get path      [end without /]
             argvf[4] get filename  [without extension]
             argvf[5] output folder [end with /]
+            argvf[6] package name
         */
+
         //Phase1: Compile
-        sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\" ; javac -encoding UTF-8 -d \"%s\" -classpath \"%s\" \"%s.java\"",argvf[3],argvf[5],argvf[5],argvf[5],argvf[4]);
+        char* backFolder = malloc(128*sizeof(char));
+        if(strcmp(argvf[6], "0")){
+            strcpy(backFolder,"../");
+            int i;
+            for(i=0; i<strlen(argvf[6]); i++){
+                if(argvf[6][i] == '.'){
+                    strcat(backFolder, "../");
+                }
+            }
+            sprintf(cmd,"cd \"%s\"; mkdir -p \"%s%s\" ; javac -encoding UTF-8 -d \"%s%s\" -classpath \"%s%s\" \"%s.java\"",argvf[3],backFolder,argvf[5],backFolder,argvf[5],backFolder,argvf[5],argvf[4]);
+        }else{
+            sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\" ; javac -encoding UTF-8 -d \"%s\" -classpath \"%s\" \"%s.java\"",argvf[3],argvf[5],argvf[5],argvf[5],argvf[4]);
+        }
+
         gettimeofday(&start,NULL);
-        system(cmd);
+        if(system(cmd)==-1){
+            fprintf(stderr,"Java compile error\n");
+        }
         gettimeofday(&end,NULL);
         compile_time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
 
-        cmd_compile=malloc(1024*sizeof(cmd));
         strcpy(cmd_compile,cmd);
 
-        //Phase2: Get package name
-        sprintf(cmd,"%s/readPackageDarwin -p %s/%s.java",argvf[2],argvf[3],argvf[4]);
-        packageName=execAndGet(cmd);
-
-        //Phase3: Run
-        sprintf(cmd,"cd \"%s/%s\"; java ",argvf[3],argvf[5]);
-        if(strcmp(packageName,"0")){ //If execAndGetCanRun and package!="0"
-            strcat(cmd,packageName);
-            strcat(cmd,".");
+        //Phase2: Run
+        if(strcmp(argvf[6], "0")){
+            sprintf(cmd,"cd \"%s\"; cd \"%s\"; cd \"%s\"; java %s.%s",argvf[3],backFolder,argvf[5],argvf[6],argvf[4]);
+        }else{
+            sprintf(cmd,"cd \"%s/%s\"; java %s",argvf[3],argvf[5],argvf[4]);
         }
-        sprintf(cmd,"%s%s",cmd,argvf[4]);
     }else if(!strcmp(argvf[1],".c") || !strcmp(argvf[1],".cpp") || !strcmp(argvf[1],".cs")){
         cmd=malloc(1024*sizeof(char));
         /*
@@ -142,17 +136,7 @@ int main(int argc, char** argv){
         printf("Command:\n%s\n\n",cmd);
         printf("Total Time: %.6lf s\n\n",((double)time)*(10e-7));
     }
-/*
-        if(!strcmp(argv[0],".c") || !strcmp(argv[0],".cpp") || !strcmp(argv[0],".cs")){
-            printf("for c language");
-        }else if(!strcmp(argv[0],".java")){
-            printf("for java");
-        }else{
-            printf("%s",argv[0]);
-            system("reset");
-            system(argv[0]);
-        }
-*/
+
     pause();
     exit(0);
 }
