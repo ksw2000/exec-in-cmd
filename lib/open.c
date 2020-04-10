@@ -130,8 +130,10 @@ int main(int argc, char** argv){
         printf("Compiling command:\t%s\nRunning command:\t%s\n",str2,str);
         printf("\n--------------------------------\n");
         printf("Compilation Time:\t%.4f s\nExecution Time:\t\t%.4f s\nTotal Time:\t\t%.4f s\n",compile_time,exec_time,total_time);
-        if(strcmp(argv[7], "0")){
-            printf("Package:\t\t%s\n", argv[7]);
+        if(argc>7){
+            if(strcmp(argv[7], "0")){
+                printf("Package:\t\t%s\n", argv[7]);
+            }
         }
         printf("\n");
     }else{
