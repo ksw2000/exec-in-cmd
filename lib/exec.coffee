@@ -28,31 +28,35 @@ compatible =
             description: 'Specify the root directory of your PHP [ end with blackslash ]'
             default: 'C:\\MAMP\\htdoc\\'
 
+
 compatible = if(system=='win32') then compatible.win else compatible.linux_and_darwin
 
 module.exports =
     config:
-        outputfolder:
+        c:
             type: 'object'
-            title: 'Output Folder'
-            order: 2
+            title: 'About C, C++, C#'
+            order: 1
             properties:
-                C:
+                out:
                     type: 'string'
                     title: 'C, C++, C# output folder (relative)'
                     description: compatible.C.description
                     default: compatible.C.default
-                    order: 1
-                Java:
+        java:
+            type: 'object'
+            title: 'About Java'
+            order: 2
+            properties:
+                out:
                     type: 'string'
                     title: 'Java output folder (relative)'
                     description: compatible.Java.description
                     default: compatible.Java.default
-                    order: 2
         php:
             type: 'object'
             title: 'About PHP'
-            order: 4
+            order: 3
             properties:
                 phpFolder:
                     type: 'string'
@@ -66,6 +70,17 @@ module.exports =
                     description: 'Specify the URL to access your PHP.'
                     default: 'http://localhost/'
                     order: 2
+        python:
+            type: 'object'
+            title: 'About Python'
+            order: 4
+            properties:
+                interpreter:
+                    type: 'string'
+                    title: 'About Python'
+                    description: 'Type an interpreter to run python. Ex: python, python3, ...'
+                    default: 'python'
+                    #enum: ['python','python3']
 
     activate: ->
         atom.commands.add 'atom-workspace', 'Exec-in-cmd:exec', => @exec_in_cmd(0)
@@ -128,10 +143,11 @@ module.exports =
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
             else if extname in ['.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R','.kt']
-                _dir_path_ = "\"#{dir_path}\""
-                _basename_ = "\"#{basename}\""
-                _extname_  = "\"#{extname}\""
-                _dirname_  = "\"#{__dirname}\""
+                _dir_path_   = "\"#{dir_path}\""
+                _basename_   = "\"#{basename}\""
+                _extname_    = "\"#{extname}\""
+                _dirname_    = "\"#{__dirname}\""
+                pythonInter  = atom.config.get('exec-in-cmd.python.interpreter') ? 'python'
 
                 # Get Package Name of java file
                 packageName = '0'
@@ -147,8 +163,8 @@ module.exports =
 
                 # For windows
                 if system == 'win32'
-                    outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out\\'
-                    outJava  = atom.config.get('exec-in-cmd.outputfolder.Java') ? 'out\\'
+                    outC     = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
+                    outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
 
                     command = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
                     if extname in ['.c','.cpp','.cs']
@@ -157,17 +173,20 @@ module.exports =
                         command = "#{command} \"#{outJava}\" \"#{packageName}\""
                     else if extname == '.kt'
                         command = "#{command} \"#{outJava}\""
-
+                    else if extname == '.py'
+                        command = "#{command} \"#{pythonInter}\""
                     command = command.replace(/\\/g,'\\\\')
 
-                    changeDisk = ""
+                    # Beside change directory, also need to notice to change disk if user works under D:\ or anotehr disk
                     i=0
+                    changeDisk=""
+
                     while i< __dirname.length-1
-                         if __dirname[i]==':' &&  __dirname[i+1]=='\\'
-                             changeDisk = __dirname.slice(0,i)
-                             changeDisk += ": & "
-                             break
-                         i++
+                        if __dirname[i]==':' &&  __dirname[i+1]=='\\'
+                            changeDisk = __dirname.slice(0,i)
+                            changeDisk = "#{changeDisk}: & "
+                            break
+                        i++
 
                     command = "#{changeDisk}cd \"#{__dirname}\" & start \"Exec-in-cmd\" /WAIT open.exe #{command}"
                     exec command
@@ -175,10 +194,10 @@ module.exports =
                 #For linux
                 else if system == 'linux'
                     terminal = "gnome-terminal --window --title='Exec-in-cmd' -e"
-                    outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out/'
-                    outJava  = atom.config.get('exec-in-cmd.outputfolder.Java') ? 'out/'
+                    outC     = atom.config.get('exec-in-cmd.c.out') ? 'out/'
+                    outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
                     flag     = 0
-                    _finalOutputC_ = "\"#{dir_path}/#{outC}\"\"#{basename}\""
+
                     switch extname
                         when '.c','.cpp','.cs'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
@@ -189,7 +208,7 @@ module.exports =
                         when '.js'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; node \"'#{_dir_path_}/#{_basename_}.js'\"'\""
                         when '.py'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; python \"'#{_dir_path_}/#{_basename_}.py'\"'\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; #{pythonInter} \"'#{_dir_path_}/#{_basename_}.py'\"'\""
                         when '.R'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; Rscript \"'#{_dir_path_}/#{_basename_}.R'\"'\""
                         when '.rb'
@@ -200,8 +219,8 @@ module.exports =
 
                 #For mac os
                 else if system == 'darwin'
-                    outC     = atom.config.get('exec-in-cmd.outputfolder.C') ? 'out/'
-                    outJava  = atom.config.get('exec-in-cmd.outputfolder.Java') ? 'out/'
+                    outC     = atom.config.get('exec-in-cmd.c.out') ? 'out/'
+                    outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
                     flag = 0
                     switch extname
                         when '.c','.cpp','.cs'
@@ -213,7 +232,7 @@ module.exports =
                         when '.js'
                         then data = "node \"#{dir_path}/#{basename}.js\""
                         when '.py'
-                        then data = "python \"#{dir_path}/#{basename}.py\""
+                        then data = "#{pythonInter} \"#{dir_path}/#{basename}.py\""
                         when '.R'
                         then data = "Rscript \"#{dir_path}/#{basename}.R\""
                         when '.rb'

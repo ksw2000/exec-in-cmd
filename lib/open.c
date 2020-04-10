@@ -12,8 +12,11 @@ int main(int argc, char** argv){
     //argv[3] get filename extension (start with .)
     //argv[4] get this open.c's path (end without \)
     //argv[5] 1: if use advance mode , 0: else
-    //argv[6] output folder (end with \)
-    //argv[7] package name (java)
+    //argv[6]
+        // C,C++,C#,Java        output folder (end with \)
+        // Python               python interpreter (python or python3)
+    //argv[7]
+        // java                 package name (java)
 
     //Get disk name
     int i,j;
@@ -41,35 +44,30 @@ int main(int argc, char** argv){
 
     sprintf(str,"%s & cd \"%s\"",diskName,argv[1]);
     if(strcmp(argv[3],".java")==0){
-        if(advance==1){
-            exitFlag=java_advance(str,str2,argv,&compile_time,&packageFlag);
-        }else{
-
-            //Compile
-            char backFolder[128];
-            if(strcmp(argv[7], "0")){
-                strcpy(backFolder,"..\\");
-                int i;
-                for(i=0; i<strlen(argv[7]); i++){
-                    if(argv[7][i] == '.'){
-                        strcat(backFolder, "..\\");
-                    }
+        //Compile
+        char backFolder[128];
+        if(strcmp(argv[7], "0")){
+            strcpy(backFolder,"..\\");
+            int i;
+            for(i=0; i<strlen(argv[7]); i++){
+                if(argv[7][i] == '.'){
+                    strcat(backFolder, "..\\");
                 }
-
-                sprintf(str,"%s & md \"%s%s\" & cls & javac -encoding UTF-8 -d %s%s -classpath %s%s %s%s",str,backFolder,argv[6],backFolder,argv[6],backFolder,argv[6],argv[2],argv[3]);
-            }else{
-                sprintf(str,"%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s%s",str,argv[6],argv[6],argv[6],argv[2],argv[3]);
             }
 
-            compile_time=exec(str);
-            strcpy(str2,str);
+            sprintf(str,"%s & md \"%s%s\" & cls & javac -encoding UTF-8 -d %s%s -classpath %s%s %s%s",str,backFolder,argv[6],backFolder,argv[6],backFolder,argv[6],argv[2],argv[3]);
+        }else{
+            sprintf(str,"%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s%s",str,argv[6],argv[6],argv[6],argv[2],argv[3]);
+        }
 
-            //Run
-            if(strcmp(argv[7], "0")){
-                sprintf(str,"%s & cd \"%s\" & cd %s & cd \"%s\" & java %s.%s",diskName,argv[1],backFolder,argv[6],argv[7],argv[2]);
-            }else{
-                sprintf(str,"%s & cd \"%s\\%s\" & java %s",diskName,argv[1],argv[6],argv[2]);
-            }
+        compile_time=exec(str);
+        strcpy(str2,str);
+
+        //Run
+        if(strcmp(argv[7], "0")){
+            sprintf(str,"%s & cd \"%s\" & cd %s & cd \"%s\" & java %s.%s",diskName,argv[1],backFolder,argv[6],argv[7],argv[2]);
+        }else{
+            sprintf(str,"%s & cd \"%s\\%s\" & java %s",diskName,argv[1],argv[6],argv[2]);
         }
     }else if(!strcmp(argv[3],".kt")){
         //Compile
@@ -106,7 +104,7 @@ int main(int argc, char** argv){
         if(advance==1){
             exitFlag=py_advance(str,argv);
         }else{
-            sprintf(str,"%s & python \"%s%s\"",str,argv[2],argv[3]);
+            sprintf(str,"%s & %s \"%s%s\"",str,argv[6],argv[2],argv[3]);
         }
     }else if(strcmp(argv[3],".js")==0){
         sprintf(str,"%s & node \"%s%s\"",str,argv[2],argv[3]);
