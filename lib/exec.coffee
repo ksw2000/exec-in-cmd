@@ -2,7 +2,7 @@ exec=require('child_process').exec
 path=require('path')
 os=require('os')
 fs=require('fs')
-readPackage=require("./readPackage.js");
+readPackage=require("./readPackage.coffee");
 
 system=os.platform()    # OS(win32,linux)
 
