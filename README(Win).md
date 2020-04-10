@@ -42,37 +42,20 @@ such as `GOROOT` and `GOPATH`
 
 ----
 ## .java
-__請將所有java檔放置在同一資料夾__，我們會將所有class檔放在適當的資料夾。我們利用 readPackage.exe 取得這個java檔的package名
-
-Please __save all ".java" files in the same folder__. We will move ".class" to the folder which it should be. We use readPackage.exe to get the package name of this java file.
-
-
 * example/
-   * out/ _(default output folder name)_
-       * p1/
-           * a.class
-       * b.class
-       * c.class
-   * a.java (use package p1)
-   * b.java
-   * c.java
+    * out/ _(default output folder name)_
+        * p1/
+            * a.class
+        * b.class
+        * c.class
+    * p1/
+        * a.java    (use package p1)
+    * b.java        (not using package)
+    * c.java        (not using package)
 
-##### 編譯：(Compile)
-
-       cd "{path}" & md {outputFolder} & cls & javac -encoding UTF-8 -d {outputFolder} -classpath {outputFolder} {filename}.java
-
-##### 取得package名：(Get package name)
-
-       {exec-in-cmd-root}\lib\readPackage.exe -p "{path}"
-##### 執行：(Run)
-
-       // Use package
-       cd "{path}\{outputFolder}" & java {package_name}.{filename}
-
-       // Not use package
-       cd "{path}\{outputFolder}" & java {filename}
-
-You can just compile without running (僅編譯不執行) by `Exec In Cmd:Advance` or `Shift+F12`
+> Put ".java" in proper folder (version >= 3.1.2)
+>
+> Put all ".java" in the same folder (version <3.1.2)
 
 You need to install [`JRE (Java Runtime Environment)`](https://www.oracle.com/technetwork/java/javase/downloads/index.html) and set environment variables.</BR>
 
@@ -87,13 +70,13 @@ You need to install [`Node.js`](https://nodejs.org) and set environment variable
  |                           |                                     |
  | ----------------------:   |:------------------------------------|
  | root_directory_of_PHP     | C:\MAMP\htdocs\                     |
- | URL_to access_your_PHP    | http://localhost:81/                |
+ | URL_to access_your_PHP    | http://localhost:80/                |
  | PHP file you want to open | C:\MAMP\htdocs\myphp\index.php      |
- | We will open              | http://localhost:81/myphp/index.php |
+ | We will open              | http://localhost:80/myphp/index.php |
 
-       start "" "http://localhost:81/myphp/index.php"
+       start "" "http://localhost:80/myphp/index.php"
 
-You need some application which can make you run PHP in your computer, for example [__MAMP__]( https://www.mamp.info/ ).
+You need some application which can make you run PHP in your computer. **For example,** [__MAMP__]( https://www.mamp.info/ ).
 
 ----
 ## .rb
@@ -178,7 +161,7 @@ Press `Shift+F12`
 > `Ctrl + Shift +F12` : Open command line
 ----
 ## Hacking
-First, the package catches the file's path, filename,  filename extension, and so on. Then, we deliver the arguments to `open.exe`(windows),a program that can detect the kind of file and choose the proper commands to work.</BR>
+First, the package catches the file's path, filename,  filename extension, and so on. Then, we deliver the arguments to `open.exe`, a program that can detect the kind of file and choose the proper commands to work.</BR>
 
 If you want to add or change the commands, please modify `lib\open.c` or`lib\advance.h` in the package.
 
@@ -190,5 +173,3 @@ If you want to add or change the commands, please modify `lib\open.c` or`lib\adv
         * function.h
         * open.c
         * open.exe
-        * readPackage.go
-        * readPackage.exe

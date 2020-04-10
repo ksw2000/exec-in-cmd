@@ -6,7 +6,7 @@ Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette
 
 It will run the following command in terminal:
 
-    sudo chmod -R 777 {exec-in-cmd-root}/lib
+    sudo chmod -R 777 {atom_packages}/exec-in-cmd/lib
 
 ---
 ## .c .cpp
@@ -33,38 +33,20 @@ You need to install [`GO`](https://golang.org/doc/install).
 
 ----
 ## .java
-__請將所有java檔放置在同一資料夾__，我們會將所有class檔放在適當的資料夾。我們利用 readPackage.exe 取得這個java檔的package名
-
-Please __save all ".java" files in the same folder__. We will move ".class" to the folder which it should be. We use readPackage.exe to get the package name of this java file.
-
-
 * example/
-   * out/ _(default output folder name)_
-       * p1/
-           * a.class
-       * b.class
-       * c.class
-   * a.java (use package p1)
-   * b.java
-   * c.java
+    * out/ _(default output folder name)_
+        * p1/
+            * a.class
+        * b.class
+        * c.class
+    * p1/
+        * a.java    (use package p1)
+    * b.java        (not using package)
+    * c.java        (not using package)
 
-##### 編譯：(Compile)
-
-    cd "{path}" ; mkdir -p {outputFolder} ; javac -encoding UTF-8 -d {outputFolder} -classpath {outputFolder} {filename}.java
-
-##### 取得package名：(Get package name)
-
-    {exec-in-cmd-root}/lib/readPackage.exe -p "{path}"
-
-##### 執行：(Run)
-
-    // Use package
-    cd "{path}/{outputFolder}" ; java {package_name}.{filename}
-
-    // Not use package
-    cd "{path}/{outputFolder}" ; java {filename}
-
-You need to install `javac` and `java`.
+> Put ".java" in proper folder (version >= 3.1.2)
+>
+> Put all ".java" in the same folder (version <3.1.2)
 
 ----
 ## .js (Node.js)
@@ -77,11 +59,11 @@ You need to install [`Node.js`](https://nodejs.org).
  |                           |                                     |
  | ----------------------:   |:------------------------------------|
  | root_directory_of_PHP     | /var/www/test.com/                  |
- | URL_to access_your_PHP    | http://localhost/                   |
+ | URL_to access_your_PHP    | http://localhost:80/                   |
  | PHP file you want to open | /var/www/test.com/index.php         |
- | We will open              | http://localhost/index.php          |
+ | We will open              | http://localhostl:80/index.php          |
 
-    xdg-open "http://localhost/index.php"
+    xdg-open "http://localhost:80/index.php"
 
 You need some application which can make you run PHP in your computer.
 
@@ -136,5 +118,3 @@ If you want to add or change the commands, please modify `lib/openLinux.c` or `l
         * exec.coffee
         * openLinux.c
         * openLinux
-        * readPackage.go
-        * readPackage
