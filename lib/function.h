@@ -1,18 +1,3 @@
-int execAndGet(char* cmd, char* result){
-    char buffer[512];
-    FILE* pipe=_popen(cmd,"r");
-    if(!pipe){
-        return 0;   //Return 0 if fail.
-    }
-    while(!feof(pipe)){
-        if(fgets(buffer,512,pipe)){
-            sprintf(result,"%s%s",result,buffer);
-        }
-    }
-    _pclose(pipe);
-    return 1;   //Return 0 if success.
-}
-
 float exec(char str[]){
     clock_t start,end;
     start=clock();

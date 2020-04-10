@@ -37,57 +37,6 @@ int c_advance(char *str, char *str2, char **argv, float *compile_time){
     return 0;
 }
 
-int java_advance(char *str, char *str2, char **argv, float *compile_time,int *packageFlag){
-    printf("Input \n\t0: Compile only\n\t1: Run old %s.class\n\t2: Specify output folder and then compile and run\n",argv[2]);
-    int choose;
-    char folder[256];
-    scanf("%d",&choose);
-    system("cls");
-
-    //-------------- IF choose==2 --------------//
-    if(choose==2){
-        printf("Please input the folder name (<256) you want to output file in.\nDo not include whitespace character.\n For example:\n");
-        printf("out\\ , output\\java\\ , ..\\out\\ , .\\ , ..\\\n");
-        scanf("%s",&folder);
-    }else{
-        strcpy(folder,argv[6]);
-    }
-
-    //------------------------------------------//
-    if(choose==0 || choose==2){
-        sprintf(str,"%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s%s",str,folder,folder,folder,argv[2],argv[3]);
-        if(choose==2){
-            *compile_time=exec(str);
-            strcpy(str2,str);
-        }
-    }
-
-    //------------------------------------------//
-    if(choose==1 || choose==2){
-        //Run
-        char getPackage[256]="",packageName[256]="";
-        sprintf(getPackage,"%s\\readPackage.exe -p \"%s\\%s%s\" ",argv[4],argv[1],argv[2],argv[3]);
-        sprintf(str,"cd \"%s\\%s\" & java ",argv[1],folder);
-
-        //If use package
-        if(execAndGet(getPackage,packageName)==1){
-            if(strcmp(packageName,"0")!=0){
-                sprintf(str,"%s%s.",str,packageName);
-                *packageFlag=1;
-            }
-        }
-        sprintf(str,"%s%s",str,argv[2]);
-    }
-
-    //------------------------------------------//
-    if(choose!=0 && choose!=1 && choose!=2){
-        error_try_again();
-        return java_advance(str,str2,argv,compile_time,packageFlag);
-    }
-
-    return 0;
-}
-
 int go_advance(char *str,char **argv){
     printf("Input \n\t0: Run\n\t1: Build\n");
     int choose;

@@ -143,7 +143,7 @@ Press `Ctrl+Shift+F12`
 
 Press `Shift+F12`
 
-##### .c .cpp .java
+##### .c .cpp
      0: Compile only  (僅編譯)
      1: Run old       (執行舊檔)
      2: Specify output folder and then compile and run
