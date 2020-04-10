@@ -226,6 +226,7 @@ module.exports =
                         when '.c','.cpp','.cs'
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outC}"
                         when '.go'
+<<<<<<< HEAD
                         then data = "cd \"'#{_dir_path_}'\"; go run \"#{dir_path}/#{basename}.go\""
                         when '.java'
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}\n#{packageName}"
@@ -237,6 +238,19 @@ module.exports =
                         then data = "cd \"'#{_dir_path_}'\"; Rscript \"#{dir_path}/#{basename}.R\""
                         when '.rb'
                         then data = "cd \"'#{_dir_path_}'\"; ruby \"#{dir_path}/#{basename}.rb\""
+=======
+                        then data = "cd #{_dirname_}; go run \"#{dir_path}/#{basename}.go\""
+                        when '.java'
+                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}\n#{packageName}"
+                        when '.js'
+                        then data = "cd #{_dirname_}; node \"#{dir_path}/#{basename}.js\""
+                        when '.py'
+                        then data = "cd #{_dirname_}; #{pythonInter} \"#{dir_path}/#{basename}.py\""
+                        when '.R'
+                        then data = "cd #{_dirname_}; Rscript \"#{dir_path}/#{basename}.R\""
+                        when '.rb'
+                        then data = "cd #{_dirname_}; ruby \"#{dir_path}/#{basename}.rb\""
+>>>>>>> 738761903a7967a05bb2b648aa05e9aac4208605
                         else flag=1
                     data = "#{data}\n"
                     if !flag
