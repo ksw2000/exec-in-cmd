@@ -27,6 +27,10 @@ Make your Atom be more convenient when you want to run your code. You don't need
 
 `Shift + F12` Advance Mode ( For __windows__ user now )
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 83e089f0c2eec5ebbc7e95450ea5a267ddb39443
 `Ctrl + F12` Initialize ( for __Linux__ user and __macOS__ user when the first time use )
 
 ![permission_denied](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot_linux_permission.png)
