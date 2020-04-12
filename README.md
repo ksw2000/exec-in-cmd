@@ -23,9 +23,10 @@ Make your Atom be more convenient when you want to run your code. You don't need
 # Hot Key
 `F12` Normal ( Run code )
 
-`Shift + F12` Advance Mode ( For `windows` user now )
-
 `Ctrl + Shift +F12` Open command line in windows or open terminal in linux or macOS
+
+`Shift + F12` Advance Mode ( For __windows__ user now )
+
 
 `Ctrl + F12` Initialize ( for __Linux__ user and __macOS__ user when the first time use )
 
