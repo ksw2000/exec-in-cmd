@@ -1,15 +1,49 @@
+## 3.1.2
+* Add feature: specify python interpreter
+
+> python example.py
+>
+> or
+>
+> python3 example.py
+
+* We use coffeescript instead of golang to detect package name (java). And we support java directory structure.
+
+**New (ver >= 3.1.2)**
+> * example/
+    * out/ _(default output folder name)_
+        * p1/
+            * a.class
+        * b.class
+        * c.class
+    * p1/
+        * a.java    (use package p1)
+    * b.java        (not using package)
+    * c.java        (not using package)
+
+**Old (ver < 3.1.2)**
+> * example/
+    * out/ _(default output folder name)_
+        * p1/
+            * a.class
+        * b.class
+        * c.class
+    * a.java    (use package p1)
+    * b.java        (not using package)
+    * c.java        (not using package)
+
 ## 3.1.0
-* We started to support gnome based Linux
+* We started to support macOS
 
 ## 3.0.2
 * Add C# for windows
 * Turn on optimization flags -O2 for C and C++
 * Fix bug
-    * We didn't support the file in the disk taht is different from exec.coffee. But now, we can.
+    * We didn't support the file in the disk taht is different from exec.coffee. But now, we can do.
     * In the past, we didn't notice that `cd` can only change directory in the same disk.
 
 ## 3.0.1
-* Fix bug in ( exec.coffee )
+* Fix bug in (exec.coffee)
 
 ## 3.0.0
 * We started to support gnome based Linux
