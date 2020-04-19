@@ -81,6 +81,24 @@ module.exports =
                     description: 'Type an interpreter to run python. Ex: python, python3, ...'
                     default: 'python'
                     #enum: ['python','python3']
+        asm:
+            type: 'object'
+            title: 'About assembly (Only for linux)'
+            order: 5
+            properties:
+                out:
+                    type: 'string'
+                    title: 'Assembly output folder (relative)'
+                    description: 'Specify the folder name where assembly output <BR>`[ end with slash ]` `out/` , `output/c/` , `../out/` , `./` , `../`'
+                    default: 'out/'
+                    order: 1
+                flag:
+                    type: 'string'
+                    title: 'Specify flag'
+                    description: 'elf64 for x64, elf for x86'
+                    default: 'elf64'
+                    enum: ['elf64','elf']
+                    order: 2
 
     activate: ->
         atom.commands.add 'atom-workspace', 'Exec-in-cmd:exec', => @exec_in_cmd(0)
@@ -142,7 +160,7 @@ module.exports =
                     when 'darwin'
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
-            else if extname in ['.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R','.kt']
+            else if extname in ['.asm','.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R','.kt']
                 _dir_path_   = "\"#{dir_path}\""
                 _basename_   = "\"#{basename}\""
                 _extname_    = "\"#{extname}\""
@@ -194,11 +212,15 @@ module.exports =
                 #For linux
                 else if system == 'linux'
                     terminal = "gnome-terminal --window --title='Exec-in-cmd' -e"
+                    outA     = atom.config.get('exec_in_cmd.asm.out') ? 'out/'
+                    nasmFlag = atom.config.get('exec_in_cmd.asm.flag') ? 'elf64'
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out/'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
                     flag     = 0
 
                     switch extname
+                        when '.asm'
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"#{nasmFlag}\" \"#{outA}\"\""
                         when '.c','.cpp','.cs'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
                         when '.go'

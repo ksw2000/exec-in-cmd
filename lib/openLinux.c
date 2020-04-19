@@ -13,10 +13,47 @@ int main(int argc, char** argv){
     //Timecounter
     int i;
     char *cmd, *cmd_compile;
+    char *cmd_assemble, *cmd_link;
     struct  timeval  start, end;
     unsigned long compile_time=0, time=0;
+    unsigned long assemble_time=0, link_time=0;
 
-    if(!strcmp(argv[1],".java")){
+    if(!strcmp(argv[1],".asm")){
+        /*
+            argv[1] type(.java)
+            argv[2] get path      [end without /]
+            argv[3] get filename  [without extension]
+            argv[4] flagelf64
+            argv[5] output folder [end with /]
+        */
+        //Phase1: Assembler
+        cmd          = malloc(1024*sizeof(char));
+        cmd_assemble = malloc(1024*sizeof(char));
+        cmd_link     = malloc(1024*sizeof(char));
+        sprintf(cmd, "cd \"%s\"; mkdir -p \"%s\"; nasm -f %s \"%s.asm\" -o \"%s%s.o\"",argv[2],argv[5],argv[4],argv[3],argv[5],argv[3]);
+
+        gettimeofday(&start,NULL);
+        if(system(cmd)==-1){
+            fprintf(stderr,"Assembling error\n");
+        }
+        gettimeofday(&end,NULL);
+        assemble_time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
+        cmd_assemble = malloc(1024*sizeof(cmd));
+        strcpy(cmd_assemble,cmd);
+
+        //Phase2: Linker
+        sprintf(cmd,"cd \"%s/%s\"; ld -s -o \"%s\" \"%s.o\"",argv[2],argv[5],argv[3],argv[3]);
+        gettimeofday(&start,NULL);
+        if(system(cmd)==-1){
+            fprintf(stderr,"Linking error\n");
+        }
+        gettimeofday(&end,NULL);
+        link_time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
+        strcpy(cmd_link,cmd);
+
+        //Phase3: Run
+        sprintf(cmd,"cd \"%s/%s\"; \"./%s\"",argv[2],argv[5],argv[3]);
+    }else if(!strcmp(argv[1],".java")){
         cmd = malloc(1024*sizeof(char));
         cmd_compile = malloc(1024*sizeof(char));
         /*
@@ -110,6 +147,12 @@ int main(int argc, char** argv){
         printf("\n--------------------------------\n");
         printf("Compilation Time:\t%.6lf s\nExecution Time:\t\t%.6lf s\nTotal Time:\t\t%.6lf s\n\n",\
         ((double)compile_time)*(10e-7),((double)time)*(10e-7),((double)(compile_time+time))*(10e-7));
+    }else if(assemble_time>0){
+        printf("\n--------------------------------\n");
+        printf("Assembling command:\t%s\nLinking command:\t%s\nRunning command:\t%s\n",cmd_assemble,cmd_link,cmd);
+        printf("\n--------------------------------\n");
+        printf("Assembling Time:\t%.6lf s\nLinking Time:\t\t%.6lf s\nExecution Time:\t\t%.6lf s\nTotal Time:\t\t%.6lf s\n\n",\
+        ((double)assemble_time)*(10e-7),((double)link_time)*(10e-7),((double)time)*(10e-7),((double)(assemble_time+link_time+time))*(10e-7));
     }else{
         printf("\n--------------------------------\n");
         printf("Command:\n%s\n\n",cmd);
