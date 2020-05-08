@@ -1,12 +1,13 @@
 # Exec in cmd
-讓你的 Atom 更方便！當你每次要執行程式碼時不必另外開啟命令提示字元，也不必改用其他 IDE ，你只要按下 `F12` 即可！目前僅支援 __Windows__,  __gnome-based Linux__ 和 __macOS__
 
-Make your Atom be more convenient when you want to run your code. You don't need to use command line or other IDE to run your code. You just need to press `F12` to run your code.Only support for __Windows__ , __gnome-based Linux__ and __macOS__ now.
+Make it more convenient for running code in Atom. Instead of command line or other IDEs, you just need to press `F12` to run your code.
+
+We only support for __Windows__ , __gnome-based Linux__ and __macOS__ now.
 
 ![preview](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png)
 
 # Notice
-+ Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette for __Linux__ user and __macOS__ user when the first time use. ( linux 用戶及 macOS 用戶初次使用時務必按下 `Ctrl + F12`)
++ Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette for __Linux__ user and __macOS__ user when the first time use. ( linux 用戶及 macOS 用戶初次使用時務必先按下 `Ctrl + F12`)
 
 + Please use UTF-8 encoding always.
 
@@ -33,7 +34,5 @@ Make your Atom be more convenient when you want to run your code. You don't need
 If you get __Permission denied__ , please press `Ctrl + F12`
 
 ----
-
-[More Information](https://had.name/atom/)
 
 Made by [Hadname Online](https://had.name)
