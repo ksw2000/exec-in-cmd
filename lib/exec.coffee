@@ -17,6 +17,9 @@ compatible =
         php:
             description: 'Specify the root directory of your PHP [ end with slash ]'
             default: '/var/www/'
+        Rust:
+            description: 'Specify the folder name where Rust output (Do not include whitespace character.) <BR>`[ end with slash ]` `out/` , `output/` , `../out/` , `./` , `../`'
+            default: 'out/'
     win:
         C:
             description: 'Specify the folder name where C,C++,C# output <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
@@ -27,6 +30,9 @@ compatible =
         php:
             description: 'Specify the root directory of your PHP [ end with blackslash ]'
             default: 'C:\\MAMP\\htdoc\\'
+        Rust:
+            description: 'Specify the folder name where Rust output (Do not include whitespace character.) <BR>`[ end with slash ]` `out/` , `output/` , `../out/` , `./` , `../`'
+            default: 'out\\'
 
 
 compatible = if(system=='win32') then compatible.win else compatible.linux_and_darwin
@@ -81,10 +87,20 @@ module.exports =
                     description: 'Type an interpreter to run python. Ex: python, python3, ...'
                     default: 'python'
                     #enum: ['python','python3']
+        rust:
+            type: 'object'
+            title: 'About Rust'
+            order: 5
+            properties:
+                out:
+                    type: 'string'
+                    title: 'Rust output folder (relative)'
+                    description: compatible.Rust.description
+                    default: compatible.Rust.default
         asm:
             type: 'object'
             title: 'About assembly (Only for linux)'
-            order: 5
+            order: 6
             properties:
                 out:
                     type: 'string'
@@ -160,7 +176,7 @@ module.exports =
                     when 'darwin'
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
-            else if extname in ['.asm','.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R','.kt']
+            else if extname in ['.asm','.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R','.kt','.rs']
                 _dir_path_   = "\"#{dir_path}\""
                 _basename_   = "\"#{basename}\""
                 _extname_    = "\"#{extname}\""
@@ -216,13 +232,14 @@ module.exports =
                     nasmFlag = atom.config.get('exec_in_cmd.asm.flag') ? 'elf64'
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out/'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
+                    outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out/'
                     flag     = 0
 
                     switch extname
                         when '.asm'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"#{nasmFlag}\" \"#{outA}\"\""
                         when '.c','.cpp','.cs'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
                         when '.go'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
                         when '.java'
@@ -235,6 +252,8 @@ module.exports =
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; Rscript \"'#{_dir_path_}/#{_basename_}.R'\"'\""
                         when '.rb'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
+                        when '.rs'
+                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outRust}'\"\""
                         else flag=1
                     if !flag
                         exec command
