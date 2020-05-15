@@ -6,8 +6,6 @@ class package_ex_import{
     }
 }
 
-//You should compile(Click F12) `package_ex.java` first.
-//You should compile(Click F12) `package_ex.java` first.
-//You should compile(Click F12) `package_ex.java` first.
-//You should compile(Click F12) `package_ex.java` first.
-//You should compile(Click F12) `package_ex.java` first.
+/*********************************************************
+You should compile(Press F12) `p1/package_ex.java`first.
+*********************************************************/
