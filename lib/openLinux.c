@@ -170,24 +170,29 @@ int main(int argc, char** argv){
         fprintf(stderr,"Terminal error\n");
     }
     gettimeofday(&end,NULL);
-    time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
+    time = 1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
 
     if(compile_time>0){
         printf("\n--------------------------------\n");
-        printf("Compiling command:\t%s\nRunning command:\t%s\n",cmd_compile,cmd);
-        printf("\n--------------------------------\n");
-        printf("Compilation Time:\t%.6lf s\nExecution Time:\t\t%.6lf s\nTotal Time:\t\t%.6lf s\n\n",\
-        ((double)compile_time)*(10e-7),((double)time)*(10e-7),((double)(compile_time+time))*(10e-7));
+        printf("%-12s%s\n%-12s%s\n\n",\
+               "Compile:", cmd_compile, "Run:", cmd);
+        printf("%-12s%.6lf s\n%-12s%.6lf s\n%-12s%.6lf s\n\n",\
+               "Compiling:", ((double)compile_time)*(10e-7),\
+               "Executing:", ((double)time)*(10e-7),\
+               "Total:",     ((double)(compile_time+time))*(10e-7));
     }else if(assemble_time>0){
         printf("\n--------------------------------\n");
-        printf("Assembling command:\t%s\nLinking command:\t%s\nRunning command:\t%s\n",cmd_assemble,cmd_link,cmd);
-        printf("\n--------------------------------\n");
-        printf("Assembling Time:\t%.6lf s\nLinking Time:\t\t%.6lf s\nExecution Time:\t\t%.6lf s\nTotal Time:\t\t%.6lf s\n\n",\
-        ((double)assemble_time)*(10e-7),((double)link_time)*(10e-7),((double)time)*(10e-7),((double)(assemble_time+link_time+time))*(10e-7));
+        printf("%-12s%s\n%-12s%s\n%-12s%s\n\n",\
+               "Assembling:", cmd_assemble, "Link:", cmd_link,"Run:", cmd);
+        printf("%-12s%.6lf s\n%-12s%.6lf s\n%-12s%.6lf s\n%-12s%.6lf s\n\n",\
+               "Assembling:", ((double)assemble_time)*(10e-7),\
+               "Linking:",    ((double)link_time)*(10e-7),\
+               "Execution:",  ((double)time)*(10e-7),\
+               "Total:",      ((double)(assemble_time+link_time+time))*(10e-7));
     }else{
         printf("\n--------------------------------\n");
-        printf("Command:\n%s\n\n",cmd);
-        printf("Total Time: %.6lf s\n\n",((double)time)*(10e-7));
+        printf("Run:  %s\n\n",cmd);
+        printf("Time: %.6lf s\n\n",((double)time)*(10e-7));
     }
     /*
         printf("\n--------------------------------\n");
