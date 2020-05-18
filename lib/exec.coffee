@@ -18,7 +18,7 @@ compatible =
             description: 'Specify the root directory of your PHP [ end with slash ]'
             default: '/var/www/'
         Rust:
-            description: 'Specify the folder name where Rust output (Do not include whitespace character.) <BR>`[ end with slash ]` `out/` , `output/` , `../out/` , `./` , `../`'
+            description: 'Specify the folder name where Rust output <BR>`[ end with slash ]` `out/` , `output/` , `../out/` , `./` , `../`'
             default: 'out/'
     win:
         C:
@@ -28,10 +28,10 @@ compatible =
             description: 'Specify the folder name where Java,Kotlin output (Do not include whitespace character.) <BR>`[ end with backslash ]` `out\\` , `output\\java\\` , `..\\out\\` , `.\\` , `..\\`'
             default: 'out\\'
         php:
-            description: 'Specify the root directory of your PHP [ end with blackslash ]'
+            description: 'Specify the root directory of your PHP [ end with backslash ]'
             default: 'C:\\MAMP\\htdoc\\'
         Rust:
-            description: 'Specify the folder name where Rust output (Do not include whitespace character.) <BR>`[ end with slash ]` `out/` , `output/` , `../out/` , `./` , `../`'
+            description: 'Specify the folder name where Rust output <BR>`[ end with backslash ]` `out\\` , `output\\rust\\` , `..\\out\\` , `.\\` , `..\\`'
             default: 'out\\'
 
 
@@ -199,6 +199,7 @@ module.exports =
                 if system == 'win32'
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
+                    outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out\\'
 
                     command = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
                     if extname in ['.c','.cpp','.cs']
@@ -209,6 +210,8 @@ module.exports =
                         command = "#{command} \"#{outJava}\""
                     else if extname == '.py'
                         command = "#{command} \"#{pythonInter}\""
+                    else if extname == '.rs'
+                        command = "#{command} \"#{outRust}\""
                     command = command.replace(/\\/g,'\\\\')
 
                     # Beside change directory, also need to notice to change disk if user works under D:\ or anotehr disk

@@ -19,31 +19,29 @@ int main(int argc, char** argv){
         // java                 package name (java)
 
     //Get disk name
-    int i,j;
-    for(i=0; i<strlen(argv[1]); i++){
-        if(argv[1][i]==':'){
-            break;
-        }
+    int i, j;
+    for(i = 0; (i < strlen(argv[1])) && (argv[1][i] != ':'); i++);
+
+    char* diskName = calloc(i+2, sizeof(char));
+
+    for(j=0; j<i+1; diskName[j] = argv[1][j], j++);
+    diskName[j] = '\0';
+
+    //Declare some variables
+    int   advance  = (strcmp(argv[5],"1") == 0)? 1:0;
+    float compile_time = 0.0;
+    float exec_time = 0.0;
+    float total_time = 0.0;
+    char  *str  = calloc(65535, sizeof(char));
+    char  *str2 = calloc(65535, sizeof(char));
+
+    sprintf(str, "%s & cd \"%s\"", diskName, argv[1]);
+
+    if(advance){
+        goto ADVANCE;
     }
 
-    char* diskName=calloc(i+2, sizeof(char));
-
-    for(j=0; j<i+1; j++){
-        diskName[j]=argv[1][j];
-    }
-    diskName[j]='\0';
-
-    int exitFlag=0,packageFlag=0;
-    float compile_time=0.0,exec_time=0.0,total_time=0.0;
-    clock_t start_compile_time,end_compile_time;
-    int advance=(strcmp(argv[5],"1")==0)? 1:0;
-    char *str,*str2;
-    size_t length = strlen(argv[1]) + strlen(argv[2]) + strlen(argv[3]) + strlen(argv[4]) + 512;
-    str=calloc(length, sizeof(char));
-    str2=calloc(length, sizeof(char));
-
-    sprintf(str,"%s & cd \"%s\"",diskName,argv[1]);
-    if(strcmp(argv[3],".java")==0){
+    if(!strcmp(argv[3],".java")){
         //Compile
         char backFolder[128];
         if(strcmp(argv[7], "0")){
@@ -55,81 +53,87 @@ int main(int argc, char** argv){
                 }
             }
 
-            sprintf(str,"%s & md \"%s%s\" & cls & javac -encoding UTF-8 -d %s%s -classpath %s%s %s%s",str,backFolder,argv[6],backFolder,argv[6],backFolder,argv[6],argv[2],argv[3]);
+            sprintf(str, "%s & md \"%s%s\" & cls & javac -encoding UTF-8 -d \"%s%s\" \
+                    -classpath \"%s%s\" \"%s.java\"",\
+                    str, backFolder, argv[6] , backFolder, argv[6],\
+                    backFolder, argv[6], argv[2]);
         }else{
-            sprintf(str,"%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s%s",str,argv[6],argv[6],argv[6],argv[2],argv[3]);
+            sprintf(str, "%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s.java",\
+                    str, argv[6], argv[6], argv[6], argv[2]);
         }
 
-        compile_time=exec(str);
-        strcpy(str2,str);
+        compile_time = exec(str);
+        strcpy(str2, str);
 
         //Run
         if(strcmp(argv[7], "0")){
-            sprintf(str,"%s & cd \"%s\" & cd %s & cd \"%s\" & java %s.%s",diskName,argv[1],backFolder,argv[6],argv[7],argv[2]);
+            sprintf(str, "%s & cd \"%s\" & cd \"%s\" & cd \"%s\" & java %s.%s",\
+                    diskName, argv[1], backFolder, argv[6], argv[7], argv[2]);
         }else{
-            sprintf(str,"%s & cd \"%s\\%s\" & java %s",diskName,argv[1],argv[6],argv[2]);
+            sprintf(str, "%s & cd \"%s\\%s\" & java %s",\
+                    diskName, argv[1], argv[6], argv[2]);
         }
     }else if(!strcmp(argv[3],".kt")){
         //Compile
-        sprintf(str,"%s & md \"%s\" & cls & kotlinc %s%s -include-runtime -d \"%s%s.jar\"",str,argv[6],argv[2],argv[3],argv[6],argv[2]);
-        compile_time=exec(str);
+        sprintf(str, "%s & md \"%s\" & cls & kotlinc %s.kt -include-runtime -d \"%s%s.jar\"",\
+                str, argv[6], argv[2], argv[6], argv[2]);
+        compile_time = exec(str);
         strcpy(str2,str);
 
         //Run
-        sprintf(str,"%s & cd \"%s\\%s\" & java -jar \"%s.jar\"",diskName,argv[1],argv[6],argv[2]);
-    }else if(strcmp(argv[3],".c")==0 || strcmp(argv[3],".cpp")==0){
-        if(advance==1){
-            exitFlag=c_advance(str,str2,argv,&compile_time);
-        }else{
-            sprintf(str,"%s & chcp 65001 & md \"%s\" & cls &",str,argv[6]);
-            if(strcmp(argv[3],".c")==0){
-                sprintf(str,"%s gcc",str);
-            }else{
-                sprintf(str,"%s g++",str);
-            }
+        sprintf(str, "%s & cd \"%s\\%s\" & java -jar \"%s.jar\"",\
+                diskName, argv[1], argv[6], argv[2]);
+    }else if(!strcmp(argv[3],".c") || !strcmp(argv[3],".cpp")){
+        //Compile
+        sprintf(str, "%s & chcp 65001 & md \"%s\" & cls &", str, argv[6]);
+        sprintf(str, "%s %s", str, (!strcmp(argv[3],".c"))? "gcc" : "g++");
+        sprintf(str, "%s \"%s%s\" -O2 -o \"%s%s.exe\"", str, argv[2], argv[3], argv[6], argv[2]);
+        compile_time = exec(str);
 
-            sprintf(str,"%s \"%s%s\" -O2 -o \"%s%s.exe\"",str,argv[2],argv[3],argv[6],argv[2]);
-            compile_time=exec(str);
-            strcpy(str2,str);
-            sprintf(str,"%s & cd \"%s\\%s\" & \"%s.exe\"",diskName,argv[1],argv[6],argv[2]);
-        }
-    }else if(strcmp(argv[3],".cs")==0){
-        sprintf(str,"%s & md \"%s\" & cls & mcs -out:\"%s%s.exe\" \"%s.cs\"",\
-                str,argv[6],argv[6],argv[2],argv[2]);
-        compile_time=exec(str);
+        //Run
         strcpy(str2,str);
+        sprintf(str,"%s & \"%s\\%s%s.exe\"", diskName, argv[1], argv[6], argv[2]);
+    }else if(!strcmp(argv[3],".cs")){
+        //Compile
+        sprintf(str, "%s & md \"%s\" & cls & mcs -out:\"%s%s.exe\" \"%s.cs\"",\
+                str, argv[6], argv[6], argv[2], argv[2]);
+        compile_time = exec(str);
 
-        sprintf(str,"%s & cd \"%s\\%s\" & \"%s.exe\"",diskName,argv[1],argv[6],argv[2]);
-    }else if(strcmp(argv[3],".py")==0){
-        if(advance==1){
-            exitFlag=py_advance(str,argv);
-        }else{
-            sprintf(str,"%s & %s \"%s%s\"",str,argv[6],argv[2],argv[3]);
-        }
-    }else if(strcmp(argv[3],".js")==0){
-        sprintf(str,"%s & node \"%s%s\"",str,argv[2],argv[3]);
-    }else if(strcmp(argv[3],".go")==0){
-        if(advance==1){
-            exitFlag=go_advance(str,argv);
-        }else{
-            sprintf(str,"%s & go run \"%s%s\"",str,argv[2],argv[3]);
-        }
-    }else if(strcmp(argv[3],".R")==0){
-        sprintf(str,"%s & chcp 65001 & cls & Rscript \"%s%s\"",str,argv[2],argv[3]);
-    }else if(strcmp(argv[3],".rb")==0){
-        sprintf(str,"%s & chcp 65001 & cls & ruby \"%s%s\"",str,argv[2],argv[3]);
+        //Run
+        strcpy(str2,str);
+        sprintf(str, "%s & \"%s\\%s%s.exe\"", diskName, argv[1], argv[6], argv[2]);
+    }else if(!strcmp(argv[3], ".rs")){
+        //Compile
+        sprintf(str, "%s & rustc \"%s.rs\" --out-dir \"%s\\\"",\
+                str, argv[2], argv[6]);
+        compile_time = exec(str);
+
+        //Run
+        strcpy(str2,str);
+        sprintf(str,"%s & \"%s\\%s%s.exe\"", diskName, argv[1], argv[6], argv[2]);
+    }else if(!strcmp(argv[3],".py")){
+        sprintf(str, "%s & %s \"%s%s\"", str, argv[6], argv[2], argv[3]);
+    }else if(!strcmp(argv[3],".js")){
+        sprintf(str, "%s & node \"%s%s\"", str, argv[2], argv[3]);
+    }else if(!strcmp(argv[3],".go")){
+        sprintf(str, "%s & go run \"%s%s\"", str, argv[2], argv[3]);
+    }else if(!strcmp(argv[3],".R")){
+        sprintf(str, "%s & chcp 65001 & cls & Rscript \"%s%s\"", str, argv[2], argv[3]);
+    }else if(!strcmp(argv[3],".rb")){
+        sprintf(str, "%s & chcp 65001 & cls & ruby \"%s%s\"", str, argv[2], argv[3]);
     }else{
         fprintf(stderr, "Invalid extension\n");
         exit(1);
     }
 
-    exec_time=exec(str);
+    exec_time = exec(str);
     if(compile_time>0){
         total_time=compile_time+exec_time;
         printf("\n--------------------------------\n");
-        printf("Compiling command:\t%s\nRunning command:\t%s\n",str2,str);
-        printf("\n--------------------------------\n");
-        printf("Compilation Time:\t%.4f s\nExecution Time:\t\t%.4f s\nTotal Time:\t\t%.4f s\n",compile_time,exec_time,total_time);
+        printf("%-12s%s\n%-12s%s\n\n",\
+               "Compiling:", str2, "Running: ", str);
+        printf("%-12s%.4f s\n%-12s%.4f s\n%-12s%.4f s\n",\
+               "Compiling:", compile_time, "Executing:", exec_time, "Total:", total_time);
         if(argc>7){
             if(strcmp(argv[7], "0")){
                 printf("Package:\t\t%s\n", argv[7]);
@@ -142,9 +146,21 @@ int main(int argc, char** argv){
         printf("Total Time: %.4f s\n\n",exec_time);
     }
 
-    if(exitFlag==0){
-        system("pause");
+    system("pause");
+	return 0;
+
+    int exitFlag = 0;
+ADVANCE:
+    if(!strcmp(argv[3],".c") || !strcmp(argv[3],".cpp")){
+        exitFlag = c_advance(str,str2,argv,&compile_time);
+    }else if(!strcmp(argv[3],".py")){
+        exitFlag = py_advance(str,argv);
+    }else if(!strcmp(argv[3],".go")){
+        exitFlag = go_advance(str,argv);
     }
 
-	return 0;
+    if(!exitFlag){
+        system("pause");
+    }
+    return 0;
 }
