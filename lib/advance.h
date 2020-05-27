@@ -1,9 +1,10 @@
 #include<conio.h>
 int c_advance(char *str, char *str2, char **argv, float *compile_time){
     printf("Press \n\
-            0: Compile only\n\
-            1: Run old %s.exe\n\
-         else: Specify output folder and then compile and run\n", argv[2]);
+        0: Compile only\n\
+        1: Run old %s.exe\n\
+        2: Specify output folder and then compile and run\n\
+     else: Cancel\n", argv[2]);
     char choose;
     choose = getche();
     system("cls");
@@ -13,7 +14,7 @@ int c_advance(char *str, char *str2, char **argv, float *compile_time){
     }else if(choose == '1'){
         sprintf(str, "%s & cd \"%s\" & chcp 65001 & cls & \".\\%s.exe\"",\
                 str, argv[6], argv[2]);
-    }else{
+    }else if(choose == '2'){
         char* strtemp = malloc(sizeof(char) * strlen(str));
         strcpy(strtemp, str);
 
@@ -28,6 +29,8 @@ int c_advance(char *str, char *str2, char **argv, float *compile_time){
         strcpy(str2, str);
         sprintf(str, "%s & cd \"%s\" & chcp 65001 & cls & \"%s.exe\"",\
                 strtemp, folder, argv[2]);
+    }else{
+        return 1;
     }
     return 0;
 }
@@ -35,15 +38,18 @@ int c_advance(char *str, char *str2, char **argv, float *compile_time){
 int go_advance(char *str, char **argv){
     printf("Press \n\
         0: Run\n\
-     else: Build\n");
+        1: Build\n\
+     else: Cancel\n");
     char choose;
     choose = getche();
     system("cls");
     if(choose == '0'){
         sprintf(str, "%s & go run \"%s%s\"",str,argv[2],argv[3]);
-    }else{
+    }else if(choose == '1'){
         printf("Building...\n");
         sprintf(str, "%s & go build \"%s%s\"",str,argv[2],argv[3]);
+    }else{
+        return 1;
     }
     return 0;
 }
@@ -51,15 +57,19 @@ int go_advance(char *str, char **argv){
 int py_advance(char *str,char **argv){
     printf("Press \n\
         0: Run\n\
-     else: Build (by pyinstaller)\n");
+        1: Build (by pyinstaller)\n\
+     else: Cancel\n");
+
     char choose;
     choose = getche();
     system("cls");
     if(choose == '0'){
         sprintf(str,"%s & python \"%s%s\"",str,argv[2],argv[3]);
-    }else{
+    }else if(choose == '1'){
         printf("Building...\n");
         sprintf(str,"%s & pyinstaller -F \"%s%s\"",str,argv[2],argv[3]);
+    }else{
+        return 1;
     }
     return 0;
 }
