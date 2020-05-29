@@ -1,10 +1,9 @@
-exec=require('child_process').exec
-path=require('path')
-os=require('os')
-fs=require('fs')
-readPackage=require("./readPackage.coffee");
-
-system=os.platform()    # OS(win32,linux)
+exec        = require('child_process').exec
+path        = require('path')
+os          = require('os')
+fs          = require('fs')
+readPackage = require("./readPackage.coffee");
+system      = os.platform()    # OS(win32,linux)
 
 compatible =
     linux_and_darwin:
@@ -20,6 +19,24 @@ compatible =
         Rust:
             description: 'Specify the folder name where Rust output <BR>`[ end with slash ]` `out/` , `output/` , `../out/` , `./` , `../`'
             default: 'out/'
+        asm:
+            type: 'object'
+            title: 'About assembly (Only for linux)'
+            order: 6
+            properties:
+                out:
+                    type: 'string'
+                    title: 'Assembly output folder (relative)'
+                    description: 'Specify the folder name where assembly output <BR>`[ end with slash ]` `out/` , `output/asm/` , `../out/` , `./` , `../`'
+                    default: 'out/'
+                    order: 1
+                flag:
+                    type: 'string'
+                    title: 'Specify flag'
+                    description: 'elf64 for x64, elf for x86'
+                    default: 'elf64'
+                    enum: ['elf64','elf']
+                    order: 2
     win:
         C:
             description: 'Specify the folder name where C,C++,C# output <BR>`[ end with backslash ]` `out\\` , `output\\c\\` , `..\\out\\` , `.\\` , `..\\`'
@@ -33,7 +50,17 @@ compatible =
         Rust:
             description: 'Specify the folder name where Rust output <BR>`[ end with backslash ]` `out\\` , `output\\rust\\` , `..\\out\\` , `.\\` , `..\\`'
             default: 'out\\'
-
+        asm:
+            type: 'object'
+            title: 'About assembly'
+            order: 6
+            properties:
+                out:
+                    type: 'string'
+                    title: 'Assembly output folder (relative)'
+                    description: 'Specify the folder name where assembly output <BR>`[ end with backslash ]` `out\\` , `output\\asm\\` , `..\\out\\` , `.\\` , `..\\`'
+                    default: 'out/'
+                    order: 1
 
 compatible = if(system=='win32') then compatible.win else compatible.linux_and_darwin
 
@@ -97,24 +124,7 @@ module.exports =
                     title: 'Rust output folder (relative)'
                     description: compatible.Rust.description
                     default: compatible.Rust.default
-        asm:
-            type: 'object'
-            title: 'About assembly (Only for linux)'
-            order: 6
-            properties:
-                out:
-                    type: 'string'
-                    title: 'Assembly output folder (relative)'
-                    description: 'Specify the folder name where assembly output <BR>`[ end with slash ]` `out/` , `output/c/` , `../out/` , `./` , `../`'
-                    default: 'out/'
-                    order: 1
-                flag:
-                    type: 'string'
-                    title: 'Specify flag'
-                    description: 'elf64 for x64, elf for x86'
-                    default: 'elf64'
-                    enum: ['elf64','elf']
-                    order: 2
+        asm: compatible.asm
 
     activate: ->
         atom.commands.add 'atom-workspace', 'Exec-in-cmd:exec', => @exec_in_cmd(0)
@@ -182,6 +192,7 @@ module.exports =
                 _extname_    = "\"#{extname}\""
                 _dirname_    = "\"#{__dirname}\""
                 pythonInter  = atom.config.get('exec-in-cmd.python.interpreter') ? 'python'
+                extFlag      = 0
 
                 # Get Package Name of java file
                 packageName = '0'
@@ -197,21 +208,27 @@ module.exports =
 
                 # For windows
                 if system == 'win32'
+                    outA     = atom.config.get('exec_in_cmd.asm.out') ? 'out/'
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
                     outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out\\'
+                    command  = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
 
-                    command = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
-                    if extname in ['.c','.cpp','.cs']
-                        command = "#{command} \"#{outC}\""
-                    else if extname == '.java'
-                        command = "#{command} \"#{outJava}\" \"#{packageName}\""
-                    else if extname == '.kt'
-                        command = "#{command} \"#{outJava}\""
-                    else if extname == '.py'
-                        command = "#{command} \"#{pythonInter}\""
-                    else if extname == '.rs'
-                        command = "#{command} \"#{outRust}\""
+                    switch extname
+                        when '.asm'
+                        then command = "#{command} \"#{outA}\""
+                        when '.c', '.cpp', '.cs'
+                        then command = "#{command} \"#{outC}\""
+                        when '.java'
+                        then command = "#{command} \"#{outJava}\" \"#{packageName}\""
+                        when '.kt'
+                        then command = "#{command} \"#{outJava}\""
+                        when '.py'
+                        then command = "#{command} \"#{pythonInter}\""
+                        when '.rs'
+                        then command = "#{command} \"#{outRust}\""
+                        else extFlag = 1
+
                     command = command.replace(/\\/g,'\\\\')
 
                     # Beside change directory, also need to notice to change disk if user works under D:\ or anotehr disk
@@ -226,7 +243,8 @@ module.exports =
                         i++
 
                     command = "#{changeDisk}cd \"#{__dirname}\" & start \"Exec-in-cmd\" /WAIT open.exe #{command}"
-                    exec command
+                    if !extFlag
+                        exec command
 
                 #For linux
                 else if system == 'linux'
@@ -236,7 +254,6 @@ module.exports =
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out/'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
                     outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out/'
-                    flag     = 0
 
                     switch extname
                         when '.asm'
@@ -257,15 +274,15 @@ module.exports =
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
                         when '.rs'
                         then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outRust}'\"\""
-                        else flag=1
-                    if !flag
+                        else extFlag = 1
+                    if !extFlag
                         exec command
 
                 #For mac os
                 else if system == 'darwin'
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out/'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
-                    flag = 0
+
                     switch extname
                         when '.c','.cpp','.cs'
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outC}"
@@ -281,9 +298,9 @@ module.exports =
                         then data = "cd \"'#{_dir_path_}'\"; Rscript \"#{dir_path}/#{basename}.R\""
                         when '.rb'
                         then data = "cd \"'#{_dir_path_}'\"; ruby \"#{dir_path}/#{basename}.rb\""
-                        else flag=1
+                        else extFlag = 1
                     data = "#{data}\n"
-                    if !flag
+                    if !extFlag
                         fs.writeFile(__dirname+'/configTemp.tmp',data,(err)->{})
                         exec "open -a Terminal ./#{__dirname}/openDarwin"
                 else

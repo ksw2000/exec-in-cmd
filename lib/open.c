@@ -13,6 +13,7 @@ int main(int argc, char** argv){
     //argv[4] get this open.c's path (end without \)
     //argv[5] 1: if use advance mode , 0: else
     //argv[6]
+        // ASM                  output folder (end with \)
         // C,C++,C#,Java        output folder (end with \)
         // Python               python interpreter (python or python3)
     //argv[7]
@@ -41,7 +42,11 @@ int main(int argc, char** argv){
         goto ADVANCE;
     }
 
-    if(!strcmp(argv[3],".java")){
+    if(!strcmp(argv[3], ".asm")){
+        //Compile
+        sprintf(str, "%s & chcp 65001 & md \"%s\" & cls & nasm \"%s.asm\" -o \"%s%s.com\"",\
+                str, argv[6], argv[2], argv[6], argv[2]);
+    }else if(!strcmp(argv[3], ".java")){
         //Compile
         char backFolder[128];
         if(strcmp(argv[7], "0")){
