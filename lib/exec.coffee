@@ -282,6 +282,7 @@ module.exports =
                 else if system == 'darwin'
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out/'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
+                    outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out/'
 
                     switch extname
                         when '.c','.cpp','.cs'
@@ -298,6 +299,8 @@ module.exports =
                         then data = "cd \"'#{_dir_path_}'\"; Rscript \"#{dir_path}/#{basename}.R\""
                         when '.rb'
                         then data = "cd \"'#{_dir_path_}'\"; ruby \"#{dir_path}/#{basename}.rb\""
+                        when '.rs'
+                        then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outRust}"
                         else extFlag = 1
                     data = "#{data}\n"
                     if !extFlag
