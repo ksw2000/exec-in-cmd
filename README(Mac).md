@@ -7,14 +7,25 @@ It will run the following command in terminal:
 
     chmod -R 755 {exec-in-cmd-root}/lib
 
+Another way:
+
+If you have already installed `gcc`, you can compile `/exec-in-cmd/lib/openDarwin.c` to `openDarwin`.
+
 ---
 ## .c .cpp
-##### C :
-    cd "{path}"; mkdir -p "{outputFolder}" ; gcc "{filename}.c" -lm -O2 -o "{outputFolder}/{filename}"
-    cd "{path}/{outputFolder}" ; "./{filename}"
-##### C++ :
-    cd "{path}"; mkdir -p "{outputFolder}" ; g++ "{filename}.cpp" -lm -O2 -o "{outputFolder}/{filename}"
-    cd "{path}/{outputFolder}" ; "./{filename}"
+
+#### Compile (.c)
+
+```sh
+cd "{path}"; mkdir -p "{output_dir}";
+gcc "{filename}.c" -lm -O2 -o "{output_dir}/{filename}"
+```
+#### Compile (.cpp)
+
+```sh
+cd "{path}"; mkdir -p "{output_dir}";
+g++ "{filename}.cpp" -lm -O2 -o "{output_dir}/{filename}"
+```
 
 You need to install `gcc` and `g++`
 
@@ -26,8 +37,9 @@ You need to install `gcc` and `g++`
 
 ----
 ## .go
-    cd "{path}" ; go run "{filename}.go"
-
+```sh
+cd "{path}" ; go run "{filename}.go"
+```
 You need to install [`GO`](https://golang.org/doc/install).
 
 ----
@@ -43,63 +55,102 @@ You need to install [`GO`](https://golang.org/doc/install).
     * b.java        (not using package)
     * c.java        (not using package)
 
-> Put ".java" in proper folder (version >= 3.1.2)
->
-> Put all ".java" in the same folder (version <3.1.2)
+version >= 3.1.2
+> Put ".java" in the folder whit is same as package name
+
+version <3.1.2
+> Put all ".java" in the same folder
 
 ----
 ## .js (Node.js)
-    cd "{path}" ; node "{filename}.js"
+
+```sh
+cd "{path}" ; node "{filename}.js"
+```
 You need to install [`Node.js`](https://nodejs.org).
 
 ----
 ## .php
  ##### For example :
- |                           |                                     |
+ | #                         | value                               |
  | ----------------------:   |:------------------------------------|
  | root_directory_of_PHP     | /var/www/test.com/                  |
- | URL_to access_your_PHP    | http://localhost/                   |
+ | URL_to access_your_PHP    | http://localhost:80/                |
  | PHP file you want to open | /var/www/test.com/index.php         |
- | We will open              | http://localhost/index.php          |
+ | We will open              | http://localhostl:80/index.php      |
 
-    open -a Terminal "http://localhost/index.php"
+```sh
+open -a Terminal "http://localhost:80/index.php"
+```
 
-You need some application which can make you run PHP in your computer.
+You need some application which can make you run PHP in your computer (server).
 
 ----
 ## .rb
-       cd "{path}" ; ruby "{filename}.rb"
+```sh
+cd "{path}" ; ruby "{filename}.rb"
+```
 You need to install [`Ruby`](https://www.ruby-lang.org/).
 
 If you get garbled texts, try to insert following code in the opening of file.
 
-        #!/usr/bin/ruby -w
-        # -*- coding: UTF-8 -*-
-        #coding=utf-8
+```ruby
+#!/usr/bin/ruby -w
+# -*- coding: UTF-8 -*-
+#coding=utf-8
+```
+
+----
+## .rs
+
+#### Compile
+```sh
+cd "{path}"; rustc "{filename}.rs" --out-dir "{output_dir}"
+```
+
+#### Run
+```sh
+cd "{path}/{output_dir}" ; "./{filename}"
+```
+You need to install [`Rust`](https://www.rust-lang.org/).
+
+----
 
 ----
 ## .py
-    cd "{path}" ; python "{filename}.py"
+```sh
+cd "{path}" ; python "{filename}.py"
+```
 
 If you get garbled texts, try to insert following code in the opening of file.
 
-    # -*- coding: utf-8 -*
+```py
+# -*- coding: utf-8 -*
+```
 
 Yout need to install [`python`](https://www.python.org/downloads/).
 
 ----
 ## .R
-    cd "{path}" ; Rscript "{filename}.R"
+```sh
+cd "{path}" ; Rscript "{filename}.R"
+```
 
 You need to install [`R`](https://www.r-project.org/).
 
 ----
 ## .html .htm .pdf
-    open "{path}\{filename}{filename_extension}"
+```sh
+open "{path}\{filename}{filename_extension}"
+```
 
-Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/head&gt;:
+Get garbled texts in html file?
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+Try to insert code between &lt;head&gt; &lt;/head&gt;:
+
+```html
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+```
 
 ----
 ## Hacking
@@ -107,9 +158,9 @@ First, the package gets the file's extension, and choose what action should we d
 
 If this file needs to be compiled, it will be processed by `./openDarwin`, a program that can detect the kind of file and choose the proper commands to work.
 
-If this file does not need to be compiled, but it needs to be run in terminal, then `exec.coffee` will send proper commands to `openLinux` because if you run these files through `exec.coffee` directly, they will exit (instead of pause) immediately.
+If this file does not need to be compiled, but it needs to be run in terminal, then `exec.coffee` will send proper commands to `openDarwin` because if you run these files through `exec.coffee` directly, they will exit (instead of pause) immediately.
 
-If you want to add or change the commands, please modify `lib/openLinux.c` or `lib/exec.coffee` in the package.
+If you want to add or change the commands, please modify `lib/openDarwin.c` or `lib/exec.coffee` in the package.
 
 * exec-in-cmd /
     * example /

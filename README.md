@@ -7,7 +7,7 @@ We only support for __Windows__ , __gnome-based Linux__ and __macOS__ now.
 ![preview](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png)
 
 # Notice
-+ Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette for __Linux__ user and __macOS__ user when the first time use. ( linux 用戶及 macOS 用戶初次使用時務必先按下 `Ctrl + F12`)
++ Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette for __Linux__ user and __macOS__ user when the first time use to avoid `permission denied`.
 
 + Please use UTF-8 encoding always.
 
