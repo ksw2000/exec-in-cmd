@@ -27,9 +27,9 @@ int main(int argc, char** argv){
             argv[5] output folder [end with /]
         */
         //Phase1: Assembler
-        cmd          = malloc(65525 * sizeof(char));
-        cmd_assemble = malloc(65525 * sizeof(char));
-        cmd_link     = malloc(65525 * sizeof(char));
+        cmd          = malloc(65536 * sizeof(char));
+        cmd_assemble = malloc(65536 * sizeof(char));
+        cmd_link     = malloc(65536 * sizeof(char));
         sprintf(cmd, "cd \"%s\"; mkdir -p \"%s\"; nasm -f %s \"%s.asm\" -o \"%s%s.o\"",\
                 argv[2],argv[5],argv[4],argv[3],argv[5],argv[3]);
 
@@ -39,7 +39,7 @@ int main(int argc, char** argv){
         }
         gettimeofday(&end,NULL);
         assemble_time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
-        cmd_assemble = malloc(65525 * sizeof(cmd));
+        cmd_assemble = malloc(65536 * sizeof(cmd));
         strcpy(cmd_assemble,cmd);
 
         //Phase2: Linker
@@ -55,8 +55,8 @@ int main(int argc, char** argv){
         //Phase3: Run
         sprintf(cmd,"cd \"%s/%s\"; \"./%s\"",argv[2],argv[5],argv[3]);
     }else if(!strcmp(argv[1],".java")){
-        cmd = malloc(65525 * sizeof(char));
-        cmd_compile = malloc(65525 * sizeof(char));
+        cmd = malloc(65536 * sizeof(char));
+        cmd_compile = malloc(65536 * sizeof(char));
         /*
             argv[1] type(.java)
             argv[2] get this open.c's path
@@ -104,7 +104,7 @@ int main(int argc, char** argv){
             sprintf(cmd,"cd \"%s/%s\"; java %s",argv[3],argv[5],argv[4]);
         }
     }else if(!strcmp(argv[1],".c") || !strcmp(argv[1],".cpp") || !strcmp(argv[1],".cs")){
-        cmd=malloc(65525 * sizeof(char));
+        cmd=malloc(65536 * sizeof(char));
         /*
             argv[1] type(.c , .cpp or .cs)
             argv[2] get path      [end without /]
@@ -127,7 +127,7 @@ int main(int argc, char** argv){
         }
         gettimeofday(&end,NULL);
         compile_time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
-        cmd_compile = malloc(65526 * sizeof(cmd));
+        cmd_compile = malloc(65536 * sizeof(cmd));
         strcpy(cmd_compile,cmd);
 
         //Phase2: Run
@@ -137,7 +137,7 @@ int main(int argc, char** argv){
             sprintf(cmd,"cd \"%s/%s\"; mono \"%s.exe\"",argv[2],argv[4],argv[3]);
         }
     }else if(!strcmp(argv[1],".rs")){
-        cmd=malloc(65526 * sizeof(char));
+        cmd=malloc(65536 * sizeof(char));
         /*
             argv[1] type(.rs)
             argv[2] get path      [end without /]
@@ -155,7 +155,7 @@ int main(int argc, char** argv){
         }
         gettimeofday(&end,NULL);
         compile_time=1000000*(end.tv_sec-start.tv_sec)+ end.tv_usec-start.tv_usec;
-        cmd_compile = malloc(65525 * sizeof(cmd));
+        cmd_compile = malloc(65536 * sizeof(cmd));
         strcpy(cmd_compile,cmd);
 
         //Phase2: Run
