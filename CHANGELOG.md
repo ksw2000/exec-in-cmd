@@ -1,3 +1,7 @@
+## 3.2.0
++ Add "Rust"
++ Add "Assembly" for linux nasm
+
 ## 3.1.2
 * Add feature: specify python interpreter
 

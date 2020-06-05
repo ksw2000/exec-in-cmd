@@ -6,29 +6,92 @@ Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette
 
 It will run the following command in terminal:
 
-    sudo chmod -R 777 {atom_packages}/exec-in-cmd/lib
+```sh
+sudo chmod -R 777 {atom_packages}/exec-in-cmd/lib
+```
+
+---
+## .asm
+#### Assembling (nasm)
+flag : `elf` or `elf64`
+```sh
+cd "{path}"; mkdir -p "{output_dir}"; nasm -f {flag} "{filename}.asm" -o "{output_dir}/{filename}.o"
+```
+
+#### Link (binutils)
+```sh
+cd "{path}/{output_dir}"; ld -s -o "{filename}" "{filename}.o"
+```
+
+#### Run
+```sh
+cd "{path}/{output_dir}"; "./{filename}"
+```
+
+#### Install
+```sh
+# install nasm
+sudo apt-get install nasm
+
+# install binutils
+sudo apt-get install binutils
+```
 
 ---
 ## .c .cpp
-##### C :
-    cd "{path}"; mkdir -p "{outputFolder}" ; gcc "{filename}.c" -lm -O2 -o "{outputFolder}/{filename}"
-    cd "{path}/{outputFolder}" ; "./{filename}"
-##### C++ :
-    cd "{path}"; mkdir -p "{outputFolder}" ; g++ "{filename}.cpp" -lm -O2 -o "{outputFolder}/{filename}"
-    cd "{path}/{outputFolder}" ; "./{filename}"
+
+#### Compile (.c)
+
+```sh
+cd "{path}"; mkdir -p "{output_dir}";
+gcc "{filename}.c" -lm -O2 -o "{output_dir}/{filename}"
+```
+#### Compile (.cpp)
+
+```sh
+cd "{path}"; mkdir -p "{output_dir}";
+g++ "{filename}.cpp" -lm -O2 -o "{output_dir}/{filename}"
+```
+
+#### Run
+
+```sh
+cd "{path}/{output_dir}"; "./{filename}"
+```
 
 You need to install `gcc` and `g++`
 
 * example/
    * out/ _(default output folder name)_
-       * example.exe
+       * example
    * example.c
    * example.cpp
 
 ----
-## .go
-    cd "{path}" ; go run "{filename}.go"
+## .cs
 
+#### Compile
+```sh
+cd "{path}"; mkdir -p "{output_dir}"; mcs -out:"{filename}.exe"
+```
+
+#### Run
+```sh
+cd "{path}/{output_dir}" ; mono "{filename}.exe"
+```
+
+You need to install [`mono`](https://www.mono-project.com/)
+
+* example/
+   * out/ _(default output folder name)_
+       * example.exe
+   * example.cs
+
+----
+## .go
+```sh
+cd "{path}" ; go run "{filename}.go"
+```
 You need to install [`GO`](https://golang.org/doc/install).
 
 ----
@@ -44,63 +107,99 @@ You need to install [`GO`](https://golang.org/doc/install).
     * b.java        (not using package)
     * c.java        (not using package)
 
-> Put ".java" in proper folder (version >= 3.1.2)
->
-> Put all ".java" in the same folder (version <3.1.2)
+version >= 3.1.2
+> Put ".java" in the folder whit is same as package name
+
+version <3.1.2
+> Put all ".java" in the same folder
 
 ----
 ## .js (Node.js)
-    cd "{path}" ; node "{filename}.js"
+
+```sh
+cd "{path}" ; node "{filename}.js"
+```
 You need to install [`Node.js`](https://nodejs.org).
 
 ----
 ## .php
  ##### For example :
- |                           |                                     |
+ | #                         | value                               |
  | ----------------------:   |:------------------------------------|
  | root_directory_of_PHP     | /var/www/test.com/                  |
- | URL_to access_your_PHP    | http://localhost:80/                   |
+ | URL_to access_your_PHP    | http://localhost:80/                |
  | PHP file you want to open | /var/www/test.com/index.php         |
- | We will open              | http://localhostl:80/index.php          |
+ | We will open              | http://localhostl:80/index.php      |
 
-    xdg-open "http://localhost:80/index.php"
+```sh
+xdg-open "http://localhost:80/index.php"
+```
 
-You need some application which can make you run PHP in your computer.
+You need some application which can make you run PHP in your computer (server).
 
 ----
 ## .rb
-       cd "{path}" ; ruby "{filename}.rb"
+```sh
+cd "{path}" ; ruby "{filename}.rb"
+```
 You need to install [`Ruby`](https://www.ruby-lang.org/).
 
 If you get garbled texts, try to insert following code in the opening of file.
 
-        #!/usr/bin/ruby -w
-        # -*- coding: UTF-8 -*-
-        #coding=utf-8
+```ruby
+#!/usr/bin/ruby -w
+# -*- coding: UTF-8 -*-
+#coding=utf-8
+```
+
+----
+## .rs
+
+#### Compile
+```sh
+cd "{path}"; rustc "{filename}.rs" --out-dir "{output_dir}"
+```
+
+#### Run
+```sh
+cd "{path}/{output_dir}" ; "./{filename}"
+```
+You need to install [`Rust`](https://www.rust-lang.org/).
 
 ----
 ## .py
-    cd "{path}" ; python "{filename}.py"
+```sh
+cd "{path}" ; python "{filename}.py"
+```
 
 If you get garbled texts, try to insert following code in the opening of file.
 
-    # -*- coding: utf-8 -*
+```py
+# -*- coding: utf-8 -*
+```
 
 Yout need to install [`python`](https://www.python.org/downloads/).
 
 ----
 ## .R
-    cd "{path}" ; Rscript "{filename}.R"
+```sh
+cd "{path}" ; Rscript "{filename}.R"
+```
 
 You need to install [`R`](https://www.r-project.org/).
 
 ----
 ## .html .htm .pdf
-    xdg-open "{path}\{filename}{filename_extension}"
+
+```sh
+xdg-open "{path}\{filename}{filename_extension}"
+```
 
 Get garbled texts in html file? Try to insert code between &lt;head&gt; &lt;/head&gt;:
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+```html
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+```
 
 ----
 ## Hacking
