@@ -133,14 +133,16 @@ int main(int argc, char** argv){
 
     int exitFlag = 0;
 ADVANCE:
-    if(!strcmp(argv[3], ".c") || !strcmp(argv[3], ".cpp")){
-        exitFlag = c_advance(str, str2 ,argv, &compile_time);
-    }else if(!strcmp(argv[3], ".py")){
-        exitFlag = py_advance(str, argv);
-    }else if(!strcmp(argv[3], ".go")){
-        exitFlag = go_advance(str, argv);
+    if(advance){
+        if(!strcmp(argv[3], ".c") || !strcmp(argv[3], ".cpp")){
+            exitFlag = c_advance(str, str2 ,argv, &compile_time);
+        }else if(!strcmp(argv[3], ".py")){
+            exitFlag = py_advance(str, argv);
+        }else if(!strcmp(argv[3], ".go")){
+            exitFlag = go_advance(str, argv);
+        }
     }
-
+    
     exec_time = exec(str);
     if(compile_time>0){
         total_time=compile_time+exec_time;
