@@ -227,7 +227,6 @@ module.exports =
                         then command = "#{command} \"#{pythonInter}\""
                         when '.rs'
                         then command = "#{command} \"#{outRust}\""
-                        else extFlag = 1
 
                     command = command.replace(/\\/g,'\\\\')
 
@@ -243,8 +242,8 @@ module.exports =
                         i++
 
                     command = "#{changeDisk}cd \"#{__dirname}\" & start \"Exec-in-cmd\" /WAIT open.exe #{command}"
-                    if !extFlag
-                        exec command
+    
+                    exec command
 
                 #For linux
                 else if system == 'linux'
