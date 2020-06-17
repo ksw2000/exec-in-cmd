@@ -1,5 +1,7 @@
 #include<conio.h>
-int c_advance(char *str, char *str2, char **argv, float *compile_time){
+extern double exec_in_cmd(char*);
+
+int c_advance(char *str, char *str2, char **argv, double *compile_time){
     printf("Press \n\
         0: Compile only\n\
         1: Run old %s.exe\n\
@@ -25,7 +27,7 @@ int c_advance(char *str, char *str2, char **argv, float *compile_time){
         scanf("%s", &folder);
         sprintf(str, "%s & chcp 65001 & md %s & %s \"%s%s\" -o %s\\%s",\
                 str, folder, !strcmp(argv[3],".c")? "gcc" : "g++", argv[2], argv[3], folder, argv[2]);
-        *compile_time = exec(str);
+        *compile_time = exec_in_cmd(str);
         strcpy(str2, str);
         sprintf(str, "%s & cd \"%s\" & chcp 65001 & cls & \"%s.exe\"",\
                 strtemp, folder, argv[2]);

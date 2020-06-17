@@ -2,8 +2,16 @@
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
-#include"function.h"
 #include"advance.h"
+
+double exec_in_cmd(char* str){
+    clock_t timer;
+    timer = clock();
+    system(str);
+    timer = clock() - timer;
+
+    return (double)timer / CLOCKS_PER_SEC;
+}
 
 int main(int argc, char** argv){
     //Use fopen to get arguments instead of using command line
@@ -30,9 +38,9 @@ int main(int argc, char** argv){
 
     //Declare some variables
     int   advance  = (strcmp(argv[5],"1") == 0)? 1:0;
-    float compile_time = 0.0;
-    float exec_time = 0.0;
-    float total_time = 0.0;
+    double compile_time = 0.0;
+    double exec_time = 0.0;
+    double total_time = 0.0;
     char  *str  = calloc(65535, sizeof(char));
     char  *str2 = calloc(65535, sizeof(char));
 
@@ -67,7 +75,7 @@ int main(int argc, char** argv){
                     str, argv[6], argv[6], argv[6], argv[2]);
         }
 
-        compile_time = exec(str);
+        compile_time = exec_in_cmd(str);
         strcpy(str2, str);
 
         //Run
@@ -82,7 +90,7 @@ int main(int argc, char** argv){
         //Compile
         sprintf(str, "%s & md \"%s\" & cls & kotlinc %s.kt -include-runtime -d \"%s%s.jar\"",\
                 str, argv[6], argv[2], argv[6], argv[2]);
-        compile_time = exec(str);
+        compile_time = exec_in_cmd(str);
         strcpy(str2,str);
 
         //Run
@@ -93,7 +101,7 @@ int main(int argc, char** argv){
         sprintf(str, "%s & chcp 65001 & md \"%s\" & cls &", str, argv[6]);
         sprintf(str, "%s %s", str, (!strcmp(argv[3],".c"))? "gcc" : "g++");
         sprintf(str, "%s \"%s%s\" -O2 -o \"%s%s.exe\"", str, argv[2], argv[3], argv[6], argv[2]);
-        compile_time = exec(str);
+        compile_time = exec_in_cmd(str);
 
         //Run
         strcpy(str2,str);
@@ -102,7 +110,7 @@ int main(int argc, char** argv){
         //Compile
         sprintf(str, "%s & md \"%s\" & cls & mcs -out:\"%s%s.exe\" \"%s.cs\"",\
                 str, argv[6], argv[6], argv[2], argv[2]);
-        compile_time = exec(str);
+        compile_time = exec_in_cmd(str);
 
         //Run
         strcpy(str2,str);
@@ -111,7 +119,7 @@ int main(int argc, char** argv){
         //Compile
         sprintf(str, "%s & rustc \"%s.rs\" --out-dir \"%s\\\"",\
                 str, argv[2], argv[6]);
-        compile_time = exec(str);
+        compile_time = exec_in_cmd(str);
 
         //Run
         strcpy(str2,str);
@@ -142,8 +150,8 @@ ADVANCE:
             exitFlag = go_advance(str, argv);
         }
     }
-    
-    exec_time = exec(str);
+
+    exec_time = exec_in_cmd(str);
     if(compile_time>0){
         total_time=compile_time+exec_time;
         printf("\n--------------------------------\n");
