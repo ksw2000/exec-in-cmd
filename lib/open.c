@@ -58,7 +58,7 @@ int main(int argc, char** argv){
         //Compile
         char backFolder[128];
         if(strcmp(argv[7], "0")){
-            strcpy(backFolder,"..\\");
+            strcpy(backFolder, "..\\");
             int i;
             for(i=0; i<strlen(argv[7]); i++){
                 if(argv[7][i] == '.'){
@@ -66,10 +66,8 @@ int main(int argc, char** argv){
                 }
             }
 
-            sprintf(str, "%s & md \"%s%s\" & cls & javac -encoding UTF-8 -d \"%s%s\" \
-                    -classpath \"%s%s\" \"%s.java\"",\
-                    str, backFolder, argv[6] , backFolder, argv[6],\
-                    backFolder, argv[6], argv[2]);
+            sprintf(str, "%s & md \"%s%s\" & cls & javac -encoding UTF-8 -d %s%s -classpath %s%s %s.java",\
+                    str, backFolder, argv[6] , backFolder, argv[6], backFolder, argv[6], argv[2]);
         }else{
             sprintf(str, "%s & md \"%s\" & cls & javac -encoding UTF-8 -d %s -classpath %s %s.java",\
                     str, argv[6], argv[6], argv[6], argv[2]);
