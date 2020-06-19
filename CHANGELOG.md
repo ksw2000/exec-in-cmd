@@ -1,5 +1,5 @@
 ## 3.2.3
-Fix bug [d50c65b](https://github.com/Hadname/exec-in-cmd/commit/d50c65b43778847c878f602421f35145feb36b79) : java package mode error
+Fix bug [d50c65b](https://github.com/Hadname/exec-in-cmd/commit/d50c65b43778847c878f602421f35145feb36b79) : java package mode error (only under Windows)
 
 > There are a lot of bugs between 3.1.2 and 3.2.3 :roll_eyes: :pensive:
 
