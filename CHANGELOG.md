@@ -1,3 +1,14 @@
+## 3.2.3
+Fix bug [d50c65b](https://github.com/Hadname/exec-in-cmd/commit/d50c65b43778847c878f602421f35145feb36b79) : java package mode error
+
+> There are a lot of bugs between 3.1.2 and 3.2.3 :roll_eyes: :pensive:
+
+## 3.2.2
+Fix bug [dc441d2](https://github.com/Hadname/exec-in-cmd/commit/dc441d27d7254003b0d40e8d07c85c72206188a1) : windwos extflag error (Cannot run .go .js .rb .py .R in windows)
+
+## 3.2.1
+Fix bug: [2ba5231](2ba52318a9b7547eb521084f2cb90cd29bc55e38) : windows advance mode error (Cannot use normal mode in windows)
+
 ## 3.2.0
 + Add "Rust"
 + Add "Assembly" for linux nasm
@@ -59,7 +70,7 @@
     * By specifying the root of workspace and URL.
 * Add "advance mode" for Python.
     * You can use `pyinstaller` to build .exe from .py
-* Fixed bug: If filename contains "&", open.exe can not work.
+* Fixed bug: If filename contains "\&", open.exe can not work.
     * Update exec.coffee
 * Replace some c code(open.c) by coffeescript code(exec.coffee).
 
