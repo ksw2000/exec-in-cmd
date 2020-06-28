@@ -1,10 +1,9 @@
-exec        = require('child_process').exec
-path        = require('path')
-os          = require('os')
-fs          = require('fs')
-readPackage = require("./readPackage.coffee")
-cfg         = require("./config.coffee")
-system      = os.platform()    # OS(win32,linux)
+exec = require('child_process').exec
+path = require('path')
+fs   = require('fs')
+rp   = require('./readPackage.coffee')
+cfg  = require('./config.coffee')
+sys  = require('os').platform()
 
 module.exports =
     config : cfg
@@ -28,7 +27,7 @@ module.exports =
 
         dir_path = path.dirname(select_file)
         extname  = path.extname(select_file)
-        basename = path.basename(select_file).replace(extname,"")
+        basename = path.basename(select_file).replace(extname, '')
 
         terminal = atom.config.get('exec-in-cmd.terminal')
 
@@ -36,9 +35,9 @@ module.exports =
             if extname == '.php'
                 openIn = atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost/';
 
-                if system == 'win32'
+                if sys == 'win32'
                     phpFolder = atom.config.get('exec-in-cmd.php.phpFolder') ? 'C:\\MAMP\\htdoc\\';
-                else if system == 'linux' || system == 'darwin'
+                else if sys == 'linux' || sys == 'darwin'
                     phpFolder = atom.config.get('exec-in-cmd.php.phpFolder') ? '/var/www/';
 
                 if select_file.indexOf(phpFolder) == -1
@@ -51,10 +50,10 @@ module.exports =
                             `#{select_file}`
                             """
                         dismissable : true
-                    atom.notifications.addError('Invalid directory',option)
+                    atom.notifications.addError('Invalid directory', option)
                 else
-                    openUrl = openIn + select_file.replace("#{phpFolder}",'').replace("\\","/")
-                    switch system
+                    openUrl = openIn + select_file.replace("#{phpFolder}", '').replace("\\","/")
+                    switch sys
                         when 'win32'
                         then exec "start \"\" \"#{openUrl}\""
                         when 'linux'
@@ -62,8 +61,8 @@ module.exports =
                         when 'darwin'
                         then exec "open \"#{openUrl}\""
 
-            else if extname in ['.html','.htm','.lnk','.pdf']
-                switch system
+            else if extname in ['.html', '.htm', '.lnk', '.pdf']
+                switch sys
                     when 'win32'
                     then exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
                     when 'linux'
@@ -71,7 +70,8 @@ module.exports =
                     when 'darwin'
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
-            else if extname in ['.asm','.c','.cpp','.cs','.go','.java','.js','.rb','.py','.R','.kt','.rs']
+            else if extname in ['.asm', '.c', '.cpp', '.cs', '.go', '.java', '.js', '.rb', '.py', '.R',
+                                '.kt', '.rs']
                 _dir_path_  = "\"#{dir_path}\""
                 _basename_  = "\"#{basename}\""
                 _extname_   = "\"#{extname}\""
@@ -84,7 +84,7 @@ module.exports =
                 if extname == '.java'
                     data = null
                     try
-                        data = readPackage(select_file)
+                        data = rp(select_file)
                     catch err
                         console.log(err)
 
@@ -92,7 +92,7 @@ module.exports =
                         packageName = data[1]
 
                 # For windows
-                if system == 'win32'
+                if sys == 'win32'
                     outA     = atom.config.get('exec_in_cmd.asm.out') ? 'out/'
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
@@ -115,7 +115,9 @@ module.exports =
 
                     command = command.replace(/\\/g,'\\\\')
 
-                    # Beside change directory, also need to notice to change disk if user works under D:\ or anotehr disk
+                    # Beside change directory, also need to notice to change disk if user
+                    # works under D:\ or anotehr disk
+
                     i = 0
                     changeDisk = ''
 
@@ -126,16 +128,17 @@ module.exports =
                             break
                         i++
 
-                    command = "#{changeDisk}cd \"#{__dirname}\" & start \"Exec-in-cmd\" /WAIT open.exe #{command}"
+                    command =  "#{changeDisk}cd \"#{__dirname}\" "
+                    command += "& start \"Exec-in-cmd\" /WAIT open.exe #{command}"
 
                     exec command
 
                 #For linux
-                else if system == 'linux'
+                else if sys == 'linux'
                     if terminal == 'gnome-terminal'
                         terminal = "gnome-terminal --window --title='Exec-in-cmd' -e"
                     else if terminal == 'konsole'
-                        terminal = "konsole -e"
+                        terminal = 'konsole -e'
 
                     outA     = atom.config.get('exec_in_cmd.asm.out') ? 'out/'
                     nasmFlag = atom.config.get('exec_in_cmd.asm.flag') ? 'elf64'
@@ -143,31 +146,33 @@ module.exports =
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
                     outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out/'
 
+                    command = "cd #{_dirname_}; #{terminal}"
+
                     switch extname
                         when '.asm'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"#{nasmFlag}\" \"#{outA}\"\""
+                        then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"#{nasmFlag}\" \"#{outA}\"\""
                         when '.c','.cpp','.cs'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
+                        then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
                         when '.go'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
                         when '.java'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outJava}'\" \"'#{packageName}'\"\""
+                        then command += "\"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outJava}'\" \"'#{packageName}'\"\""
                         when '.js'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; node \"'#{_dir_path_}/#{_basename_}.js'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; node \"'#{_dir_path_}/#{_basename_}.js'\"'\""
                         when '.py'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; #{pythonInter} \"'#{_dir_path_}/#{_basename_}.py'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; #{pythonInter} \"'#{_dir_path_}/#{_basename_}.py'\"'\""
                         when '.R'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; Rscript \"'#{_dir_path_}/#{_basename_}.R'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; Rscript \"'#{_dir_path_}/#{_basename_}.R'\"'\""
                         when '.rb'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux 'cd \"'#{_dir_path_}'\"; ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
                         when '.rs'
-                        then command = "cd #{_dirname_}; #{terminal} \"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outRust}'\"\""
+                        then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outRust}'\"\""
                         else extFlag = 1
                     if !extFlag
                         exec command
 
                 #For mac os
-                else if system == 'darwin'
+                else if sys == 'darwin'
                     outC     = atom.config.get('exec-in-cmd.c.out') ? 'out/'
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
                     outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out/'
@@ -196,7 +201,7 @@ module.exports =
                         exec "open -a Terminal ./#{__dirname}/openDarwin"
                 else
                     atom.notifications.addError('Invalid os',{
-                        description :"`#{system}` is not supported."
+                        description :"`#{sys}` is not supported."
                     })
             else
                 atom.notifications.addError('Invalid file extension',{
@@ -205,29 +210,29 @@ module.exports =
 
         # advace2: Open cmd in windows or terminal in linux or mac os
         else if advance == 2
-            if system == 'win32'
+            if sys == 'win32'
                 exec "start cmd /k \"cd /d \"#{dir_path}\"\""
-            else if system == 'linux'
-                if terminal == "gnome-terminal"
+            else if sys == 'linux'
+                if terminal == 'gnome-terminal'
                     exec "cd \"#{dir_path}\"; gnome-terminal --window"
-                else if terminal == "konsole"
+                else if terminal == 'konsole'
                     exec "cd \"#{dir_path}\"; konsole"
-            else if system == 'darwin'
+            else if sys == 'darwin'
                 exec "open -a Terminal #{dir_path}"
             else
                 atom.notifications.addError('Invalid os',{
-                    description :"`#{system}` is not supported."
+                    description :"`#{sys}` is not supported."
                 })
 
         # advance3: Initialize for linux users and mac os users
         else if advance == 3
-            if system =='linux'
+            if sys =='linux'
                 if terminal == 'gnome-terminal'
                     exec "gnome-terminal --title='Init for Exec-in-cmd' -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
                 else if terminal == 'konsole'
                     exec "konsole -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
 
-            else if system =='darwin'
+            else if sys =='darwin'
                 exec "chmod -R 755 '#{__dirname}'"
                 atom.notifications.addSuccess('Initialization done',{
                     description :"Now, you can press `F12` to run code!"
