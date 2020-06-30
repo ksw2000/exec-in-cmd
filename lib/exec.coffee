@@ -93,27 +93,27 @@ module.exports =
 
                 # For windows
                 if sys == 'win32'
-                    outA     = atom.config.get('exec_in_cmd.asm.out') ? 'out/'
-                    outC     = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
-                    outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
-                    outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out\\'
-                    command  = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
+                    outA    = atom.config.get('exec_in_cmd.asm.out') ? 'out/'
+                    outC    = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
+                    outJava = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
+                    outRust = atom.config.get('exec-in-cmd.rust.out') ? 'out\\'
+                    args    = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
 
                     switch extname
                         when '.asm'
-                        then command = "#{command} \"#{outA}\""
+                        then args = "#{args} \"#{outA}\""
                         when '.c', '.cpp', '.cs'
-                        then command = "#{command} \"#{outC}\""
+                        then args = "#{args} \"#{outC}\""
                         when '.java'
-                        then command = "#{command} \"#{outJava}\" \"#{packageName}\""
+                        then args = "#{args} \"#{outJava}\" \"#{packageName}\""
                         when '.kt'
-                        then command = "#{command} \"#{outJava}\""
+                        then args = "#{args} \"#{outJava}\""
                         when '.py'
-                        then command = "#{command} \"#{pythonInter}\""
+                        then args = "#{args} \"#{pythonInter}\""
                         when '.rs'
-                        then command = "#{command} \"#{outRust}\""
+                        then args = "#{args} \"#{outRust}\""
 
-                    command = command.replace(/\\/g,'\\\\')
+                    args = args.replace(/\\/g,'\\\\')
 
                     # Beside change directory, also need to notice to change disk if user
                     # works under D:\ or anotehr disk
@@ -128,10 +128,7 @@ module.exports =
                             break
                         i++
 
-                    command =  "#{changeDisk}cd \"#{__dirname}\" "
-                    command += "& start \"Exec-in-cmd\" /WAIT open.exe #{command}"
-
-                    exec command
+                    exec "#{changeDisk}cd \"#{__dirname}\" & start \"Exec-in-cmd\" /WAIT open.exe #{args}"
 
                 #For linux
                 else if sys == 'linux'
