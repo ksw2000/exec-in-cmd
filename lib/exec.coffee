@@ -143,7 +143,7 @@ module.exports =
                     outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out/'
                     outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out/'
 
-                    command = "cd #{_dirname_}; #{terminal}"
+                    command = "cd #{_dirname_}; #{terminal} "
 
                     switch extname
                         when '.asm'
