@@ -32,7 +32,7 @@ module.exports =
         terminal = atom.config.get('exec-in-cmd.terminal')
 
         if advance < 2
-            if extname == '.php'
+            if extname == '.php' && atom.config.get('exec-in-cmd.php.phpAction') == 'Open in browser'
                 openIn = atom.config.get('exec-in-cmd.php.openIn') ? 'http://localhost/';
 
                 if sys == 'win32'
@@ -66,12 +66,12 @@ module.exports =
                     when 'win32'
                     then exec "start \"\" \"#{dir_path}\\#{basename}#{extname}\""
                     when 'linux'
-                    then exec "xdg-open \"#{dir_path}/#{basename}#{extname}\""
+                    then exec "xdg-open \"#{select_file}\""
                     when 'darwin'
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
-            else if extname in ['.asm', '.c', '.cpp', '.cs', '.go', '.java', '.js', '.rb', '.py', '.R',
-                                '.kt', '.rs']
+            else if extname in ['.asm', '.c', '.cpp', '.cs', '.go', '.java', '.js', '.rb', '.py', '.php',
+                                '.R', '.kt', '.rs']
                 _dir_path_  = "\"#{dir_path}\""
                 _basename_  = "\"#{basename}\""
                 _extname_   = "\"#{extname}\""
@@ -151,17 +151,19 @@ module.exports =
                         when '.c','.cpp','.cs'
                         then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
                         when '.go'
-                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; go run \"'#{_dir_path_}/#{_basename_}.go'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; go run \"'\"#{select_file}\"'\"'\""
                         when '.java'
                         then command += "\"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outJava}'\" \"'#{packageName}'\"\""
                         when '.js'
-                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; node \"'#{_dir_path_}/#{_basename_}.js'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; node \"'\"#{select_file}\"'\"'\""
+                        when '.php'
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; php -f \"'\"#{select_file}\"'\"'\""
                         when '.py'
-                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; #{pythonInter} \"'#{_dir_path_}/#{_basename_}.py'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; #{pythonInter} \"'\"#{select_file}\"'\"'\""
                         when '.R'
-                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; Rscript \"'#{_dir_path_}/#{_basename_}.R'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; Rscript \"'\"#{select_file}\"'\"'\""
                         when '.rb'
-                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; ruby \"'#{_dir_path_}/#{_basename_}.rb'\"'\""
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; ruby \"'\"#{select_file}\"'\"'\""
                         when '.rs'
                         then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outRust}'\"\""
                         else extFlag = 1

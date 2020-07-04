@@ -9,14 +9,14 @@ compatible =
             description: 'Specify the folder name where Java output (Do not include whitespace character.) <BR>`[ end with slash ]` `out/` , `output/java/` , `../out/` , `./` , `../`'
             default: 'out/'
         php:
-            description: 'Specify the root directory of your PHP [ end with slash ]'
+            description: 'Specify the root directory of your PHP [ end with slash ] <BR> If you choose to running in cmd(terminal) instead of opening in browser, you can skip this column.'
             default: '/var/www/'
         Rust:
             description: 'Specify the folder name where Rust output <BR>`[ end with slash ]` `out/` , `output/` , `../out/` , `./` , `../`'
             default: 'out/'
         asm:
             type: 'object'
-            title: 'About assembly (Only for linux)'
+            title: 'About assembly'
             order: 6
             properties:
                 out:
@@ -85,18 +85,25 @@ cfg =
         title: 'About PHP'
         order: 3
         properties:
+            phpAction:
+                type: 'string'
+                title: 'How to process .php'
+                description: 'Open in browser or run php in cmd(terminal)?'
+                default: 'Open in browser'
+                enum: ['Open in browser', 'Run in cmd']
+                order: 1
             phpFolder:
                 type: 'string'
-                title: 'PHP Setting'
+                title: 'Root directory'
                 description: compatible.php.description
                 default: compatible.php.default
-                order: 1
+                order: 2
             openIn:
                 type: 'string'
-                title: 'index URL'
+                title: 'Go to:'
                 description: 'Specify the URL to access your PHP.'
                 default: 'http://localhost/'
-                order: 2
+                order: 3
     python:
         type: 'object'
         title: 'About Python'
@@ -105,7 +112,7 @@ cfg =
             interpreter:
                 type: 'string'
                 title: 'About Python'
-                description: 'Type an interpreter to run python. Ex: python, python3, ...'
+                description: 'Type an interpreter to run python. Ex: `python`, `python3`, ...'
                 default: 'python'
                 #enum: ['python','python3']
     rust:
