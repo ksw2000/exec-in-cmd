@@ -8,7 +8,7 @@ for i in range (0,21):
         print()
     else:
         for j in range(0,11):
-            if(j==0):
+            if j==0:
                 print('%3d' % i, end='\t')
             else:
                 print('%.4f' % (1-0.01*j)**i, end='\t')
