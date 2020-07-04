@@ -1,4 +1,7 @@
-# Exec in cmd Manual for Linux (gnome-based)
+# Exec in cmd Manual for Linux
+
+We support `gnome-terminal` and `konsole`(v3.2.4)
+
 ## Get "permission denied" ?
 ![permission_denied](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot_linux_permission.png)
 
@@ -108,7 +111,7 @@ You need to install [`GO`](https://golang.org/doc/install).
     * c.java        (not using package)
 
 version >= 3.1.2
-> Put ".java" in the folder whit is same as package name
+> Put ".java" in the folder which is same as package name
 
 version <3.1.2
 > Put all ".java" in the same folder

@@ -2,7 +2,6 @@
 
 Make it more convenient for running code in Atom. Instead of command line or other IDEs, you just need to press `F12` to run your code.
 
-We only support for __Windows__ , __gnome-based Linux__ and __macOS__ now.
 
 ![preview](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png)
 
@@ -17,7 +16,8 @@ We only support for __Windows__ , __gnome-based Linux__ and __macOS__ now.
 # Manual
 + Windows : <br>https://github.com/Hadname/exec-in-cmd/blob/master/README(Win).md
 
-+ Linux (gnome-based) : <br>https://github.com/Hadname/exec-in-cmd/blob/master/README(Linux).md
++ Linux: <br>https://github.com/Hadname/exec-in-cmd/blob/master/README(Linux).md<br>
+We support `Gnome-terminal` and `Konsole`
 
 + macOS : <br>https://github.com/Hadname/exec-in-cmd/blob/master/README(Mac).md
 
