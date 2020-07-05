@@ -193,8 +193,8 @@ module.exports =
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}\n#{packageName}"
                         when '.js'
                         then data = "cd \"'#{_dir_path_}'\"; node \"#{dir_path}/#{basename}.js\""
-                        when '.py'
-                        then data = "cd \"'#{_dir_path_}'\"; php -f \"#{dir_path}/#{basename}.py\""
+                        when '.php'
+                        then data = "cd \"'#{_dir_path_}'\"; php -f \"#{dir_path}/#{basename}.php\""
                         when '.py'
                         then data = "cd \"'#{_dir_path_}'\"; #{pythonInter} \"#{dir_path}/#{basename}.py\""
                         when '.R'
