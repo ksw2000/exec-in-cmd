@@ -14,17 +14,16 @@ double exec_in_cmd(char* str){
 }
 
 int main(int argc, char** argv){
-    //Use fopen to get arguments instead of using command line
-    //argv[1] get path (end without \)
-    //argv[2] get filename (not including extension)
-    //argv[3] get filename extension (start with .)
-    //argv[4] get this open.c's path (end without \)
-    //argv[5] 1: if use advance mode , 0: else
-    //argv[6]
+    // argv[1] get path (end without \)
+    // argv[2] get filename (not including extension)   or command (for running directly)
+    // argv[3] get filename extension (start with .)    or --run
+    // argv[4] get this open.c's path (end without \)
+    // argv[5] 1: if use advance mode , 0: else
+    // argv[6]
         // ASM                  output folder (end with \)
         // C,C++,C#,Java        output folder (end with \)
         // Python               python interpreter (python or python3)
-    //argv[7]
+    // argv[7]
         // java                 package name (java)
 
     //Get disk name
@@ -36,19 +35,25 @@ int main(int argc, char** argv){
     for(j=0; j<i+1; diskName[j] = argv[1][j], j++);
     diskName[j] = '\0';
 
-    //Declare some variables
-    int   advance  = (strcmp(argv[5],"1") == 0)? 1:0;
+    // Declare some variables
+    int    exitFlag     = 0;
     double compile_time = 0.0;
-    double exec_time = 0.0;
-    double total_time = 0.0;
-    char  *str  = calloc(65535, sizeof(char));
-    char  *str2 = calloc(65535, sizeof(char));
+    double exec_time    = 0.0;
+    double total_time   = 0.0;
+    char   *str         = calloc(65535, sizeof(char));
+    char   *str2        = calloc(65535, sizeof(char));
 
+    // Initialize str
     sprintf(str, "%s & cd \"%s\"", diskName, argv[1]);
 
-    if(advance){
-        goto ADVANCE;
+    // Run command directly
+    if(!strcmp(argv[3], "--run")){
+        sprintf(str, "%s & %s \"%s\"", diskName, argv[2], argv[1]);
+        goto EXEC;  // Avoid argv[4], argv[5], argv[6], ... simple mode not support
     }
+
+    int advance = (strcmp(argv[5], "1") == 0)? 1 : 0;
+    if(advance) goto EXEC;   // Must after initializing str
 
     if(!strcmp(argv[3], ".asm")){
         //Compile
@@ -122,23 +127,17 @@ int main(int argc, char** argv){
         //Run
         strcpy(str2,str);
         sprintf(str,"%s & \"%s\\%s%s.exe\"", diskName, argv[1], argv[6], argv[2]);
-    }else if(!strcmp(argv[3],".py")){
+        // Use simple command
+    }else if(!strcmp(argv[3], ".py")){
         sprintf(str, "%s & %s \"%s%s\"", str, argv[6], argv[2], argv[3]);
-    }else if(!strcmp(argv[3],".js")){
-        sprintf(str, "%s & node \"%s%s\"", str, argv[2], argv[3]);
-    }else if(!strcmp(argv[3],".go")){
+    }else if(!strcmp(argv[3], ".go")){
         sprintf(str, "%s & go run \"%s%s\"", str, argv[2], argv[3]);
-    }else if(!strcmp(argv[3],".R")){
-        sprintf(str, "%s & chcp 65001 & cls & Rscript \"%s%s\"", str, argv[2], argv[3]);
-    }else if(!strcmp(argv[3],".rb")){
-        sprintf(str, "%s & chcp 65001 & cls & ruby \"%s%s\"", str, argv[2], argv[3]);
     }else{
         fprintf(stderr, "Invalid extension\n");
         exit(1);
     }
 
-    int exitFlag = 0;
-ADVANCE:
+EXEC:
     if(advance){
         if(!strcmp(argv[3], ".c") || !strcmp(argv[3], ".cpp")){
             exitFlag = c_advance(str, str2 ,argv, &compile_time);

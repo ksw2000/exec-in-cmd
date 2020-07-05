@@ -106,10 +106,18 @@ module.exports =
                         then args = "#{args} \"#{outC}\""
                         when '.java'
                         then args = "#{args} \"#{outJava}\" \"#{packageName}\""
+                        when '.js'
+                        then args = "\"#{select_file}\" \"node\" --run"
                         when '.kt'
                         then args = "#{args} \"#{outJava}\""
+                        when '.php'
+                        then args = "\"#{select_file}\" \"php -f\" --run"
                         when '.py'
                         then args = "#{args} \"#{pythonInter}\""
+                        when '.R'
+                        then args = "\"#{select_file}\" \"chcp 65001 & cls & Rscript\" --run"
+                        when '.rb'
+                        then args = "\"#{select_file}\" \"chcp 65001 & cls & ruby\" --run"
                         when '.rs'
                         then args = "#{args} \"#{outRust}\""
 
@@ -185,6 +193,8 @@ module.exports =
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}\n#{packageName}"
                         when '.js'
                         then data = "cd \"'#{_dir_path_}'\"; node \"#{dir_path}/#{basename}.js\""
+                        when '.py'
+                        then data = "cd \"'#{_dir_path_}'\"; php -f \"#{dir_path}/#{basename}.py\""
                         when '.py'
                         then data = "cd \"'#{_dir_path_}'\"; #{pythonInter} \"#{dir_path}/#{basename}.py\""
                         when '.R'
