@@ -16,7 +16,7 @@ compatible =
             default: 'out/'
         asm:
             type: 'object'
-            title: 'About assembly'
+            title: 'About assembly [Only for linux]'
             order: 6
             properties:
                 out:
@@ -48,13 +48,12 @@ compatible =
         asm:
             type: 'object'
             title: 'About assembly'
-            order: 6
             properties:
                 out:
                     type: 'string'
                     title: 'Assembly output folder (relative)'
                     description: 'Specify the folder name where assembly output <BR>`[ end with backslash ]` `out\\` , `output\\asm\\` , `..\\out\\` , `.\\` , `..\\`'
-                    default: 'out/'
+                    default: 'out\\'
                     order: 1
 
 compatible = if(system == 'win32') then compatible.win else compatible.linux_and_darwin
