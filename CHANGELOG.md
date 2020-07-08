@@ -1,3 +1,17 @@
+## 3.2.4
+New Feature
++ You can choose which action to execute .php
+
+    + run in browser
+
+    + run in command line
+
++ You can choose what terminal you want to use in linux.
+
+    + Gnome terminal
+
+    + Konsole
+
 ## 3.2.3
 Fix bug [d50c65b](https://github.com/Hadname/exec-in-cmd/commit/d50c65b43778847c878f602421f35145feb36b79) : java package mode error (only under Windows)
 
