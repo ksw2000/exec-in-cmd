@@ -5,7 +5,9 @@ Please press `Control + F12` or type `Exec in cmd: init` in command-palette
 
 It will run the following command in terminal:
 
-    chmod -R 755 {exec-in-cmd-root}/lib
+```sh
+chmod -R 755 {exec-in-cmd-root}/lib
+```
 
 Another way:
 
@@ -56,7 +58,7 @@ You need to install [`GO`](https://golang.org/doc/install).
     * c.java        (not using package)
 
 version >= 3.1.2
-> Put ".java" in the folder whit is same as package name
+> Put ".java" in the folder whose name is as same as the package name
 
 version <3.1.2
 > Put all ".java" in the same folder
@@ -158,7 +160,7 @@ First, the package gets the file's extension, and choose what action should we d
 
 If this file needs to be compiled, it will be processed by `./openDarwin`, a program that can detect the kind of file and choose the proper commands to work.
 
-If this file does not need to be compiled, but it needs to be run in terminal, then `exec.coffee` will send proper commands to `openDarwin` because if you run these files through `exec.coffee` directly, they will exit (instead of pause) immediately.
+If this file does not need to be compiled, but it needs to be run in a terminal, then `exec.coffee` will send proper commands to `openDarwin` because if you run these files through `exec.coffee` directly, they will exit (instead of pause) immediately.
 
 If you want to add or change the commands, please modify `lib/openDarwin.c` or `lib/exec.coffee` in the package.
 

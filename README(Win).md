@@ -71,9 +71,11 @@ such as `GOROOT` and `GOPATH`
     * b.java        (not using package)
     * c.java        (not using package)
 
-> Put ".java" in proper folder (version >= 3.1.2)
->
-> Put all ".java" in the same folder (version <3.1.2)
+version >= 3.1.2
+> Put ".java" in the folder whose name is as same as the package name
+
+version <3.1.2
+> Put all ".java" in the same folder
 
 You need to install [`JRE (Java Runtime Environment)`](https://www.oracle.com/technetwork/java/javase/downloads/index.html) and set environment variables.</BR>
 
@@ -99,7 +101,7 @@ You need to install [`Node.js`](https://nodejs.org) and set environment variable
 start "" "http://localhost:80/myphp/index.php"
 ```
 
-You need some application which can make you run PHP in your computer. **For example,** [__MAMP__]( https://www.mamp.info/ ).
+You need some application which can make you run PHP on your computer. **For example,** [__MAMP__]( https://www.mamp.info/ ).
 
 ----
 ## .rb
@@ -108,7 +110,7 @@ disk: & cd "{path}"  & chcp 65001 & cls & ruby "{filename}.rb"
 ```
 You need to install [`Ruby`](https://www.ruby-lang.org/) and set environment variables.
 
-If you get garbled texts, try to insert following code in the opening of file.
+If you get garbled texts, try to insert the following code in the opening of the file.
 
 ```ruby
 #!/usr/bin/ruby -w
@@ -156,7 +158,7 @@ disk: & cd "{path}" &  pyinstaller -F  "{filename}.py"
 ```
 
 
-If you want to use building feature, please insall `pyinstaller` by command line bellow :
+If you want to use building feature, please install `pyinstaller` by command line bellow :
 
 ```sh
 pip install pyinstaller
@@ -204,14 +206,15 @@ Press `Shift+F12`
 >
 > 1: Run old       (執行舊檔)
 >
-> 2: Specify output folder and then compile and run
+> 2: Specify the output folder and then compile and run
 > (指定輸出資料夾後編譯執行)
 >
 
 ##### .go .py
 >
-> 0: Run   (執行)
-> 1: Build (建立)
+> 0: Run   (go run)
+>
+> 1: Build (go build)
 >
 
 ----

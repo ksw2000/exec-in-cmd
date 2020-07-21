@@ -1,5 +1,7 @@
 # Exec in cmd
 
+![](https://img.shields.io/apm/dm/exec-in-cmd)
+
 Make it more convenient for running code in Atom. Instead of command line or other IDEs, you just need to press `F12` to run your code.
 
 
