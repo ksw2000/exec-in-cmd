@@ -8,17 +8,16 @@ void pause(){
     char c = getc(stdin);
 }
 
-
 struct timeval t;
 
 void timerStart(){
     gettimeofday(&t, NULL);
 }
 
-unsigned long timerEnd(){
-    struct timeval now;
-    gettimeofday(&now, NULL);
-    return (unsigned long)(now.tv_usec - t.tv_usec);
+long timerEnd(){
+    long pre = t.tv_usec;
+    gettimeofday(&t, NULL);
+    return t.tv_usec - pre;
 }
 
 int main(int argc, char** argv){
@@ -26,11 +25,10 @@ int main(int argc, char** argv){
     int i;
     char *cmd, *cmd_compile;
     char *cmd_assemble, *cmd_link;
-    struct  timeval  start, end;
-    unsigned long compile_time=0, time=0;
-    unsigned long assemble_time=0, link_time=0;
+    long compile_time = 0, time = 0;
+    long assemble_time = 0, link_time = 0;
 
-    if(!strcmp(argv[1],".asm")){
+    if(!strcmp(argv[1], ".asm")){
         /*
             argv[1] type(.asm)
             argv[2] get path      [end without /]
@@ -43,28 +41,29 @@ int main(int argc, char** argv){
         cmd_assemble = malloc(65536 * sizeof(char));
         cmd_link     = malloc(65536 * sizeof(char));
         sprintf(cmd, "cd \"%s\"; mkdir -p \"%s\"; nasm -f %s \"%s.asm\" -o \"%s%s.o\"",\
-                argv[2],argv[5],argv[4],argv[3],argv[5],argv[3]);
+                argv[2], argv[5], argv[4], argv[3], argv[5], argv[3]);
 
         timerStart();
         if(system(cmd)==-1){
-            fprintf(stderr,"Assembling error\n");
+            fprintf(stderr, "Assembling error\n");
         }
         assemble_time = timerEnd();
         cmd_assemble  = malloc(65536 * sizeof(cmd));
-        strcpy(cmd_assemble,cmd);
+        strcpy(cmd_assemble, cmd);
 
         //Phase2: Linker
-        sprintf(cmd,"cd \"%s/%s\"; ld -s -o \"%s\" \"%s.o\"",argv[2],argv[5],argv[3],argv[3]);
+        sprintf(cmd, "cd \"%s/%s\"; ld -s -o \"%s\" \"%s.o\"",\
+                argv[2], argv[5], argv[3], argv[3]);
         timerStart();
         if(system(cmd)==-1){
-            fprintf(stderr,"Linking error\n");
+            fprintf(stderr, "Linking error\n");
         }
         link_time = timerEnd();
-        strcpy(cmd_link,cmd);
+        strcpy(cmd_link, cmd);
 
         //Phase3: Run
-        sprintf(cmd,"cd \"%s/%s\"; \"./%s\"",argv[2],argv[5],argv[3]);
-    }else if(!strcmp(argv[1],".java")){
+        sprintf(cmd, "cd \"%s/%s\"; \"./%s\"", argv[2], argv[5], argv[3]);
+    }else if(!strcmp(argv[1], ".java")){
         cmd = malloc(65536 * sizeof(char));
         cmd_compile = malloc(65536 * sizeof(char));
         /*
@@ -79,38 +78,39 @@ int main(int argc, char** argv){
         //Phase1: Compile
         char* backFolder = malloc(128*sizeof(char));
         if(strcmp(argv[6], "0")){
-            strcpy(backFolder,"../");
+            strcpy(backFolder, "../");
             int i;
             for(i=0; i<strlen(argv[6]); i++){
                 if(argv[6][i] == '.'){
                     strcat(backFolder, "../");
                 }
             }
-            sprintf(cmd,"cd \"%s\"; mkdir -p \"%s%s\" ; javac -encoding UTF-8 -d \"%s%s\" \
+            sprintf(cmd, "cd \"%s\"; mkdir -p \"%s%s\" ; javac -encoding UTF-8 -d \"%s%s\" \
                     -classpath \"%s%s\" \"%s.java\"",\
-                    argv[3],backFolder,argv[5],backFolder,argv[5],\
-                    backFolder,argv[5],argv[4]);
+                    argv[3], backFolder, argv[5], backFolder, argv[5],\
+                    backFolder, argv[5], argv[4]);
         }else{
-            sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\" ; javac -encoding UTF-8 -d \"%s\" \
+            sprintf(cmd, "cd \"%s\"; mkdir -p \"%s\" ; javac -encoding UTF-8 -d \"%s\" \
                     -classpath \"%s\" \"%s.java\"",\
-                    argv[3],argv[5],argv[5],\
-                    argv[5],argv[4]);
+                    argv[3], argv[5], argv[5],\
+                    argv[5], argv[4]);
         }
 
         timerStart();
         if(system(cmd)==-1){
-            fprintf(stderr,"Java compile error\n");
+            fprintf(stderr, "Java compile error\n");
         }
         compile_time = timerEnd();
 
-        strcpy(cmd_compile,cmd);
+        strcpy(cmd_compile, cmd);
 
         //Phase2: Run
         if(strcmp(argv[6], "0")){
-            sprintf(cmd,"cd \"%s\"; cd \"%s\"; cd \"%s\"; java %s.%s",\
-            argv[3],backFolder,argv[5],argv[6],argv[4]);
+            sprintf(cmd, "cd \"%s\"; cd \"%s\"; cd \"%s\"; java %s.%s",\
+                    argv[3], backFolder, argv[5], argv[6], argv[4]);
         }else{
-            sprintf(cmd,"cd \"%s/%s\"; java %s",argv[3],argv[5],argv[4]);
+            sprintf(cmd, "cd \"%s/%s\"; java %s",\
+                    argv[3], argv[5], argv[4]);
         }
     }else if(!strcmp(argv[1], ".kt")){
         /*
@@ -127,7 +127,7 @@ int main(int argc, char** argv){
                 argv[2], argv[5], argv[4], argv[5], argv[4]);
         timerStart();
         if(system(cmd_compile) == -1){
-            fprintf(stderr,"C, C++ or C# compile error\n");
+            fprintf(stderr, "C, C++ or C# compile error\n");
         }
         compile_time = timerEnd();
 
@@ -135,7 +135,7 @@ int main(int argc, char** argv){
         cmd = malloc(65536 * sizeof(char));
         sprintf(cmd, "cd \"%s/%s\" & java -jar \"%s.jar\"",\
                 argv[3], argv[5], argv[4]);
-    }else if(!strcmp(argv[1],".c") || !strcmp(argv[1],".cpp") || !strcmp(argv[1],".cs")){
+    }else if(!strcmp(argv[1], ".c") || !strcmp(argv[1], ".cpp") || !strcmp(argv[1], ".cs")){
         cmd = malloc(65536 * sizeof(char));
         /*
             argv[1] type(.c , .cpp or .cs)
@@ -144,18 +144,18 @@ int main(int argc, char** argv){
             argv[4] output folder [end with /]
         */
         //Phase1: Compile
-        if(!strcmp(argv[1],".c") || !strcmp(argv[1],".cpp")){
+        if(!strcmp(argv[1], ".c") || !strcmp(argv[1], ".cpp")){
             sprintf(cmd, "cd \"%s\"; mkdir -p \"%s\" ; %s \"%s%s\" -lm -O2 -o \"%s%s\"",\
-                    argv[2],argv[4],(!strcmp(argv[1],".c"))? "gcc" : "g++",\
-                    argv[3],argv[1],argv[4],argv[3]);
+                    argv[2], argv[4], (!strcmp(argv[1], ".c"))? "gcc" : "g++",\
+                    argv[3], argv[1], argv[4], argv[3]);
         }else{
-            sprintf(cmd,"cd \"%s\"; mkdir -p \"%s\"; mcs -out:\"%s%s.exe\" \"%s.cs\"",\
+            sprintf(cmd, "cd \"%s\"; mkdir -p \"%s\"; mcs -out:\"%s%s.exe\" \"%s.cs\"",\
                     argv[2], argv[4], argv[4], argv[3], argv[3]);
         }
 
         timerStart();
         if(system(cmd) == -1){
-            fprintf(stderr,"C, C++ or C# compile error\n");
+            fprintf(stderr, "C, C++ or C# compile error\n");
         }
         compile_time = timerEnd();
         cmd_compile  = malloc(65536 * sizeof(cmd));
@@ -163,9 +163,9 @@ int main(int argc, char** argv){
 
         //Phase2: Run
         if(!strcmp(argv[1], ".c") || !strcmp(argv[1], ".cpp")){
-            sprintf(cmd,"cd \"%s/%s\"; \"./%s\"",argv[2],argv[4],argv[3]);
+            sprintf(cmd, "cd \"%s/%s\"; \"./%s\"", argv[2], argv[4], argv[3]);
         }else{
-            sprintf(cmd,"cd \"%s/%s\"; mono \"%s.exe\"",argv[2],argv[4],argv[3]);
+            sprintf(cmd, "cd \"%s/%s\"; mono \"%s.exe\"", argv[2], argv[4], argv[3]);
         }
     }else if(!strcmp(argv[1], ".rs")){
         cmd = malloc(65536 * sizeof(char));
@@ -176,9 +176,8 @@ int main(int argc, char** argv){
             argv[4] output folder [end with /]
         */
         //Phase1: Compile
-        sprintf(cmd,"cd \"%s\"; rustc \"%s.rs\" --out-dir \"%s\"",\
-                argv[2],argv[3],argv[4]);
-
+        sprintf(cmd, "cd \"%s\"; rustc \"%s.rs\" --out-dir \"%s\"",\
+                argv[2], argv[3], argv[4]);
 
         timerStart();
         if(system(cmd)==-1){
@@ -186,10 +185,10 @@ int main(int argc, char** argv){
         }
         compile_time = timerEnd();
         cmd_compile  = malloc(65536 * sizeof(cmd));
-        strcpy(cmd_compile,cmd);
+        strcpy(cmd_compile, cmd);
 
         //Phase2: Run
-        sprintf(cmd,"cd \"%s/%s\"; \"./%s\"",argv[2],argv[4],argv[3]);
+        sprintf(cmd, "cd \"%s/%s\"; \"./%s\"", argv[2], argv[4], argv[3]);
     }else{
         //argv[1] command
         cmd = argv[1];
@@ -220,8 +219,8 @@ int main(int argc, char** argv){
                "Total:",      ((double)(assemble_time+link_time+time))*(1e-6));
     }else{
         printf("\n--------------------------------\n");
-        printf("Run:  %s\n\n",cmd);
-        printf("Time: %.6lf s\n\n",((double)time)*(1e-6));
+        printf("Run:  %s\n\n", cmd);
+        printf("Time: %.6lf s\n\n", ((double)time)*(1e-6));
     }
     /*
         printf("\n--------------------------------\n");
