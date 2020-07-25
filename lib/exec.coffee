@@ -160,7 +160,7 @@ module.exports =
                         then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
                         when '.go'
                         then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; go run \"'\"#{select_file}\"'\"'\""
-                        when '.java'
+                        when '.java', '.kt'
                         then command += "\"./openLinux #{extname} \"'#{_dirname_}'\" \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outJava}'\" \"'#{packageName}'\"\""
                         when '.js'
                         then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; node \"'\"#{select_file}\"'\"'\""
@@ -239,7 +239,10 @@ module.exports =
                 if terminal == 'gnome-terminal'
                     exec "gnome-terminal --title='Init for Exec-in-cmd' -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
                 else if terminal == 'konsole'
-                    exec "konsole -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
+                    exec "konsole --hold -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
+                atom.notifications.addInfo('Still not work?',{
+                    description :"if terminal still cannot work, try below:<br> `sudo chmod -R 777 \"#{__dirname}\"`"
+                })
 
             else if sys =='darwin'
                 exec "chmod -R 755 '#{__dirname}'"
