@@ -70,8 +70,8 @@ module.exports =
                     when 'darwin'
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
-            else if extname in ['.asm', '.c', '.cpp', '.cs', '.go', '.java', '.js', '.rb', '.py', '.php',
-                                '.R', '.kt', '.rs']
+            else if extname in ['.asm', '.c', '.cpp', '.cs', '.dart', '.go', '.java', '.js', '.kt', '.php',
+                                '.py', '.R', '.rb', '.rs']
                 _dir_path_  = "\"#{dir_path}\""
                 _basename_  = "\"#{basename}\""
                 _extname_   = "\"#{extname}\""
@@ -104,6 +104,8 @@ module.exports =
                         then args = "#{args} \"#{outA}\""
                         when '.c', '.cpp', '.cs'
                         then args = "#{args} \"#{outC}\""
+                        when '.dart'
+                        then args = "\"#{select_file}\" \"dart\" --run"
                         when '.java'
                         then args = "#{args} \"#{outJava}\" \"#{packageName}\""
                         when '.js'
@@ -158,6 +160,8 @@ module.exports =
                         then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"#{nasmFlag}\" \"#{outA}\"\""
                         when '.c','.cpp','.cs'
                         then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outC}'\"\""
+                        when '.dart'
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; dart \"'\"#{select_file}\"'\"'\""
                         when '.go'
                         then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; go run \"'\"#{select_file}\"'\"'\""
                         when '.java', '.kt'
@@ -187,6 +191,8 @@ module.exports =
                     switch extname
                         when '.c','.cpp','.cs'
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outC}"
+                        when '.dart'
+                        then data = "cd \"'#{_dir_path_}'\"; dart \"#{dir_path}/#{basename}.dart\""
                         when '.go'
                         then data = "cd \"'#{_dir_path_}'\"; go run \"#{dir_path}/#{basename}.go\""
                         when '.java'
