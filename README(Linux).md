@@ -91,6 +91,13 @@ You need to install [`mono`](https://www.mono-project.com/)
    * example.cs
 
 ----
+## .dart
+```sh
+cd "{path}" ; dart "{filename}.dart"
+```
+You need to install [`dart`](https://dart.dev/get-dart).
+
+----
 ## .go
 ```sh
 cd "{path}" ; go run "{filename}.go"

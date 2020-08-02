@@ -38,6 +38,13 @@ You need to install `gcc` and `g++`
    * example.cpp
 
 ----
+## .dart
+```sh
+cd "{path}" ; dart "{filename}.dart"
+```
+You need to install [`dart`](https://dart.dev/get-dart).
+
+----
 ## .go
 ```sh
 cd "{path}" ; go run "{filename}.go"

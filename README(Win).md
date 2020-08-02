@@ -32,6 +32,14 @@ You need to install [`MINGW`](http://www.mingw.org/) and set environment variabl
    * example.cpp
 
 ----
+## .dart
+```sh
+disk: & cd "{path}"  & dart "{filename}.dart"
+```
+
+You need to install [`dart`](https://dart.dev/get-dart) and set environment variables.
+
+---
 ## .go
 **Run**
 
