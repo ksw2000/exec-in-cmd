@@ -97,7 +97,7 @@ module.exports =
                     outC    = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
                     outJava = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
                     outRust = atom.config.get('exec-in-cmd.rust.out') ? 'out\\'
-                    args    = "#{_dir_path_} #{_basename_} #{_extname_} #{_dirname_} #{advance}"
+                    args    = "#{_dir_path_} #{_basename_} #{_extname_} #{advance}"
 
                     switch extname
                         when '.asm'
@@ -105,21 +105,21 @@ module.exports =
                         when '.c', '.cpp', '.cs'
                         then args = "#{args} \"#{outC}\""
                         when '.dart'
-                        then args = "\"#{select_file}\" \"dart\" --run"
+                        then args = "#{_dir_path_} --run dart \"#{basename}#{extname}\""
                         when '.java'
                         then args = "#{args} \"#{outJava}\" \"#{packageName}\""
                         when '.js'
-                        then args = "\"#{select_file}\" \"node\" --run"
+                        then args = "#{_dir_path_} --run node \"#{basename}#{extname}\""
                         when '.kt'
                         then args = "#{args} \"#{outJava}\""
                         when '.php'
-                        then args = "\"#{select_file}\" \"php -f\" --run"
+                        then args = "#{_dir_path_} --run \"php -f\" \"#{basename}#{extname}\""
                         when '.py'
                         then args = "#{args} \"#{pythonInter}\""
                         when '.R'
-                        then args = "\"#{select_file}\" \"chcp 65001 & cls & Rscript\" --run"
+                        then args = "#{_dir_path_} --run \"chcp 65001 & cls & Rscript\" \"#{basename}#{extname}\""
                         when '.rb'
-                        then args = "\"#{select_file}\" \"chcp 65001 & cls & ruby\" --run"
+                        then args = "#{_dir_path_} --run \"chcp 65001 & cls & ruby\" \"#{basename}#{extname}\""
                         when '.rs'
                         then args = "#{args} \"#{outRust}\""
 
