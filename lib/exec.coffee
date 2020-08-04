@@ -192,21 +192,21 @@ module.exports =
                         when '.c','.cpp','.cs'
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outC}"
                         when '.dart'
-                        then data = "cd \"'#{_dir_path_}'\"; dart \"#{dir_path}/#{basename}.dart\""
+                        then data = "cd #{_dir_path_}; dart \"#{select_file}\""
                         when '.go'
-                        then data = "cd \"'#{_dir_path_}'\"; go run \"#{dir_path}/#{basename}.go\""
+                        then data = "cd #{_dir_path_}; go run \"#{select_file}\""
                         when '.java'
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outJava}\n#{packageName}"
                         when '.js'
-                        then data = "cd \"'#{_dir_path_}'\"; node \"#{dir_path}/#{basename}.js\""
+                        then data = "cd #{_dir_path_}; node \"#{select_file}\""
                         when '.php'
-                        then data = "cd \"'#{_dir_path_}'\"; php -f \"#{dir_path}/#{basename}.php\""
+                        then data = "cd #{_dir_path_}; php -f \"#{select_file}\""
                         when '.py'
-                        then data = "cd \"'#{_dir_path_}'\"; #{pythonInter} \"#{dir_path}/#{basename}.py\""
+                        then data = "cd #{_dir_path_}; #{pythonInter} \"#{select_file}\""
                         when '.R'
-                        then data = "cd \"'#{_dir_path_}'\"; Rscript \"#{dir_path}/#{basename}.R\""
+                        then data = "cd #{_dir_path_}; Rscript \"#{select_file}\""
                         when '.rb'
-                        then data = "cd \"'#{_dir_path_}'\"; ruby \"#{dir_path}/#{basename}.rb\""
+                        then data = "cd #{_dir_path_}; ruby \"#{select_file}\""
                         when '.rs'
                         then data = "#{extname}\n#{__dirname}\n#{dir_path}\n#{basename}\n#{outRust}"
                         else extFlag = 1
