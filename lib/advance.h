@@ -39,8 +39,9 @@ int c_advance(char *str, char *str2, char **argv, double *compile_time){
 
 int go_advance(char *str, char **argv){
     printf("Press \n\
-        0: Run\n\
-        1: Build\n\
+        0: go run\n\
+        1: go build\n\
+        2: gofmt -w\n\
      else: Cancel\n");
     char choose;
     choose = getche();
@@ -50,6 +51,9 @@ int go_advance(char *str, char **argv){
     }else if(choose == '1'){
         printf("Building...\n");
         sprintf(str, "%s & go build \"%s%s\"",str,argv[2],argv[3]);
+    }else if(choose == '2'){
+        printf("Formatting...\n");
+        sprintf(str, "%s & gofmt -w \"%s%s\"",str,argv[2],argv[3]);
     }else{
         return 1;
     }
