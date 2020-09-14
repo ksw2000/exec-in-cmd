@@ -1,11 +1,18 @@
+## 3.4.0
+New Feature
+
++ gofmt for windows users
+
++ Add option "Open command line" on tree view
+
 ## 3.3.0
 New Feature
 
-* Add Dart
++ Add Dart
 
 Fix bug
 
-* Fix .js .php .R .ruby relative path problem
++ Fix .js .php .R .ruby relative path problem
 
 ## 3.2.4
 New Feature
