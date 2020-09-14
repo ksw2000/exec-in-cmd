@@ -17,17 +17,15 @@ module.exports =
     deactivate: ->
         @subscriptions.dispose()
     exec_in_cmd: (advance) ->
-        #complete filepath
-        select_file = atom.workspace.getActivePaneItem()?.buffer?.file?.path
-        ###
-            dir_path: 檔案位罝(結尾不含斜線或反斜線) file path (not including slash or backslash)
-            extname : 副檔名(含點) filename extension (including point)
-            basename: 檔名(不含副檔名) filename (not including extension)
-        ###
-
-        dir_path = path.dirname(select_file)
-        extname  = path.extname(select_file)
-        basename = path.basename(select_file).replace(extname, '')
+        if atom.workspace.getActivePaneItem()?.buffer?.file?.path?
+            select_file = atom.workspace.getActivePaneItem()?.buffer?.file?.path
+            dir_path    = path.dirname(select_file) # file path (not including slash or backslash)
+            extname     = path.extname(select_file) # filename extension (including point)
+            basename    = path.basename(select_file).replace(extname, '') # filename (not including extension)
+        else if advance == 2 && atom.workspace.getActivePaneItem()?.selectedPath?
+            dir_path    = atom.workspace.getActivePaneItem()?.selectedPath
+        else
+            return
 
         terminal = atom.config.get('exec-in-cmd.terminal')
 
