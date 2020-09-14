@@ -23,7 +23,7 @@ cd "{path}\{output_dir}" & "{filename}.exe"
 
 You can just compile without running by `Exec In Cmd:Advance` or `Shift+F12`
 
-You need to install [`MINGW`](http://www.mingw.org/) and set environment variables.
+Need to install [`MINGW`](http://www.mingw.org/) and set environment variables.
 
 * example/
    * out/ _(default output folder name)_
@@ -37,7 +37,7 @@ You need to install [`MINGW`](http://www.mingw.org/) and set environment variabl
 disk: & cd "{path}"  & dart "{filename}.dart"
 ```
 
-You need to install [`dart`](https://dart.dev/get-dart) and set environment variables.
+Need to install [`dart`](https://dart.dev/get-dart) and set environment variables.
 
 ---
 ## .go
@@ -56,7 +56,7 @@ disk: & cd "{path}" & go run "{filename}.go"
 disk: & cd "{path}" & go build "{filename}.go"
 ```
 
-You need to install [`GO`](https://golang.org/doc/install) and set environment varibales
+Need to install [`GO`](https://golang.org/doc/install) and set environment varibales
 
 such as `GOROOT` and `GOPATH`
 
@@ -85,7 +85,7 @@ version >= 3.1.2
 version <3.1.2
 > Put all ".java" in the same folder
 
-You need to install [`JRE (Java Runtime Environment)`](https://www.oracle.com/technetwork/java/javase/downloads/index.html) and set environment variables.</BR>
+Need to install [`JRE (Java Runtime Environment)`](https://www.oracle.com/technetwork/java/javase/downloads/index.html) and set environment variables.</BR>
 
 ----
 ## .js (Node.js)
@@ -93,7 +93,7 @@ You need to install [`JRE (Java Runtime Environment)`](https://www.oracle.com/te
 disk: & cd "{path}" & node "{filename}.js"
 ```
 
-You need to install [`Node.js`](https://nodejs.org) and set environment variables.
+Need to install [`Node.js`](https://nodejs.org) and set environment variables.
 
 ----
 ## .php
@@ -109,14 +109,14 @@ You need to install [`Node.js`](https://nodejs.org) and set environment variable
 start "" "http://localhost:80/myphp/index.php"
 ```
 
-You need some application which can make you run PHP on your computer. **For example,** [__MAMP__]( https://www.mamp.info/ ).
+Need some applications that can run PHP on the computer (like a server). **For example,** [__MAMP__]( https://www.mamp.info/ ).
 
 ----
 ## .rb
 ```sh
 disk: & cd "{path}"  & chcp 65001 & cls & ruby "{filename}.rb"
 ```
-You need to install [`Ruby`](https://www.ruby-lang.org/) and set environment variables.
+Need to install [`Ruby`](https://www.ruby-lang.org/) and set environment variables.
 
 If you get garbled texts, try to insert the following code in the opening of the file.
 
@@ -139,7 +139,7 @@ disk: & cd "{path}" & rustc "{filename}.rs" --out-dir "{output_dir}"
 cd "{path}\{output_dir}" & "{filename}.exe"
 ```
 
-You need to install [`Rust`](https://www.rust-lang.org/) and set environment variables.
+Need to install [`Rust`](https://www.rust-lang.org/) and set environment variables.
 
 ## .py
 #### Run
@@ -155,7 +155,7 @@ If you get garbled texts, try to insert following code in the opening of file.
 # -*- coding: utf-8 -*
 ```
 
-You need to install [`python`](https://www.python.org/downloads/) and set environment variables.
+Need to install [`python`](https://www.python.org/downloads/) and set environment variables.
 
 #### Build ( .py -> .exe )
 
@@ -179,7 +179,7 @@ pip install pyinstaller
 disk: & cd "{path}" & chcp 65001 & cls & Rscript "{filename}.R"
 ```
 
-You need to install [`R`](https://www.r-project.org/) and set environment variables.
+Need to install [`R`](https://www.r-project.org/) and set environment variables.
 
 ----
 ## .html .htm .pdf .lnk
@@ -210,19 +210,27 @@ Press `Shift+F12`
 
 ##### .c .cpp
 >
-> 0: Compile only  (僅編譯)
+> 0: Compile only
 >
-> 1: Run old       (執行舊檔)
+> 1: Run old (run the last output)
 >
 > 2: Specify the output folder and then compile and run
-> (指定輸出資料夾後編譯執行)
 >
 
 ##### .go .py
 >
-> 0: Run   (go run)
+> 0: go run
 >
-> 1: Build (go build)
+> 1: go build
+>
+> 2: gofmt -w
+>
+
+##### .py
+>
+> 0: Run
+>
+> 1: Build
 >
 
 ----

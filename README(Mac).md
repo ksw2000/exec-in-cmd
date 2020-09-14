@@ -29,7 +29,7 @@ cd "{path}"; mkdir -p "{output_dir}";
 g++ "{filename}.cpp" -lm -O2 -o "{output_dir}/{filename}"
 ```
 
-You need to install `gcc` and `g++`
+Need to install `gcc` and `g++`
 
 * example/
    * out/ _(default output folder name)_
@@ -42,14 +42,14 @@ You need to install `gcc` and `g++`
 ```sh
 cd "{path}" ; dart "{filename}.dart"
 ```
-You need to install [`dart`](https://dart.dev/get-dart).
+Need to install [`dart`](https://dart.dev/get-dart).
 
 ----
 ## .go
 ```sh
 cd "{path}" ; go run "{filename}.go"
 ```
-You need to install [`GO`](https://golang.org/doc/install).
+Need to install [`GO`](https://golang.org/doc/install).
 
 ----
 ## .java
@@ -76,7 +76,7 @@ version <3.1.2
 ```sh
 cd "{path}" ; node "{filename}.js"
 ```
-You need to install [`Node.js`](https://nodejs.org).
+Need to install [`Node.js`](https://nodejs.org).
 
 ----
 ## .php
@@ -92,14 +92,14 @@ You need to install [`Node.js`](https://nodejs.org).
 open -a Terminal "http://localhost:80/index.php"
 ```
 
-You need some application which can make you run PHP in your computer (server).
+Need some applications that can run PHP on the computer (like a server).
 
 ----
 ## .rb
 ```sh
 cd "{path}" ; ruby "{filename}.rb"
 ```
-You need to install [`Ruby`](https://www.ruby-lang.org/).
+Need to install [`Ruby`](https://www.ruby-lang.org/).
 
 If you get garbled texts, try to insert following code in the opening of file.
 
@@ -121,7 +121,7 @@ cd "{path}"; rustc "{filename}.rs" --out-dir "{output_dir}"
 ```sh
 cd "{path}/{output_dir}" ; "./{filename}"
 ```
-You need to install [`Rust`](https://www.rust-lang.org/).
+Need to install [`Rust`](https://www.rust-lang.org/).
 
 ----
 
@@ -137,7 +137,7 @@ If you get garbled texts, try to insert following code in the opening of file.
 # -*- coding: utf-8 -*
 ```
 
-Yout need to install [`python`](https://www.python.org/downloads/).
+Need to install [`python`](https://www.python.org/downloads/).
 
 ----
 ## .R
@@ -145,7 +145,7 @@ Yout need to install [`python`](https://www.python.org/downloads/).
 cd "{path}" ; Rscript "{filename}.R"
 ```
 
-You need to install [`R`](https://www.r-project.org/).
+Need to install [`R`](https://www.r-project.org/).
 
 ----
 ## .html .htm .pdf
