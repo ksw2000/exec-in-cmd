@@ -69,7 +69,7 @@ module.exports =
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
             else if extname in ['.asm', '.c', '.cpp', '.cs', '.dart', '.go', '.java', '.js', '.kt', '.php',
-                                '.py', '.R', '.rb', '.rs']
+                                '.py', '.R', '.rb', '.rs', '.sh']
                 _dir_path_  = "\"#{dir_path}\""
                 _basename_  = "\"#{basename}\""
                 _extname_   = "\"#{extname}\""
@@ -176,6 +176,8 @@ module.exports =
                         then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; ruby \"'\"#{select_file}\"'\"'\""
                         when '.rs'
                         then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outRust}'\"\""
+                        when '.sh'
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; ./\"'\"#{basename}.sh\"'\"'\""
                         else extFlag = 1
                     if !extFlag
                         exec command
