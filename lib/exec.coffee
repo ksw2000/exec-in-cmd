@@ -69,7 +69,7 @@ module.exports =
                     then exec "open \"#{dir_path}/#{basename}#{extname}\""
 
             else if extname in ['.asm', '.c', '.cpp', '.cs', '.dart', '.go', '.java', '.js', '.kt', '.php',
-                                '.py', '.R', '.rb', '.rs', '.sh']
+                                '.py', '.R', '.rb', '.rs', '.sh', '.ts', '.coffee']
                 _dir_path_  = "\"#{dir_path}\""
                 _basename_  = "\"#{basename}\""
                 _extname_   = "\"#{extname}\""
@@ -91,15 +91,16 @@ module.exports =
 
                 # For windows
                 if sys == 'win32'
-                    outA    = atom.config.get('exec_in_cmd.asm.out') ? 'out/'
-                    outC    = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
-                    outJava = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
-                    outRust = atom.config.get('exec-in-cmd.rust.out') ? 'out\\'
-                    args    = "#{_dir_path_} #{_basename_} #{_extname_} #{advance}"
+                    outA     = atom.config.get('exec_in_cmd.asm.out') ? 'out\\'
+                    nasmFlag = atom.config.get('exec_in_cmd.asm.flag') ? 'win64'
+                    outC     = atom.config.get('exec-in-cmd.c.out') ? 'out\\'
+                    outJava  = atom.config.get('exec-in-cmd.java.out') ? 'out\\'
+                    outRust  = atom.config.get('exec-in-cmd.rust.out') ? 'out\\'
+                    args     = "#{_dir_path_} #{_basename_} #{_extname_} #{advance}"
 
                     switch extname
                         when '.asm'
-                        then args = "#{args} \"#{outA}\""
+                        then args = "#{args} \"#{outA}\" \"#{nasmFlag}\""
                         when '.c', '.cpp', '.cs'
                         then args = "#{args} \"#{outC}\""
                         when '.dart'
@@ -120,6 +121,12 @@ module.exports =
                         then args = "#{_dir_path_} --run \"chcp 65001 & cls & ruby\" \"#{basename}#{extname}\""
                         when '.rs'
                         then args = "#{args} \"#{outRust}\""
+                        when '.coffee'
+                        then args = "#{_dir_path_} --run \"coffee -c --output lib/\" \"#{basename}#{extname}\""
+                        when '.ts'
+                        then args = "#{_dir_path_} --run \"tsc --outDir lib/\" \"#{basename}#{extname}\""
+                        when '.wasm'
+                        then args = "#{_dir_path_} --run \"wasmtime\" \"#{basename}#{extname}\""
 
                     args = args.replace(/\\/g,'\\\\')
 
