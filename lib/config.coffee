@@ -21,16 +21,16 @@ compatible =
             properties:
                 out:
                     type: 'string'
-                    title: 'Assembly output folder (relative)'
+                    title: 'Output folder (relative)'
                     description: 'Specify the folder name where assembly output <BR>`[ end with slash ]` `out/` , `output/asm/` , `../out/` , `./` , `../`'
                     default: 'out/'
                     order: 1
                 flag:
                     type: 'string'
                     title: 'Specify flag'
-                    description: 'elf64 for x64, elf for x86'
+                    description: 'elf64 for x86_64, elf for x86'
                     default: 'elf64'
-                    enum: ['elf64','elf']
+                    enum: ['elf64', 'elf']
                     order: 2
     win:
         C:
@@ -51,10 +51,17 @@ compatible =
             properties:
                 out:
                     type: 'string'
-                    title: 'Assembly output folder (relative)'
-                    description: 'Specify the folder name where assembly output <BR>`[ end with backslash ]` `out\\` , `output\\asm\\` , `..\\out\\` , `.\\` , `..\\`'
+                    title: 'Output folder (relative)'
+                    description: 'Specify the folder name where .obj output <BR>`[ end with backslash ]` `out\\` , `output\\asm\\` , `..\\out\\` , `.\\` , `..\\`'
                     default: 'out\\'
                     order: 1
+                flag:
+                    type: 'string'
+                    title: 'Specify flag'
+                    description: 'nasm -f `????`'
+                    default: 'win64'
+                    enum: ['win64', 'win32']
+                    order: 2
 
 compatible = if(system == 'win32') then compatible.win else compatible.linux_and_darwin
 

@@ -23,6 +23,7 @@ int main(int argc, char** argv){
         // C,C++,C#,Java        output folder (end with \)
         // Python               python interpreter (python or python3)
     // argv[6]
+        // asm                  flag (win64 | win32)
         // java                 package name (java)
 
     //Get disk name
@@ -56,8 +57,8 @@ int main(int argc, char** argv){
 
     if(!strcmp(argv[3], ".asm")){
         //Compile
-        sprintf(str, "%s & chcp 65001 & md \"%s\" & cls & nasm \"%s.asm\" -o \"%s%s.com\"",\
-                str, argv[5], argv[2], argv[5], argv[2]);
+        sprintf(str, "%s & chcp 65001 & md \"%s\" & cls & nasm -f %s \"%s.asm\" -o \"%s%s.obj\"",\
+                str, argv[5], argv[6], argv[2], argv[5], argv[2]);
     }else if(!strcmp(argv[3], ".java")){
         //Compile
         char backFolder[128];
