@@ -199,6 +199,14 @@ cd "{path}" ; Rscript "{filename}.R"
 Need to install [`R`](https://www.r-project.org/).
 
 ----
+## .sh
+```sh
+cd "{path}" ; ./"{filename}.sh"
+```
+
+Need to use `chmod +x {filename}.sh` first.
+
+----
 ## .html .htm .pdf
 
 ```sh
