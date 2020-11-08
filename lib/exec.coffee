@@ -185,6 +185,10 @@ module.exports =
                         then command += "\"./openLinux #{extname} \"'#{_dir_path_}'\" \"'#{_basename_}'\" \"'#{outRust}'\"\""
                         when '.sh'
                         then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; ./\"'\"#{basename}.sh\"'\"'\""
+                        when '.coffee'
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; coffee -c --output lib/ \"'\"#{select_file}\"'\"'\""
+                        when '.ts'
+                        then command += "\"./openLinux 'cd \"'#{_dir_path_}'\"; tsc --outDir lib/ \"'\"#{select_file}\"'\"'\""
                         else extFlag = 1
                     if !extFlag
                         exec command
@@ -249,12 +253,8 @@ module.exports =
         # advance3: Initialize for linux users and mac os users
         else if advance == 3
             if sys =='linux'
-                if terminal == 'gnome-terminal'
-                    exec "gnome-terminal --title='Init for Exec-in-cmd' -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
-                else if terminal == 'konsole'
-                    exec "konsole --hold -e \"sudo chmod -R 777 \"'#{__dirname}'\"\""
-                atom.notifications.addInfo('Still not work?',{
-                    description :"if terminal still cannot work, try below:<br> `sudo chmod -R 777 \"#{__dirname}\"`"
+                atom.notifications.addInfo('Try below in terminal:',{
+                    description : "1. `cd \"#{__dirname}\"`<br>2. `sudo chmod -R 4777 ./ & sudo chown -R root ./`<br> 3. `sudo chmod -R u+s ./`"
                 })
 
             else if sys =='darwin'
