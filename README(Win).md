@@ -1,23 +1,38 @@
 # Exec in cmd Manual for Windows
 
+## .asm
+
+Convert `.asm` to `.obj`
+
+flag : `win64` or `win32`
+
+```sh
+disk: & cd "{path}" & chcp 65001 & md "{output_dir}" & cls
+nasm -f {flag} "{filename}.asm" -o "{output_dir}{filename}.obj"
+```
+
+Need to install [`NASM`](https://www.nasm.us/) and set environment variables.
+
+* example/
+   * out/ _(default output folder name)_
+       * example.obj
+   * example.asm
+
+---
+
 ## .c .cpp
 
-#### Compile (.c)
-
 ```sh
+# preprocess
 disk: & cd "{path}" & chcp 65001 & md "{output_dir}" & cls
-gcc "{filename}.c" -O2 -o "{output_dir}{filename}"
-```
 
-#### Compile (.cpp)
+# Compile C language
+gcc "{filename}.c" -O2 -o "{output_dir}{filename}.exe"
 
-```sh
-disk: & cd "{path}" & chcp 65001 & md "{output_dir}" & cls
-g++ "{filename}.cpp" -O2 -o "{output_dir}{filename}"
-```
+# Or C++ language
+g++ "{filename}.cpp" -O2 -o "{output_dir}{filename}.exe"
 
-#### Run
-```sh
+# Run
 cd "{path}\{output_dir}" & "{filename}.exe"
 ```
 
@@ -58,14 +73,6 @@ disk: & cd "{path}" & go build "{filename}.go"
 
 Need to install [`GO`](https://golang.org/doc/install) and set environment varibales
 
-such as `GOROOT` and `GOPATH`
-
-* example/
-   * bin/
-   * pkg/
-   * src/
-       * example.go
-
 ----
 ## .java
 * example/
@@ -88,12 +95,39 @@ version <3.1.2
 Need to install [`JRE (Java Runtime Environment)`](https://www.oracle.com/technetwork/java/javase/downloads/index.html) and set environment variables.</BR>
 
 ----
-## .js (Node.js)
+## .js .coffee .ts
 ```sh
 disk: & cd "{path}" & node "{filename}.js"
 ```
 
 Need to install [`Node.js`](https://nodejs.org) and set environment variables.
+
+**for coffeescript**
+```sh
+# run
+disk: & cd "{path}" & coffee -c --output lib/ "{filename}.coffee"
+
+# Need to install "coffeescript"
+# You can install it by npm
+npm install -g coffeescript
+```
+
+**for typescript**
+```sh
+# run
+disk: & cd "{path}" & tsc --outDir lib/ "{filename}.ts"
+
+# Need to install "typescript".
+# You can install by "npm"
+npm install -g typescript
+```
+
+* example/
+   * lib/
+       * example_coff.js
+       * example_ts.js
+   * example_coff.coffee
+   * example_ts.ts
 
 ----
 ## .php
@@ -127,15 +161,11 @@ If you get garbled texts, try to insert the following code in the opening of the
 ```
 
 ## .rs
-#### Compile
-
 ```sh
+# Compile
 disk: & cd "{path}" & rustc "{filename}.rs" --out-dir "{output_dir}"
-```
 
-#### Run
-
-```sh
+# Run
 cd "{path}\{output_dir}" & "{filename}.exe"
 ```
 

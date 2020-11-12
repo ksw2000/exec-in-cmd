@@ -7,13 +7,17 @@ Make it more convenient for running code in Atom. Instead of command line or oth
 
 ![preview](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot.png)
 
-# Notice
-+ Please press `Ctrl + F12` or type `Exec in cmd: init` in command-palette for __Linux__ user and __macOS__ user when the first time use to avoid `permission denied`.
+# Notice for Linux & MacOS
+Please type `Exec in cmd: init` in command-palette for __Linux__ user and __macOS__ user when the first time use to avoid `permission denied`.
 
-+ Please use UTF-8 encoding always.
+Or, you can type these in terminal:
 
-+ We support __C__ (gcc), __C++__ (g++), __Java__, __Python__, __GO__, __Node.js__, __R__, __Ruby__ ... and so on. (Please read manual for more information)
-
+```sh
+cd {root of atom}/packages/exec-in-cmd/lib
+sudo chmod -R 4777 ./
+sudo chown -R root ./
+sudo chmod -R u+s ./
+```
 
 # Manual
 + Windows : <br>https://github.com/Hadname/exec-in-cmd/blob/master/README(Win).md
@@ -34,6 +38,27 @@ We support `Gnome-terminal` and `Konsole`
 
 ![permission_denied](https://raw.githubusercontent.com/Hadname/exec-in-cmd/master/Screenshot_linux_permission.png)
 If you get __Permission denied__ , please press `Ctrl + F12`
+
+# Support
+| Language | Windows x64        | Linux x86_64       | MacOS              |
+| -------- | ------------------ | ------------------ | ------------------ |
+| Assembly | NASM               | NASM + ld          |                    |
+| C        | gcc                | gcc                | gcc                |
+| C++      | g++                | g++                | g++                |
+| dart     | dart               | dart               | dart               |
+| go       | `go run` / `gofmt` | `go run`           | `go run`           |
+| java     | java / javac       | java / javac       | java / javac       |
+| js       | node               | node               | node               |
+| coffee   | coffeescript       | coffeescript       |                    |
+| ts       | tsc                | tsc                |                    |
+| php      | browser / `php -f` | browser / `php -f` | browser / `php -f` |
+| rb       | ruby               | ruby               | ruby               |
+| rs       | rustc              | rustc              | rustc              |
+| py       | python / python3   | python / python3   | python / python3   |
+| R        | Rscript            | Rscript            | Rscript            |
+| sh       |                    | terminal           |                    |
+| bat      | command line       |                    |                    |
+
 
 ----
 

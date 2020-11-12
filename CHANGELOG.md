@@ -1,8 +1,11 @@
+## 3.5.0
+New feature
++ Add coffeescript for windows and linux
++ Add typescript for windows and linux
+
 ## 3.4.0
 New Feature
-
 + gofmt for windows users
-
 + Add option "Open command line" on tree view
 
 ## 3.3.0
@@ -17,15 +20,10 @@ Fix bug
 ## 3.2.4
 New Feature
 + You can choose which action to execute .php
-
     + run in browser
-
     + run in command line
-
 + You can choose what terminal you want to use in linux.
-
     + Gnome terminal
-
     + Konsole
 
 ## 3.2.3
@@ -46,11 +44,7 @@ Fix bug: [2ba5231](2ba52318a9b7547eb521084f2cb90cd29bc55e38) : windows advance m
 ## 3.1.2
 * Add feature: specify python interpreter
 
-> python example.py
->
-> or
->
-> python3 example.py
+> `python example.py` or `python3 example.py`
 
 * We use coffeescript instead of golang to detect package name (java). And we support java directory structure.
 
@@ -78,7 +72,7 @@ Fix bug: [2ba5231](2ba52318a9b7547eb521084f2cb90cd29bc55e38) : windows advance m
     * c.java        (not using package)
 
 ## 3.1.0
-* We started to support macOS
+* Start to support macOS
 
 ## 3.0.2
 * Add C# for windows
