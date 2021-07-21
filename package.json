@@ -21,6 +21,13 @@
     "atom": ">=0.1.0 <2.0.0"
   },
   "homepage": "https://github.com/Hadname/exec-in-cmd#readme",
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
+  },
   "keywords": [
     "cmd",
     "terminal",
