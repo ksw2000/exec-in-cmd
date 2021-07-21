@@ -1,0 +1,114 @@
+nasm_win:
+  assemble: |
+    nasm -f elf64 -o %rbase.obj %relative
+  link: |
+    gcc %rbase.obj -o %
+  run: |
+    ./%rbase
+
+c_win:
+  compile: |
+    gcc %relative -o %rbase
+  run: |
+    chcp 65001
+    cmd /c cls
+    ./%rbase
+
+c_unix:
+  compile: |
+    gcc %relative -o %rbase
+  run: |
+    ./%rbase
+
+cpp_win:
+  compile: |
+    g++ %relative -o %rbase
+  run: |
+    chcp 65001
+    cmd /c cls
+    ./%rbase
+
+cpp_unix:
+  compile: |
+    g++ %relative -o %rbase
+  run: |
+    ./%rbase
+
+csharp:
+  compile: |
+    mcs -out:%rbase.exe %relative
+  run: |
+    mono %rbase.exe
+  
+cmd:
+  run: |
+    ./%rbase
+
+coffee:
+  transpile: |
+    coffee -c %relative
+  run: |
+    node %rbase.js
+
+dart:
+  run: |
+    dart %relative
+
+java:
+  compile: |
+    javac -encoding UTF-8 %relative
+  run: |
+    cmd /c cd %rdir
+    java -cp %rdir %base
+
+kotlin:
+  compile: |
+    kotlinc %rbase -include-runtime -d %rbase.jar
+  run: | 
+    java -jar %rbase.jar
+
+go:
+  compile: |
+    go build -o %rbase%exe %relative
+  run: |
+    ./%rbase
+
+node:
+  run: |
+    node %relative
+
+php:
+  run: |
+    php -f %relative
+
+python:
+  run: |
+    python %relative
+
+python3:
+  run: |
+    python3 %relative
+
+rscript:
+  run: |
+    Rscript %relative
+
+ruby:
+  run: |
+    ruby %relative
+
+rust:
+  compile: | 
+    rustc %relative --out-dir %rdir
+  run: |
+    ./%rbase
+
+typescript:
+  transpile: |
+    tsc %relative
+  run: |
+    node %rbase.js
+
+wasm:
+  compile: |
+    wasmtime %relative
